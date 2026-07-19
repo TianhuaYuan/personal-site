@@ -20,7 +20,8 @@
     "profile": "0x -D prof ./quartz/bootstrap-cli.mjs build --concurrency=1",
     "install-plugins": "npx tsx ./quartz/plugins/loader/install-plugins.ts",
     "prebuild": "node quartz/bootstrap-cli.mjs plugin install",
-    "build": "node quartz/bootstrap-cli.mjs build"
+    "build": "node quartz/bootstrap-cli.mjs build",
+    "postinstall": "chmod +x quartz/bootstrap-cli.mjs node_modules/.bin/quartz node_modules/.bin/tsx 2>/dev/null || true"
   },
   "engines": {
     "npm": ">=10.9.2",
