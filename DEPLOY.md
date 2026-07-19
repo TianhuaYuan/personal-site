@@ -36,6 +36,8 @@ Cloudflare 连接后即每次 `git push` 自动部署——这是量传阶段最
    - Build output directory：`public`
    - Production branch：`v5`
    - Node.js version：**22**（在「环境变量」加 `NODE_VERSION=22`；package.json 的 `engines` 也已锁 `>=22`）
+   - **Build command（构建命令，这个才是「必填」项）**：`npx quartz plugin install && npx quartz build`。
+   - **Deploy command（部署命令）：务必留空，且标准 Git 模式根本没有这个字段。** Git 自动部署模式下 Pages 会在 Build command 完成后**自动发布 `public/`**，无需 wrangler。若界面里出现一个 deploy command 框且被误填成 `npx wrangler deploy`，会因缺少 Cloudflare 认证在 CI 中卡住或失败（裸 `wrangler deploy` 默认部署 Worker，不是 Pages）。如果界面强制该框不能留空，说明项目类型创建错了（误入 Worker/wrangler 模板），应删项目重建为纯 Git Pages（Connect to Git），重建后该字段不会出现。
 5. 首次部署完成后获得 `https://<项目名>.pages.dev`，点开即可访问。之后每次 `git push` 自动重建上线。
 
 ## 三、上线方式 B：wrangler 直传（试点最快）
