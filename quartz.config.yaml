@@ -9,9 +9,8 @@ configuration:
     provider: null
   # 内容为中文，locale 设为 zh-CN（影响日期格式与 <html lang>）
   locale: zh-CN
-  # TODO(部署后替换): Cloudflare Pages 自动分配的子域形如 personal-site-xxxx.pages.dev
-  # 买自定义域名后改为裸域名，如 tianhua.dev
-  baseUrl: tianhua.pages.dev
+  # Cloudflare Pages 实际子域（2026-07-19 部署获得）；买自定义域名后改为裸域名，如 tianhua.dev
+  baseUrl: fa55b438.personal-site-6jr.pages.dev
   # 白名单式排除：只发 content/ 下明确放入的内容；其余私密默认不泄
   ignorePatterns:
     - private
