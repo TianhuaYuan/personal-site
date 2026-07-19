@@ -2,7 +2,11 @@
 title: 全局导航
 tags: [索引]
 created: 2026-07-13
+description: "PorterYuan 的技术学习笔记：面向 2026 秋招的 AI Agent / RAG 方向面试备考与项目复盘。深入讲解 MCP、检索增强生成（RAG）、向量数据库、LangGraph 等核心主题，并附八股文、LeetCode 题解与跨领域知识图谱。"
+comments: false
 ---
+
+![PorterYuan](avatar.svg)
 
 # 📚 笔记全局导航
 

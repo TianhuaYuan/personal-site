@@ -1,10 +1,11 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: 田华 · 技术学习笔记
+  pageTitle: PorterYuan · 学习笔记
   pageTitleSuffix: ""
   enableSPA: true
   enablePopovers: true
-  # 试点阶段先关闭外部分析，避免向外发请求；域名/统计后续再开
+  # 分析统计：由 Cloudflare Web Analytics 在边缘层自动注入，无需此处配置。
+  # 开启方式：Cloudflare 控制台 → personal-site → Analytics → Web Analytics → 启用（详见说明）。
   analytics:
     provider: null
   # 内容为中文，locale 设为 zh-CN（影响日期格式与 <html lang>）
@@ -196,18 +197,32 @@ plugins:
       priority: 5
       condition: not-index
   - source: github:quartz-community/comments
-    enabled: false
+    enabled: true
     options:
       provider: giscus
-      options: {}
+      options:
+        repo: TianhuaYuan/personal-site
+        # ↓↓↓ 以下两项需前往 https://giscus.app 配置后填入（详见说明） ↓↓↓
+        repoId: "在此填入_giscus_提供的_repoId"
+        category: General
+        categoryId: "在此填入_giscus_提供的_categoryId"
+        lang: zh-CN
+        mapping: pathname
+        strict: false
+        reactionsEnabled: true
+        inputPosition: bottom
+        themeUrl: https://giscus.app/themes
+        lightTheme: light
+        darkTheme: dark
     layout:
       position: afterBody
       priority: 10
   - source: github:quartz-community/footer
     enabled: true
-    # 试点阶段清空链接，避免指向 quartz 官方/占位外链；量传时填入你的 GitHub / 简历链接
     options:
-      links: {}
+      links:
+        GitHub: https://github.com/TianhuaYuan
+        Email: mailto:lovekb248@outlook.com
   - source: github:quartz-community/recent-notes
     enabled: false
   - source: github:quartz-community/spacer
