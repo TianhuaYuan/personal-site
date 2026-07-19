@@ -1,0 +1,12 @@
+# Normalize line endings to LF on checkout/commit for all text files.
+# Notes are authored on Windows (CRLF in Obsidian); keep the repo LF-clean.
+* text=auto eol=lf
+
+# Binary assets must never be line-ending normalized.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary

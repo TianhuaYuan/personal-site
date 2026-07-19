@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Quartz build cache & plugin install artifacts
+# .quartz/ is fully regenerated on each build (prebuild runs `install-plugins`,
+# which re-fetches all 46 plugins from GitHub) — never commit it.
+.quartz/
+quartz/.quartz-cache/
+
+# Build output (regenerate via npx quartz build)
+public/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local env
+.env
+.env.local
