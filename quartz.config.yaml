@@ -10,8 +10,8 @@ configuration:
     provider: null
   # 内容为中文，locale 设为 zh-CN（影响日期格式与 <html lang>）
   locale: zh-CN
-  # Cloudflare Pages 实际子域（2026-07-19 部署获得）；买自定义域名后改为裸域名，如 tianhua.dev
-  baseUrl: fa55b438.personal-site-6jr.pages.dev
+  # 自定义域名（2026-07-19 购买 porteryuan.top）；裸域名，不带 https:// 与结尾斜杠
+  baseUrl: porteryuan.top
   # 白名单式排除：只发 content/ 下明确放入的内容；其余私密默认不泄
   ignorePatterns:
     - private
@@ -30,15 +30,16 @@ configuration:
       body: Source Sans Pro
       code: IBM Plex Mono
     colors:
+      # 配色与站点图标（青色 favicon）品牌统一：secondary=链接/标题/图谱主色，tertiary=hover/强调
       lightMode:
         light: "#faf8f8"
         lightgray: "#e5e5e5"
         gray: "#b8b8b8"
         darkgray: "#4e4e4e"
         dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
+        secondary: "#0e7490"
+        tertiary: "#06b6d4"
+        highlight: rgba(6, 182, 212, 0.10)
         textHighlight: "#fff23688"
       darkMode:
         light: "#161618"
@@ -46,9 +47,9 @@ configuration:
         gray: "#646464"
         darkgray: "#d4d4d4"
         dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
+        secondary: "#22d3ee"
+        tertiary: "#67e8f9"
+        highlight: rgba(34, 211, 238, 0.12)
         textHighlight: "#b3aa0288"
 plugins:
   - source: github:quartz-community/created-modified-date
@@ -137,11 +138,27 @@ plugins:
     enabled: true
   - source: github:quartz-community/explorer
     enabled: true
+    options:
+      # 文件夹默认折叠，避免 200+ 笔记一次性铺开；点击文件夹进入其目录页
+      folderDefaultState: collapsed
+      folderClickBehavior: link
+      useSavedState: true
     layout:
       position: left
       priority: 50
   - source: github:quartz-community/graph
     enabled: true
+    options:
+      # 局部图谱多看一层邻居，hover 聚焦；全局图谱隐藏 tag 节点，减少噪声（配色随主题青色）
+      localGraph:
+        depth: 2
+        scale: 1.1
+        showTags: false
+        focusOnHover: true
+      globalGraph:
+        depth: -1
+        showTags: false
+        focusOnHover: true
     layout:
       position: right
       priority: 10
@@ -169,7 +186,7 @@ plugins:
       position: beforeBody
       priority: 20
   - source: github:quartz-community/tag-list
-    enabled: false
+    enabled: true
     layout:
       position: beforeBody
       priority: 30
@@ -202,10 +219,10 @@ plugins:
       provider: giscus
       options:
         repo: TianhuaYuan/personal-site
-        # ↓↓↓ 以下两项需前往 https://giscus.app 配置后填入（详见说明） ↓↓↓
-        repoId: "在此填入_giscus_提供的_repoId"
+        # repoId / categoryId 来自 https://giscus.app（2026-07-19 回填）
+        repoId: "R_kgDOTc32hg"
         category: General
-        categoryId: "在此填入_giscus_提供的_categoryId"
+        categoryId: "DIC_kwDOTc32hs4DBgIF"
         lang: zh-CN
         mapping: pathname
         strict: false
@@ -224,7 +241,17 @@ plugins:
         GitHub: https://github.com/TianhuaYuan
         Email: mailto:lovekb248@outlook.com
   - source: github:quartz-community/recent-notes
-    enabled: false
+    enabled: true
+    options:
+      title: 近期更新
+      limit: 6
+      showTags: true
+      linkToMore: false
+      hideTagPages: true
+      hideFolderPages: true
+    layout:
+      position: right
+      priority: 60
   - source: github:quartz-community/spacer
     enabled: true
     options: {}
@@ -246,7 +273,8 @@ plugins:
         - tags
         - aliases
       excludedProperties: []
-      hidePropertiesView: false
+      # 隐藏正文顶部的 frontmatter 属性框（description/tags/aliases 已由 content-meta / tag-list 呈现，避免重复）
+      hidePropertiesView: true
       delimiters: ---
       language: yaml
     order: 5

@@ -1,3 +1,38 @@
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+// ============================================================
+// 1) 中文字体栈
+//    fonts 插件只加载 3 款拉丁字体（Schibsted Grotesk / Source Sans Pro /
+//    IBM Plex Mono），中文会掉到浏览器默认字体，观感割裂。这里补一层
+//    中文系统字体回退。注意：custom.scss 被拼接在 @layer 块之后，写
+//    @import url() 会违反 CSS 规范而被忽略，因此只用系统字体、不引 Web 字体。
+// ============================================================
+$zh-sans: "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+
+:root {
+  --bodyFont: "Source Sans Pro", #{$zh-sans};
+  --headerFont: "Schibsted Grotesk", #{$zh-sans};
+  --codeFont: "IBM Plex Mono", "PingFang SC", "Microsoft YaHei", monospace;
+}
+
+// fonts 插件会在 custom.scss 之后再输出一批「无 layer」的 h1–h6 字体规则，
+// 单纯改 --headerFont 会被其覆盖，故对标题字体加 !important 兜底。
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--headerFont) !important;
+}
+
+// ============================================================
+// 4) 正文阅读宽度
+//    默认 .page 最大宽 1500px（左右侧栏各 320px → 中间栏约 850px）。
+//    笔记含大量代码块 / 表格，桌面端适当加宽中间栏至约 990px。
+// ============================================================
+@media all and (min-width: 1200px) {
+  .page {
+    max-width: 1640px;
+  }
+}

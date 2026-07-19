@@ -6,9 +6,9 @@ description: "PorterYuan 的技术学习笔记：面向 2026 秋招的 AI Agent 
 comments: false
 ---
 
-![PorterYuan](avatar.svg)
-
 # 📚 笔记全局导航
+
+> 面向 2026 秋招的技术学习笔记 —— 深入 AI Agent / RAG、后端八股与算法，边学、边讲、边复盘。
 
 ## 八股文笔记
 
