@@ -1,0 +1,35 @@
+---
+title: "JOIN进阶多表连接"
+created: "2025-07-12"
+tags:
+  - 八股文
+  - mysql
+---
+
+# JOIN进阶多表连接
+## 开篇：为什么 SQL 手写是"区分度最高"的题？
+
+```mermaid
+graph TD
+    subgraph "SQL 手写能力分层"
+        Normal["普通候选人<br/>SELECT * FROM a JOIN b...<br/>遇到 NULL 陷阱、性能问题、边界情况全踩坑"]
+        Good["优秀候选人<br/>能写三种写法（JOIN / 子查询 / EXISTS）<br/>能说清每种写法的执行计划和适用场景<br/>能预判 NULL 行为"]
+    end
+    Normal -.->|"差距"| Good
+```
+
+三道题决定你能不能过 SQL 面：
+  ① 写对 JOIN（LEFT JOIN + WHERE 退化陷阱）
+  ② 写对子查询（NOT IN + NULL 全军覆没）
+  ③ 写对窗口函数（连续登录 / Top N / 环比增长率）
+
+> 🔴 **必背**：SQL 手写的本质不是你"会不会写 SQL"，而是"知不知道每种写法在什么场景下会出 bug"。写出正确结果只是及格，能预判边界情况才是优秀。
+
+---
+
+
+## 相关链接
+
+- 📋 目录：[[00-MySQL]]
+- 📚 学习清单：[[八股文学习清单]]
+

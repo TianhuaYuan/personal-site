@@ -12,7 +12,7 @@ configuration:
   locale: zh-CN
   # 自定义域名（2026-07-19 购买 porteryuan.top）；裸域名，不带 https:// 与结尾斜杠
   baseUrl: porteryuan.top
-  # 白名单式排除：只发 content/ 下明确放入的内容；其余私密默认不泄
+  # 白名单式排除：只发 content/ 下明确放入的内容
   ignorePatterns:
     - private
     - templates
@@ -20,8 +20,6 @@ configuration:
     - .trash
     - .uploads
     - .claude
-    - 学习计划
-    - 其他
   theme:
     fontOrigin: googleFonts
     cdnCaching: true
@@ -219,7 +217,7 @@ plugins:
       provider: giscus
       options:
         repo: TianhuaYuan/personal-site
-        # repoId / categoryId 来自 https://giscus.app（2026-07-19 回填）
+        # repoId / categoryId 来自 https://giscus.app
         repoId: "R_kgDOTc32hg"
         category: General
         categoryId: "DIC_kwDOTc32hs4DBgIF"
