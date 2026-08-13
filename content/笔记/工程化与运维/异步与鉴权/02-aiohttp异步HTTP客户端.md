@@ -157,12 +157,41 @@ async def fetch_all(urls: list[str], concurrency: int = 10) -> list[dict]:
 
 ---
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「aiohttp 异步 HTTP 客户端」到底是什么？**
+A：aiohttp 让一个线程同时"放出去"很多 HTTP 请求，谁先回来先处理，不再干等。
+
+**Q2：一、为什么不用 requests —— 怎么理解？ —— 怎么理解？**
+A：像点外卖：requests 是同步的，你下一个单就蹲门口等送到才下下一个，100 单等 100 秒；aiohttp 是异步的，100 单一起下单，哪个骑手先到拿哪个，约 1 秒搞定。差距来自 I/O 等待期间线程不再傻等。英文：synchronous vs asynchronous I/O。
+
+**Q3：二、基础用法与并发抓取 —— 怎么理解？ —— 怎么理解？**
+A：像开个外卖调度中心：建一个 ClientSession 当总台，async with session.get(url) 发单，asyncio.gather 把一堆任务一起 await。关键是一个 session 要复用，别每个请求都新建；超时要给 ClientTimeout 兜底。英文：ClientSession / asyncio.gather。
+
+**Q4：三、并发限流 Semaphore —— 怎么理解？ —— 怎么理解？**
+A：像只放 20 个取餐窗口：1000 个 URL 不能全涌进来，用 asyncio.Semaphore(20) 卡住并发数，其余排队。否则瞬间打爆对方服务器或被自己内存撑爆。英文：Semaphore（信号量）。
+
+**Q5：四、FastAPI 集成与速查 —— 怎么理解？ —— 怎么理解？**
+A：像在餐厅后厨调外卖平台：FastAPI 本身就跑在 asyncio 事件循环上，路由里调外部 AI API 必须用异步客户端，否则会阻塞整个循环、所有请求卡死。模板就是"建 session→限流→gather→收集结果"。英文：event loop / non-blocking。
+
+**Q6：核心速记主线有哪些？**
+- 本质：异步 I/O 让单线程并发传很多请求，I/O 等待期不空转
+- 替代 requests：同样 100 个 URL，aiohttp 并发比同步快约百倍
+- 关键组件：ClientSession 复用、asyncio.gather 并发、ClientTimeout 兜底
+- 限流必备：Semaphore 控并发数，防打爆下游或撑爆自己
+- 集成要点：FastAPI 路由内必须用异步客户端，否则阻塞事件循环
+
+**口诀**
+A：requests 同步苦等单，aiohttp 并发一锅端；
+单线程管多连接，I/O 空档别空盼；
+Semaphore 卡窗口，二十并发莫泛滥；
+FastAPI 莫阻塞，事件循环稳如磐。
+
 ## 相关链接
 
 - 上一篇：[[01-asyncio核心API与Task并发]]
 - 下一篇：[[03-JWT原理与设计]]
-- 项目实践：[[项目实战/ai-resume笔记/01_技术研读/01_架构概览|ai-resume: 架构概览]]
-- 项目实践：[[项目实战/cr-agent笔记/01-技术研读/04-三层容错与并发bug|cr-agent: 三层容错与并发bug]]
 
 ---
-→ [[技术学习清单#asyncio（AI 后端核心）]]
+→ [[技术学习路线图#asyncio（AI 后端核心）]]

@@ -24,8 +24,6 @@ import tiktoken
 import numpy as np
 
 # ============================================================
-# 第一部分：Token 计数 —— 用 tiktoken 计算实际消耗
-# ============================================================
 
 def count_tokens(text: str, model: str = "gpt-4") -> int:
     """用 tiktoken 计算一段文本在指定模型下的 token 数量"""
@@ -63,8 +61,6 @@ def audit_system_prompt(system_prompt: str, user_messages: list[str]) -> dict:
 
 
 # ============================================================
-# 第二部分：Temperature 效果可视化 —— 不同温度下的概率分布
-# ============================================================
 
 def softmax_with_temperature(logits: np.ndarray, temperature: float) -> np.ndarray:
     """实现带 Temperature 的 Softmax 公式
@@ -101,8 +97,6 @@ def demonstrate_temperature_effect():
     # T=2.0: 所有候选差距大幅缩小，低分词也有机会入选
 
 
-# ============================================================
-# 第三部分：System Prompt 构造 —— 三层结构 + 注入防护
 # ============================================================
 
 def build_system_prompt(
@@ -159,10 +153,6 @@ def build_system_prompt(
     return "\n\n---\n\n".join(sections)
 
 
-# ============================================================
-# 第四部分：Agent Temperature 分层策略 —— 不同环节不同温度
-# ============================================================
-
 # 全局一个 Temperature 是新手做法；生产级 Agent 按环节精细化调配
 AGENT_TEMPERATURE_LAYERS: dict[str, float] = {
     "router": 0.0,      # 路由层：意图分类、工具选择 → 必须精确，用最低温
@@ -178,8 +168,6 @@ def get_temperature_for_layer(layer: str) -> float:
     return AGENT_TEMPERATURE_LAYERS.get(layer, 0.5)
 
 
-# ============================================================
-# 运行演示（可直接执行 python 本文件）
 # ============================================================
 if __name__ == "__main__":
     # 1. Token 计数演示：中文 1~2 个字 ≈ 1 token
@@ -212,12 +200,47 @@ if __name__ == "__main__":
 
 > ▶ 对应原理：[[01-大语言模型LLM原理|01-大语言模型LLM原理]]
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「Token 计费原理 + Temperature 控制 + System Prompt 层级」到底是什么？**
+A：Token 是 LLM 计费单位，Temperature 控随机性，System Prompt 是最高优先级指令。
+
+**Q2：代码实现 —— 怎么理解？**
+A：像三件基础装备先备齐：用 tiktoken 数 token 做成本审计（输出比输入贵 2 倍）；用带温 softmax 看温度如何拉平概率；用结构化函数拼 System Prompt（关键约束放首尾）。
+
+**Q3：第四部分：Agent Temperature 分层策略 —— 怎么理解？**
+A：像给不同工种调空调温度：路由层（router）T=0 必须精确、执行层（executor）T=0.2 写代码、规划层（planner）T=0.6 要灵活、创造层（creator）T=0.9 发散脑暴。全局一个温度是新手的写法。
+
+**Q4：Token 计费原理 —— 怎么理解？**
+A：像按字数算稿费：中文 1~2 字约 1 token，GPT-4 输入 \$0.03/千、输出 \$0.06/千（输出贵因要逐 token 生成）。System Prompt 每次调用都占输入 token，得审计别浪费。
+
+**Q5：System Prompt 层级 —— 怎么理解？**
+A：像给 AI 戴"紧箍咒"并讲究摆放：三段式（角色/规则/输出格式），关键规则放首尾利用首因+近因效应，防注入指令放最后权重最高。System Prompt（系统提示）是最高优先级的对话宪法。
+
+**Q6：核心速记主线有哪些？**
+- Token 是计费单位，输出比输入贵 2 倍
+- Temperature 在 softmax 分母，越大越随机
+- Agent 分层调温：路由低、创造高
+- System Prompt 首尾放关键，防注入押末尾
+
+**口诀**
+A：Token 按字算稿费，输出贵过输入倍；
+Temperature 调温度，分母越大越乱飞；
+分层调度各司职，路由冷来创造沸；
+系统提示戴紧箍，首尾关键末尾卫。
+
 相关链接
 
 - 目录：[[00-AI]]
 - 下一篇：[[02-LLM本质-API调用封装]]
-- 项目实践：[[项目实战/ai-resume笔记/01_技术研读/01_架构概览#技术栈总览|ai-resume: 架构概览]]
-- 项目实践：[[项目实战/cr-agent笔记/01-技术研读/06-项目搭建与TDD实践#🟢 了解级|cr-agent: 项目搭建与TDD实践]]
 
 ---
-→ [[技术学习清单#LLM 基础]]
+→ [[技术学习路线图#LLM 基础]]
+## 相关链接
+
+- [[笔记/AI与Agent/知识/实战/26-工具幂等性与副作用控制：防止重复执行的工程手段|工具幂等性与副作用控制：防止重复执行的工程手段]]
+- [[笔记/AI与Agent/知识/实战/28-降级路径（Degradation）：某环节失败→回退到次优但可用方案|降级路径（Degradation）：某环节失败→回退到次优但可用方案]]
+- [[笔记/AI与Agent/知识/实战/12-Self-RAG：自我反思+自纠正闭环|Self-RAG：自我反思+自纠正闭环]]
+- [[笔记/AI与Agent/知识/实战/27-指数退避重试：ExponentialBackoff+Jitter|指数退避重试：Exponential Backoff + Jitter]]
+- [[笔记/AI与Agent/知识/实战/24-Human-in-the-loop：人工介入兜底与敏感操作审批机制|Human-in-the-loop：人工介入兜底与敏感操作审批机制]]

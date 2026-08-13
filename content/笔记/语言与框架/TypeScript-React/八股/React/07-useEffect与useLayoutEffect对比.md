@@ -1,35 +1,30 @@
 ---
+
 title: "useEffect vs useLayoutEffect"
+
 created: "2025-07-12"
+
 tags:
+
   - 八股文
+
   - react
+
   - react-ts-js
+
 ---
 
 # useEffect vs useLayoutEffect
 
-
-
 ## 一句话先记
-
-
 
 > **useEffect = 页面画完了再干活（不阻塞渲染）。useLayoutEffect = 页面画完之前先把活干完（阻塞渲染）。两者的区别就一个：执行时机不同。**
 
-
-
 ---
-
-
 
 ## 先搞懂——React 渲染流程
 
-
-
 要理解这两个 hook 的区别，先搞懂 React 渲染一帧的过程：
-
-
 
 ```mermaid
 
@@ -49,11 +44,7 @@ graph LR
 
 ```
 
-
-
 **关键时间线：**
-
-
 
 ```text
 
@@ -65,11 +56,7 @@ React 更新 DOM → useLayoutEffect 执行 → 浏览器绘制屏幕 → useEff
 
 ```
 
-
-
 **类比：装修房子**
-
-
 
 ```text
 
@@ -79,27 +66,17 @@ React 更新 DOM → useLayoutEffect 执行 → 浏览器绘制屏幕 → useEff
 
 2. 泥瓦工进场（浏览器绘制）
 
-
-
 useLayoutEffect = 你站在旁边盯着，水电没改完不准泥瓦工进场（阻塞）
 
 useEffect       = 你让泥瓦工先进场改，改完了再让水电工来（不阻塞）
 
 ```
 
-
-
 ---
-
-
 
 ## useEffect——"画完再说"
 
-
-
 默认行为。等浏览器把页面画完了，**悄悄在后台执行**。
-
-
 
 ```mermaid
 
@@ -129,15 +106,11 @@ sequenceDiagram
 
 ```
 
-
-
 ```typescript
 
 function 用户列表() {
 
     const [数据, 设置数据] = useState([]);
-
-
 
     // ✅ 适合放这里：数据获取
 
@@ -146,8 +119,6 @@ function 用户列表() {
         fetch('/api/users').then(res => res.json()).then(设置数据);
 
     }, []);  // 只跑一次
-
-
 
     // 等页面渲染完了，再去后台拿数据
 
@@ -159,8 +130,6 @@ function 用户列表() {
 
 ```
 
-
-
 **什么时候用：**
 
 - 数据获取（fetch API）
@@ -171,19 +140,11 @@ function 用户列表() {
 
 - 任何不需要用户"看到变化过程"的操作
 
-
-
 ---
-
-
 
 ## useLayoutEffect——"画之前改完"
 
-
-
 在浏览器绘制屏幕之前执行，**会阻塞浏览器绘制**。
-
-
 
 ```mermaid
 
@@ -215,15 +176,11 @@ sequenceDiagram
 
 ```
 
-
-
 ```typescript
 
 function 工具提示({ 目标元素 }) {
 
     const 提示框 = useRef(null);
-
-
 
     // ✅ 适合放这里：需要测量 DOM 再调整
 
@@ -241,15 +198,11 @@ function 工具提示({ 目标元素 }) {
 
     }, [目标元素]);
 
-
-
     return <div ref={提示框}>提示内容</div>;
 
 }
 
 ```
-
-
 
 **什么时候用：**
 
@@ -261,15 +214,9 @@ function 工具提示({ 目标元素 }) {
 
 - 避免页面闪烁
 
-
-
 ---
 
-
-
 ## 核心区别一张图
-
-
 
 ```mermaid
 
@@ -287,15 +234,11 @@ graph TD
 
     E --> F[用户看到页面]
 
-    
-
     C --> G[阻塞 → 用户看到最终效果]
 
     D --> H[不阻塞 → 用户可能先看到过渡状态<br/>然后闪烁一下]
 
 ```
-
-
 
 ```mermaid
 
@@ -319,8 +262,6 @@ graph LR
 
 ```
 
-
-
 | | useEffect | useLayoutEffect |
 
 | --- | --- | --- |
@@ -335,19 +276,10 @@ graph LR
 
 | 推荐场景 | API 请求、日志、事件绑定 | DOM 测量、样式调整 |
 
-
-
 ---
 
-
-
 ## 常见问题
-
-
-
 ### Q1：useLayoutEffect 什么时候真的需要？
-
-
 
 ```mermaid
 
@@ -365,11 +297,7 @@ graph TD
 
 ```
 
-
-
 具体场景：
-
-
 
 ```typescript
 
@@ -380,8 +308,6 @@ useLayoutEffect(() => {
     window.scrollTo(0, 保存的滚动位置);
 
 }, [保存的滚动位置]);
-
-
 
 // 场景 2：测量元素尺寸并调整样式
 
@@ -395,15 +321,9 @@ useLayoutEffect(() => {
 
 ```
 
-
-
 ### Q2：useLayoutEffect 会阻塞渲染，那不是性能更差吗？
 
-
-
 会阻塞，但**只有需要时才用**。大多数场景 useEffect 就够了。
-
-
 
 类比：
 
@@ -411,19 +331,11 @@ useLayoutEffect(() => {
 
 - useLayoutEffect = 外卖送错了，你在饭前打电话让店家重做（多等一会儿，但吃到的就是对的）
 
-
-
 ### Q3：服务端渲染（SSR）能用 useLayoutEffect 吗？
-
-
 
 **不能用。** 原因就一句话：**服务端没有 DOM。**
 
-
-
 **类比：网购柜子**
-
-
 
 ```text
 
@@ -432,8 +344,6 @@ useLayoutEffect(() => {
 包裹到了你家，你开始组装（浏览器 hydrate + 渲染）。
 
 ```
-
-
 
 ```mermaid
 
@@ -465,11 +375,7 @@ graph TD
 
 ```
 
-
-
 **为什么不行：**
-
-
 
 ```mermaid
 
@@ -485,25 +391,15 @@ graph LR
 
     E --> F[组件运行 useEffect<br/>或 useLayoutEffect]
 
-
-
     A -.->|useLayoutEffect 在这里想运行<br/>但这里没有 DOM 没有 window| G[❌ 报错]
 
 ```
 
-
-
 **服务端（Node.js）没有 `window`、没有 `document`、没有 `getBoundingClientRect`。**
-
-
 
 useLayoutEffect 里你要操作 DOM（量尺寸、调样式），但在服务端执行时，这些 API 全都不存在，直接报错。
 
-
-
 **React 的处理方式：**
-
-
 
 - 服务端渲染时，React 会忽略 useLayoutEffect
 
@@ -511,11 +407,7 @@ useLayoutEffect 里你要操作 DOM（量尺寸、调样式），但在服务端
 
 - 某些操作（比如读了不存在的 `window.scrollY`）会直接报错
 
-
-
 **解决方案：**
-
-
 
 ```typescript
 
@@ -523,21 +415,15 @@ useLayoutEffect 里你要操作 DOM（量尺寸、调样式），但在服务端
 
 // useLayoutEffect 只在明确需要 DOM 操作时用
 
-
-
 // 方案 2：动态选择
 
 import { useEffect, useLayoutEffect } from 'react';
 
+const 安全LayoutEffect = typeof window !== 'undefined'
 
-
-const 安全LayoutEffect = typeof window !== 'undefined' 
-
-    ? useLayoutEffect 
+    ? useLayoutEffect
 
     : useEffect;  // 服务端用 useEffect 代替
-
-
 
 // 方案 3：只在客户端执行
 
@@ -547,23 +433,15 @@ useEffect(() => {
 
     if (typeof window === 'undefined') return;
 
-    
-
     // 这里才执行 DOM 操作
 
 }, []);
 
 ```
 
-
-
 **一句话记住：SSR 阶段没有浏览器 DOM，useLayoutEffect 强制需要 DOM，所以在 SSR 用不了。用 useEffect 代替，等浏览器渲染完了再干活。**
 
-
-
 ### Q4：useEffect 里的回调什么时候执行？
-
-
 
 ```mermaid
 
@@ -583,15 +461,11 @@ graph LR
 
 ```
 
-
-
 ```typescript
 
 useEffect(() => {
 
     console.log('挂载时执行');
-
-    
 
     return () => {
 
@@ -603,15 +477,9 @@ useEffect(() => {
 
 ```
 
-
-
 ---
 
-
-
 ## 最佳实践
-
-
 
 | 场景 | 用哪个 |
 
@@ -633,65 +501,57 @@ useEffect(() => {
 
 | 其他情况 | 默认 useEffect |
 
-
-
 ---
-
-
 
 ## 一句话总结
 
-
-
 > **useEffect 画完再干活（不阻塞），useLayoutEffect 画之前干完活（阻塞）。99% 场景用 useEffect，只有在需要读 DOM 尺寸或改样式避免闪烁时才用 useLayoutEffect。**
-
-
-
-
 
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「useEffect vs useLayoutEffect」到底是什么？**
-A：**useEffect = 页面画完了再干活（不阻塞渲染）。useLayoutEffect = 页面画完之前先把活干完（阻塞渲染）。两者的区别就一个：执行时机不同。**
----
+
+A：useEffect 等浏览器画完再执行，useLayoutEffect 在绘制前同步执行并阻塞渲染。
 
 **Q2：一句话先记 —— 怎么理解？**
-A：**useEffect = 页面画完了再干活（不阻塞渲染）。useLayoutEffect = 页面画完之前先把活干完（阻塞渲染）。两者的区别就一个：执行时机不同。**
----
+
+A：像装修房子：水电改完（更新 DOM）后，useLayoutEffect 是"盯着工人改完才准泥瓦工进场"（阻塞绘制），useEffect 是"让泥瓦工先干，改完再叫水电工"（不阻塞）。两者唯一区别就是执行时机。
 
 **Q3：先搞懂——React 渲染流程 —— 怎么理解？**
-A：要理解这两个 hook 的区别，先搞懂 React 渲染一帧的过程：
-**关键时间线：**
-**类比：装修房子**
----
+
+A：像一帧的生命线：React 更新 DOM →（useLayoutEffect 在此执行）→ 浏览器绘制 →（useEffect 在此执行）。关键就一句：useLayoutEffect 在绘制前、useEffect 在绘制后，差的就是"用户会不会先看到半成品"。
 
 **Q4：useEffect——"画完再说" —— 怎么理解？**
-A：默认行为。等浏览器把页面画完了，**悄悄在后台执行**。
-**什么时候用：**
-数据获取（fetch API）
-订阅事件（addEventListener）
-打日志、埋点
-任何不需要用户"看到变化过程"的操作
----
+
+A：像后台悄悄干活：等用户已经看到页面，再去 fetch 数据、绑事件、打日志。适合任何"用户不需要看到变化过程"的操作——数据获取、订阅、埋点都放这。
 
 **Q5：useLayoutEffect——"画之前改完" —— 怎么理解？**
-A：在浏览器绘制屏幕之前执行，**会阻塞浏览器绘制**。
-**什么时候用：**
-读取 DOM 尺寸/位置（getBoundingClientRect）
-同步修改 DOM 样式
-需要让用户"一眼看到最终效果"的场景
-避免页面闪烁
----
+
+A：像画前量尺：在浏览器绘制前读 DOM 尺寸/位置（getBoundingClientRect）、同步改样式，用户一眼看到的就是最终效果，避免闪烁。适合提示框定位、滚动恢复、动画初态。
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：一句话先记、先搞懂——React 渲染流程、useEffect——"画完再说"、useLayoutEffect——"画之前改完"、核心区别一张图、常见问题。
 
+- 时机：useEffect 绘制后执行不阻塞；useLayoutEffect 绘制前执行阻塞
+
+- 体验：useEffect 可能闪烁；useLayoutEffect 一次性看到终态
+
+- 用途：数据/事件/日志用 useEffect；DOM 测量/样式用 useLayoutEffect
+
+- SSR：服务端无 DOM，useLayoutEffect 用不了，改用 useEffect
+
+**口诀**
+
+A：useEffect 画完干，Layout 画前忙；
+
+一个不阻塞，一个挡屏光；
+
+量尺改样式，Layout 最在行；
+
+SSR 无 DOM，Layout 让 useEffect。
 
 ## 相关链接
 
-
-
 - 📋 目录：[[00-React]]
 
-- 📚 学习清单：[[八股文学习清单]]
+- 📚 学习清单：[[八股文学习路线图]]
 

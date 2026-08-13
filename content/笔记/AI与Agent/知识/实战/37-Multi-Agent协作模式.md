@@ -283,7 +283,7 @@ Multi-Agent 的「协作」需要标准化的通信协议。A2A（Agent2Agent Pr
 | Artifact | 最终产物 | Worker 交回的成果 |
 
 
-## 
+##
 > ▶ 对应原理：[[29-多Agent协作基础与框架选型|29-多Agent协作基础与框架选型]]
 
 
@@ -295,6 +295,36 @@ Multi-Agent 的「协作」需要标准化的通信协议。A2A（Agent2Agent Pr
 
 > ▶ 对应原理：[[53-MCP-vs-A2A本质区别|53-MCP-vs-A2A本质区别]]
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「Multi-Agent 协作模式」到底是什么？**
+A：Multi-Agent 是让多个各有所长的智能体像团队一样分工协作，而非单个 Agent 包揽所有事。
+
+**Q2：一、为什么需要 Multi-Agent？ —— 怎么理解？**
+A：像组建团队：单人能力有天花板（上下文有限、技能单一），拆任务给专人干自己最擅长的；Multi-Agent（多智能体）靠分工突破单 Agent 上限。
+
+**Q3：二、三种常见协作模式 —— 怎么理解？**
+A：像三种团队编法：Supervisor-Worker（工头派活，集中式）、Debate（平级辩论，分散式）、Pipeline（流水线，顺序式）；协作模式（Collaboration Pattern）按场景选。
+
+**Q4：三、Supervisor-Worker 深度解析（cr-agent 模式） —— 怎么理解？**
+A：像工头加专家：Supervisor 只派活、汇总、不亲自干，Worker 各管一摊；Supervisor-Worker（主管-工人）最成熟常用，对应代码审查里 Quality、Security 等专家 Agent。
+
+**Q5：四、幻觉放大风险（Hallucination Amplification） —— 怎么理解？**
+A：像传话游戏：链条每多一环，假话被当真前提继续推理，错误乘式放大；幻觉放大（Hallucination Amplification）靠交叉验证、溯源标注、地面真相锚定缓解。
+
+**Q6：核心速记主线有哪些？**
+- 为什么需要：单 Agent 有上限，分工突破天花板
+- 三种模式：Supervisor-Worker、Debate、Pipeline
+- Supervisor-Worker：工头派活、Worker 专家、只汇总
+- 幻觉放大：链式乘式放大，靠验证溯源缓解
+
+**口诀**
+A：单 Agent 有天花板，
+三种模式按需选；
+工头派活不亲干，
+幻觉乘放需锚定。
+
 相关链接
 
 - 目录：[[00-AI]]
@@ -302,43 +332,13 @@ Multi-Agent 的「协作」需要标准化的通信协议。A2A（Agent2Agent Pr
 - 下一篇：[[38-Agent成本控制：Token用量分析+三级模型路由+语义缓存]]
 - 通信协议：[[52-A2A协议核心概念|A2A 协议]]
 - 前置知识：[[15-Agent架构与工具调用]]（单 Agent 架构是多 Agent 的基础）
-- 项目实践：[[项目实战/cr-agent笔记/01-技术研读/01-Supervisor-Worker编排与StateGraph#🔴 记忆级：graph.py + state.py 逐行精读|cr-agent: Supervisor-Worker编排]]（4 个 Worker: Quality/Security/Performance/Structure）
-- 项目实践：[[项目实战/ai-resume笔记/01_技术研读/03_LangGraph状态机#直接模式 vs MCP 模式|ai-resume: LangGraph状态机]]
 
 ---
-→ [[技术学习清单#规划与高级模式]]
+→ [[技术学习路线图#规划与高级模式]]
+## 相关链接
 
-## 速记卡（面试闪卡）
-
-**Q1：一句话讲清「Multi-Agent 协作模式」到底是什么？**
-A：单个 Agent 的能力有天花板——上下文窗口有限、单一模型不可能样样精通、长链路任务中途断了全丢。Multi-Agent 的核心思路和人类团队一样：**把大任务拆成小任务，每人干自己最擅长的**。
-对比单 Agent vs 多 Agent：
-| 维度 | 单 Agent | Multi-Agent |
-|:----|:--------|:-----------|
-
-**Q2：一、为什么需要 Multi-Agent？ —— 怎么理解？**
-A：单个 Agent 的能力有天花板——上下文窗口有限、单一模型不可能样样精通、长链路任务中途断了全丢。Multi-Agent 的核心思路和人类团队一样：**把大任务拆成小任务，每人干自己最擅长的**。
-对比单 Agent vs 多 Agent：
-| 维度 | 单 Agent | Multi-Agent |
-|:----|:--------|:-----------|
-
-**Q3：二、三种常见协作模式 —— 怎么理解？**
-A：| 模式 | 结构 | 控制流 | 适合场景 | 典型风险 |
-|:----|:-----|:------|:--------|:--------|
-| **Supervisor-Worker** | 一主多从，Supervisor 分配任务 | 集中式 | 任务可拆分为独立子任务 | Supervisor 单点瓶颈 |
-
-**Q4：三、Supervisor-Worker 深度解析（cr-agent 模式） —— 怎么理解？**
-A：这是目前最成熟、最常用的多 Agent 模式。核心思想：**一个 Supervisor 当「工头」，几个 Worker 当「专家」，Supervisor 不干活只派活**。
----
-
-**Q5：四、幻觉放大风险（Hallucination Amplification） —— 怎么理解？**
-A：这是 Multi-Agent 最容易被忽略的坑。Agent 链条每多一环，幻觉概率不是加法增长，而是**乘法放大**。
-**缓解手段**：
-| 手段 | 做法 | 成本 |
-|:----|:-----|:----|
-| 交叉验证 | 关键事实让两个 Agent 独立查，对不上的标记 | 增加 1 次调用 |
-| 溯源标注 | 每个 Agent 输出带上信息来源（哪个工具、哪次检索） | 提示词工程成本 |
-
-**Q6：核心速记主线有哪些？**
-A：抓住这几根：一、为什么需要 Multi-Agent？、二、三种常见协作模式、三、Supervisor-Worker 深度解析（cr-agent 模式）、四、幻觉放大风险（Hallucination Amplification）、五、Pipeline 模式简述、六、Debate 模式简述。
-
+- [[笔记/AI与Agent/知识/实战/46-LangGraphMemorySaverCheckpoint|LangGraph MemorySaver Checkpoint]]
+- [[笔记/AI与Agent/知识/实战/29-熔断模式-CircuitBreaker|熔断模式（Circuit Breaker）：连续失败快速拒绝 + 半开重试]]
+- [[笔记/AI与Agent/知识/实战/34-上下文压缩：任务摘要-文件摘要-过程笔记|上下文压缩：任务摘要-文件摘要-过程笔记]]
+- [[笔记/AI与Agent/知识/实战/45-LangGraph框架：StateGraph-Node-Edge-Checkpoint|LangGraph框架：StateGraph-Node-Edge-Checkpoint]]
+- [[笔记/AI与Agent/知识/实战/23-MCPTool-Resource定义与注册模式|MCP Tool/Resource 定义与注册模式]]

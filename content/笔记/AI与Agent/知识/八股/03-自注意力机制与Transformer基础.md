@@ -130,8 +130,38 @@ output = x + SubLayer(x)
 
 > ▶ 对应实操：[[03-多模型后端抽象|03-多模型后端抽象]]
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「自注意力机制与 Transformer 基础」到底是什么？**
+A：Transformer 靠自注意力让每个词同时关注全场，并行捕捉长程依赖。
+
+**Q2：一、整体架构：Encoder-Decoder 与三大经典变体 —— 怎么理解？**
+A：像一家"翻译工厂"：BERT 只占左车间（Encoder），GPT 只占右车间（Decoder），T5 两头都用——核心都是中间那台自注意力机器。英文：Encoder-Decoder。
+
+**Q3：二、Q/K/V 三元组：注意力的三件套 —— 怎么理解？**
+A：像图书馆找书：Q 是你脑子里的疑问，K 是每本书脊上的标签，V 是书的实际内容；用疑问匹配标签、再综合内容，就得到想要的"注意力"。英文：Query / Key / Value。
+
+**Q4：三、缩放点积：为什么要除以 √d_k —— 怎么理解？**
+A：像把过大的音量旋钮拧小：d_k 越大点积方差越大会让 softmax 进入饱和区、梯度消失；除以 √d_k 把方差拉回 1 附近，训练才稳。英文：Scaled Dot-Product Attention。
+
+**Q5：四、Layer Norm 与 Pre-Norm：让百层网络训得动 —— 怎么理解？**
+A：像给每层单独"称重归一"：Layer Norm 在特征维做归一、不依赖 batch 大小；Pre-Norm 把归一放到子层之前，残差路径畅通、梯度无损回流。英文：Layer Normalization。
+
+**Q6：核心速记主线有哪些？**
+- 核心公式：Attention(Q,K,V) = softmax(QKᵀ/√d_k)·V
+- 三件套：Q 找信息、K 索引进、V 装内容
+- 模块链：MHA → Add&Norm → FFN → Add&Norm
+- 稳训关键：Pre-Norm + 残差连接，深层可堆叠
+
+**口诀**
+A：自注意力全员看全场，
+QKV 三件配成行；
+缩放根号防饱和，
+Pre-Norm 残差更稳当。
+
 相关链接
-- [[八股文学习清单]]
+- [[八股文学习路线图]]
 - [[00-全局导航|全局导航]]
 
 ---
@@ -144,38 +174,10 @@ output = x + SubLayer(x)
 | Transformer 相比 RNN/LSTM 的优势？ | ① 并行计算（RNN 需要逐步处理）② 长距离依赖（Attention 直接建立任意距离连接）③ 可扩展性好 |
 | Pre-Norm 为什么比 Post-Norm 更好？ | Pre-Norm 使得残差路径上没有归一化操作，梯度可以无损地从深层传回浅层，训练更稳定 |
 | Transformer 的参数量如何估算？ | 参数主要在 Embedding 和 FFN 中。FFN 占约 2/3：W1(768×3072) + W2(3072×768) × 层数；Attention 占约 1/3：4×(768×64)×12 × 层数 |
+## 相关链接
 
-## 速记卡（面试闪卡）
-
-**Q1：一句话讲清「自注意力机制与 Transformer 基础」到底是什么？**
-A：Transformer 采用 **编码器-解码器（Encoder-Decoder）** 结构，核心是自注意力机制（Self-Attention）。BERT 只用 Encoder，GPT 只用 Decoder，T5 两者都用。
-
-**Q2：整体架构概览 —— 怎么理解？**
-A：Transformer 采用 **编码器-解码器（Encoder-Decoder）** 结构，核心是自注意力机制（Self-Attention）。BERT 只用 Encoder，GPT 只用 Decoder，T5 两者都用。
-
-**Q3：Self-Attention 自注意力机制 —— 怎么理解？**
-A：Self-Attention 的核心思想：**让序列中的每个位置都能"关注"到其他所有位置**，从而捕获全局依赖关系。
-| 符号 | 全称 | 直觉理解 | 计算方式 |
-| ------ | ------ | ---------- | ---------- |
-| Q (Query) | 查询向量 | "我在找什么信息？" | X · W_Q |
-
-**Q4：Layer Normalization —— 怎么理解？**
-A：Layer Norm 对每个样本在特征维度上做归一化，稳定训练过程。
-| 特性 | Layer Norm | Batch Norm |
-| ------ | ----------- | ------------ |
-| 归一化维度 | 特征维度（跨 hidden_size） | batch 维度 |
-| 是否依赖 batch | 否 | 是 |
-| 适用场景 | NLP / 序列模型 | CV / CNN |
-
-**Q5：Feed-Forward Network (FFN) —— 怎么理解？**
-A：每个 Transformer Block 中的 FFN 是一个两层全连接网络：
-W1 的维度：d_model → 4 × d_model（升维）
-W2 的维度：4 × d_model → d_model（降维）
-**现代变体：**
-| 激活/变体 | 代表模型 | 特点 |
-| ----------- | --------- | ------ |
-| ReLU | 原始 Transformer | 简单但有死神经元问题 |
-
-**Q6：核心速记主线有哪些？**
-A：抓住这几根：整体架构概览、Self-Attention 自注意力机制、Layer Normalization、Feed-Forward Network (FFN)、残差连接 (Residual Connection)、快速问答。
-
+- [[笔记/AI与Agent/知识/八股/06-MHA-MQA-GQA多头注意力变体|MHA-MQA-GQA多头注意力变体]]
+- [[笔记/AI与Agent/知识/八股/44-Agent间通信机制|Agent间通信机制-共享上下文vs消息转发]]
+- [[笔记/AI与Agent/知识/八股/42-记忆污染与纠错机制|记忆污染与纠错机制]]
+- [[笔记/AI与Agent/知识/八股/05-Encoder-Only-vs-Decoder-Only架构对比|Encoder-Only-vs-Decoder-Only架构对比]]
+- [[笔记/AI与Agent/知识/八股/57-自研Harness与框架选型|自研Harness与框架选型]]

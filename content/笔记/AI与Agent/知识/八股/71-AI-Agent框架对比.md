@@ -57,8 +57,38 @@ tags:
 
 ---
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「AI Agent 框架对比」到底是什么？**
+A：横向对比主流 AI Agent 框架（LangChain、LlamaIndex、Claude/OpenAI SDK）的差异与选型。
+
+**Q2：LangChain vs LlamaIndex —— 怎么理解？**
+A：像"通用工具箱" vs "专业检索柜"——LangChain 是通用 LLM 应用框架（Chain+Agent+Tool），LlamaIndex 专注数据索引与 RAG（原生深度支持、索引类型丰富）。纯 RAG 用 LlamaIndex，需 Agent/复杂工作流用 LangChain+LangGraph。
+
+**Q3：Claude Agent SDK vs OpenAI Agents SDK —— 怎么理解？**
+A：像"安全门禁" vs "快开工具"——Claude SDK 安全优先（Constitutional AI+权限控制、内置 Handoff），OpenAI SDK 简洁易上手（Function Calling、内置 Guardrails）。前者适合企业级安全场景，后者适合快速原型。
+
+**Q4：框架选型原则 —— 怎么理解？**
+A：像"看菜吃饭"——快速原型用 OpenAI SDK，安全敏感用 Claude SDK，复杂有状态工作流用 LangGraph，纯 RAG 用 LlamaIndex，企业全栈用 LangChain+LangSmith。核心：别为用框架而用。
+
+**Q5：核心心法（别为框架而框架） —— 怎么理解？**
+A：像买工具不看牌子看活儿——讲清"什么场景用什么框架"比罗列框架名值钱。生产常见组合是"框架做编排 + 自研 Harness 管安全"，框架抽象过多反而难调试。
+
+**Q6：核心速记主线有哪些？**
+- LangChain 通用、LlamaIndex 专 RAG：纯检索用后者，Agent 编排用前者
+- Claude SDK 安全优先、OpenAI SDK 简洁：企业安全 vs 快速原型
+- 选型看场景：原型/安全/有状态工作流/纯 RAG 各有推荐
+- 核心原则：别为框架而框架，常"框架编排+自研 Harness 管安全"
+
+**口诀**
+A：框架对比怎么记，LangChain 通用 Llama 专
+Claude 安全 OpenAI 快，各有场景莫乱选
+原型安全与工作流，看菜吃饭挑框架
+别为框架而框架，编排加自研才稳
+
 ## 相关链接
-- [[八股文学习清单]]
+- [[八股文学习路线图]]
 - [[00-全局导航|全局导航]]
 
 ---

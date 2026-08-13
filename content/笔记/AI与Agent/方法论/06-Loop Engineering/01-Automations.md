@@ -103,39 +103,38 @@ on_event("push", lambda commit: enqueue(task=review_task(commit)))
 - **Anthropic (2024-12)**《Building Effective Agents》：[anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents)
 - **tosea.ai (2026)**《Loop Engineering: The Complete Guide》：[tosea.ai/blog/loop-engineering-ai-agents-complete-guide-2026](https://tosea.ai/blog/loop-engineering-ai-agents-complete-guide-2026)
 
-**相关链接**：
-- 系列清单：[[学习路线图/Agent 方法论与产品思维学习清单|Agent 方法论与产品思维学习清单]]
-- 上一层级：[[00-Agent 方法论与产品思维|Loop Engineering · 索引]]
-- 同系列：[[02-Worktrees|Worktrees]] · [[03-Skills|Skills]] · [[04-Connectors|Connectors]] · [[05-Sub-agents|Sub-agents]] · [[06-State|State]]
 
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「Automations（自动化心跳）」到底是什么？**
-A：**Automations（自动化心跳） = 定时 / 事件触发的「任务发现器」**：人还没醒，系统已经把昨晚的 CI 失败、新开的 issue、过期的 PR 扫了一遍，并把活儿摆到桌上了。
-没有它，你的 Agent 就是个「等你手动喊才动」的社畜；有了它，Agent 变成「到点自己开工」的扫地机器人。
----
+A：Automations 自动化心跳：定时/事件触发，自动发现该干啥的闹钟。
 
 **Q2：一、核心观点 —— 怎么理解？**
-A：**Automations（自动化心跳） = 定时 / 事件触发的「任务发现器」**：人还没醒，系统已经把昨晚的 CI 失败、新开的 issue、过期的 PR 扫了一遍，并把活儿摆到桌上了。
-没有它，你的 Agent 就是个「等你手动喊才动」的社畜；有了它，Agent 变成「到点自己开工」的扫地机器人。
----
+A：没它，Agent 是"等你喊才动"的社畜；有它，变成"到点自己开工"的扫地机器人。Automations（自动化心跳）就是 Loop 的启动器，人没醒它已把 CI 失败、新 issue、过期 PR 扫完摆上桌。
 
 **Q3：二、定义与原理 —— 怎么理解？**
-A：**Automations** 是 Loop 的「启动器」。它解决一个朴素问题：**谁来决定 Agent 现在该干啥？** 答案是——不让人决定，让时钟和事件决定。
-**定时触发（cron）**：每天 9 点扫 CI、每周一理 open issues，像你手机里的闹钟。
-**事件触发（event）**：代码一 push 就审查、PR 一开就跑测试，像门口的感应灯，人一走近就亮。
+A：它只回答一个问题：现在该干啥？答案是——不让"人"决定，让"时钟和事件"决定。定时触发（cron）像手机闹钟，事件触发（event）像门口感应灯，混合触发像"巡楼+烟感"双保险。Trigger（触发器）分两类。
 
 **Q4：三、实践与示例 —— 怎么理解？**
-A：概念极简，先看一个 cron 风格的扫描器（伪代码，重在结构）：
-工程上真正落地，通常借助现有调度器（GitHub Actions、cron、CI 的 scheduled workflows）而非自己造轮子。Anthropic 在《Building Effective Agents》里也强调：**先判断要不要 Agent**，大多数「定时跑一段确定性脚本」根本不需要 LLM——只有任务发现后是「开放、难预测」的才交给 Loop（）。
+A：落地别自己造轮子，借 GitHub Actions / cron / CI scheduled workflows。铁律：Automations 只"发现"任务，不"解决"任务，真干活的交给后面五大构件。Anthropic 也提醒：确定性脚本就别劳烦 LLM。
 
 **Q5：四、优势与局限 —— 怎么理解？**
-A：✅ **零人工启动**：闭环真正「自主」的前提，没有它后面全是空谈。
-✅ **覆盖盲区**：人睡觉 / 摸鱼时，CI 挂了也有人盯着。
-❌ **垃圾进垃圾出**：发现器扫到的「任务」若没过滤，会把 Agent 喂成一头吃草的牛——需要一个判定「这事值不值得跑」的阈值。
-❌ **触发风暴**：一个事件被错误配置成「每次都触发」，会瞬间打爆预算（见 ）。
----
+A：优点：零人工启动（自主闭环前提）、人摸鱼时 CI 挂了也有人盯。坑：垃圾进垃圾出（发现器没过滤会喂成一头牛），触发风暴会瞬间打爆预算——所以发现器得有个"值不值得跑"的阈值。Threshold（阈值）要设。
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：一、核心观点、二、定义与原理、三、实践与示例、四、优势与局限、五、最新研究与企业数据（2024–2026）、六、学习资源。
+- Automations 是 Loop 的启动器/闹钟
+- 触发分定时(cron)、事件、混合三类
+- 铁律：只发现任务，不解决问题
+- 设阈值防触发风暴打爆预算
+
+**口诀**
+A：自动心跳先上岗，
+定时事件把活访；
+只管发现不管干，
+阈值护住预算墙。
+
+## 相关链接
+- 系列清单：[[学习路线图/Agent方法论与产品思维学习路线图|Agent 方法论与产品思维学习路线图]]
+- 上一层级：[[00-Agent方法论与产品思维|Loop Engineering · 索引]]
+- 同系列：[[02-Worktrees|Worktrees]] · [[03-Skills|Skills]] · [[04-Connectors|Connectors]] · [[05-Sub-agents|Sub-agents]] · [[06-State|State]]
 

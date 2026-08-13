@@ -93,6 +93,37 @@ compose 里的 backend 服务用 `gunicorn + UvicornWorker --workers 4` 起多�
 
 ---
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「Docker 与 docker-compose 部署流程」到底是什么？**
+A：Docker 是标准化集装箱，compose 当工头一键编排多服务上线。
+
+**Q2：1. 镜像与容器 —— 菜谱和做好的菜 —— 怎么理解？**
+A：镜像像菜谱（只读模板，含代码+依赖+环境），容器像按菜谱做出来那盘菜（可启停删的实例）。Dockerfile 就是写菜谱的方法。英文 Image / Container。
+
+**Q3：2. Dockerfile 与 compose 编排 —— 怎么理解？**
+A：Dockerfile 用 gunicorn + UvicornWorker 起多进程把 FastAPI 打包成镜像；compose 用 yaml 把 backend、Postgres、Redis 编排在一起，depends_on 定启动顺序。英文 Dockerfile / docker-compose。
+
+**Q4：3. 八步部署流程 —— 本地到生产 —— 怎么理解？**
+A：本地 docker-compose up 起服务 → build 打镜像 → tag → push 进仓库 → ssh 上服务器 → compose pull → up -d 重启 → down 收工，一条龙把代码送上生产。英文 push / pull。
+
+**Q5：4. 常见坑与要点 —— 怎么理解？**
+A：depends_on 只管启动顺序不管健康，要可用得加 healthcheck；生产单机用 compose 够，上集群换 K8s。镜像一次构建到处跑，容器是跑起来的实例。英文 healthcheck。
+
+**Q6：核心速记主线有哪些？**
+- 镜像 Image：只读模板；容器 Container：运行实例
+- Dockerfile：定义怎么构建镜像（菜谱）
+- docker-compose：yaml 编排多服务，depends_on 定顺序
+- 部署八步：up→build→tag→push→ssh→pull→up -d→down
+- 坑：depends_on 不保健康，生产要加 healthcheck
+
+**口诀**
+A：镜像构建一次到处跑，
+容器实例独立好；
+Dockerfile 写出门道，
+compose 工头把活搞。
+
 ## 相关链接
 
 - [[13-FastAPI性能优化-连接池与uvicorn-workers|性能优化]]

@@ -175,12 +175,41 @@ const evenNumbers = myFilter(numbers, (n) => n % 2 === 0);  // [2, 4, 6]
 
 ---
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「泛型generics」到底是什么？**
+A：泛型是 TypeScript 的"类型参数"，调用时才定类型，确定后仍保留类型信息。
+
+**Q2：为什么需要泛型？ —— 怎么理解？**
+A：像快递柜的"万能格口"：放包裹、文件还是外卖，取出来系统都记得你放的是啥，给你对应处理方式；而 `any` 是"失忆格口"，取出来忘了类型。泛型一个函数搞定所有类型还保住类型信息。
+
+**Q3：泛型函数 —— 怎么理解？**
+A：像带占位符的公式：`identity<T>(value: T): T` 调用时才把 T 换成 string/number，返回值类型自动跟随。还能 `makePair<K,V>` 一次带多个类型参数，手动指定 `getFirst<number>` 也行。
+
+**Q4：泛型约束（extends） —— 怎么理解？**
+A：像餐厅着装要求：泛型默认啥类型都行，但 `<T extends HasLength>` 约束 T 必须有 length；`K extends keyof T` 把 K 锁成对象的合法 key。约束后 TS 才敢让你访问 `.length`、`.name` 这些属性。
+
+**Q5：泛型接口和泛型类型 —— 怎么理解？**
+A：像统一包装盒：`interface ApiResponse<T> { data: T }` 一套结构装 User 也装 string[]；`type ApiResult<T>` 同理。实战里分页响应、状态管理 State<T>、过滤函数都靠泛型一次写死、到处复用。
+
+**Q6：核心速记主线有哪些？**
+- 动机：any 丢类型、每类型写一遍重复，泛型一个函数保类型
+- 函数：`<T>` 占位、自动推断、可多参数 `<K,V>`、可手动指定
+- 约束：`extends` 限制范围，keyof 锁合法 key，避免乱访问
+- 接口：ApiResponse<T> / State<T> 一套结构复用所有数据类型
+
+**口诀**
+A：泛型是占位，调用才定型；
+any 失记忆，泛型记得清；
+extends 加约束，keyof 锁 key；
+接口包一层，复用处处行。
+
 ## 相关链接
 
 - 目录：[[00-TypeScript]]
 - 上一篇：[[01-interface与type区别]]
 - 下一篇：[[04-函数类型与重载]]
-- 项目实践：[[项目实战/ai-resume笔记/01_技术研读/01_架构概览|ai-resume: 架构概览]]
 
 ---
-→ [[技术学习清单#TypeScript 基础]]
+→ [[技术学习路线图#TypeScript 基础]]

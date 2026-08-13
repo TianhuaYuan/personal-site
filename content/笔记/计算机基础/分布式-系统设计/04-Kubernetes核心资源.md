@@ -1,9 +1,15 @@
 ---
+
 title: "Kubernetes 核心资源：Pod / Service / Deployment"
+
 created: "2026-07-21"
+
 tags:
+
   - 八股文
+
   - 分布式-系统设计
+
 ---
 
 # Kubernetes 核心资源：Pod / Service / Deployment
@@ -19,51 +25,85 @@ Pod 不是容器，而是"装容器的容器"。一个 Pod 内部有一个 pause
 ### 1.1 Pod 生命周期五个阶段
 
 ```mermaid
+
 stateDiagram-v2
+
     [*] --> Pending : 创建但未调度
+
     Pending --> Running : 调度成功,至少一个容器运行
+
     Running --> Succeeded : 所有容器正常退出(Job完成)
+
     Running --> Failed : 至少一个容器异常退出
+
     Running --> Unknown : 节点失联,无法获取状态
+
     Succeeded --> [*]
+
     Failed --> Running : restartPolicy=Always 自动重启
+
 ```
 
 | 阶段 | 含义 | 常见原因 |
+
 |------|------|----------|
+
 | **Pending** | 已被 API Server 接受，但未绑定节点 | 镜像拉取慢 / 资源不足调度不上 |
+
 | **Running** | 已绑定节点，至少一个容器在运行 | 正常状态 |
+
 | **Succeeded** | 所有容器正常退出，不再重启 | Job/CronJob 完成 |
+
 | **Failed** | 至少一个容器非零退出 | OOMKill / 应用 crash |
+
 | **Unknown** | 节点失联 | 网络分区 / kubelet 宕机 |
 
 ### 1.2 三种探针（Probes）
 
 ```mermaid
+
 graph TD
+
     subgraph Probe[容器探针体系]
+
         Startup[ startupProbe<br/>启动探针<br/>Java应用启动慢？先用它兜底 ] -->|成功| Liveness[ livenessProbe<br/>存活探针<br/>挂了就杀,杀完看restartPolicy ]
+
         Startup -->|失败| Kill[ 容器被杀重启 ]
+
         Liveness -->|失败| Kill
+
     end
+
     Startup -->|成功前| Disable[ liveness & readiness<br/>暂时禁用 ]
+
     Readiness[ readinessProbe<br/>就绪探针<br/>没准备好就从Service摘掉 ] -->|失败| Remove[ 从Endpoint列表移除<br/>不接收流量 ]
+
 ```
 
 - **startupProbe**：专治启动慢的容器（Java 大应用、ML 模型加载）。在它成功之前，liveness 和 readiness 都被暂停——避免刚启动就被判定死亡。
+
 - **livenessProbe**：判断容器是否还活着。失败 → kubelet 杀掉容器 → 根据 `restartPolicy` 决定是否重启。
+
 - **readinessProbe**：判断容器是否准备好接客。失败 → Service 从负载均衡列表中摘掉这个 Pod。
 
 ### 1.3 Pod 的资源请求与限制
 
 ```yaml
+
 resources:
+
   requests:          # 调度依据——调度器找"够用"的节点
+
     cpu: "250m"      # 0.25 核
+
     memory: "256Mi"
+
   limits:            # 运行时天花板——超了就 OOMKill 或 CPU 节流
+
     cpu: "500m"
+
     memory: "512Mi"
+
 ```
 
 > ⚠️ **陷阱**：只设 `limits` 不设 `requests` 会导致调度器无法准确评估节点容量，Pod 可能被放到撑不住的节点上。生产环境务必同时设置两者。
@@ -71,11 +111,17 @@ resources:
 ### 1.4 Pod 本质速记
 
 | 特性 | 说明 |
+
 |------|------|
+
 | 最小调度单元 | 调度器调度的不是容器，而是 Pod |
+
 | 网络共享 | 同 Pod 容器共享 IP，localhost 互通 |
+
 | 短暂生命周期 | 死了就换新的，IP 也会变 |
+
 | pause 容器 | 基础设施容器，持有网络命名空间 |
+
 | 重启策略 | Always（默认）、OnFailure、Never |
 
 ---
@@ -87,16 +133,25 @@ resources:
 ### 2.1 层级关系
 
 ```mermaid
+
 graph TD
+
     D[ Deployment<br/>声明期望状态<br/>副本数 / 更新策略 ] --> RS1[ ReplicaSet v1<br/>管理旧版 Pod ]
+
     D --> RS2[ ReplicaSet v2<br/>管理新版 Pod ]
+
     RS1 --> P1[ Pod v1.0 ]
+
     RS1 --> P2[ Pod v1.0 ]
+
     RS2 --> P3[ Pod v2.0 ]
-    
+
     style D fill:#2d6a4f color:#fff
+
     style RS1 fill:#40916c color:#fff
+
     style RS2 fill:#52b788 color:#fff
+
 ```
 
 Deployment 不直接管理 Pod，而是通过 ReplicaSet 间接管理。这个额外层级存在的唯一理由就是支持滚动更新——更新时创建新的 ReplicaSet，同时逐步缩容旧的。
@@ -106,48 +161,77 @@ Deployment 不直接管理 Pod，而是通过 ReplicaSet 间接管理。这个�
 假设副本数 3，镜像从 v1 升到 v2：
 
 ```mermaid
+
 sequenceDiagram
+
     participant User as 用户
+
     participant Deploy as Deployment
+
     participant RS1 as RS-v1(旧)
+
     participant RS2 as RS-v2(新)
 
     User->>Deploy: kubectl apply (image: v2)
+
     Deploy->>RS2: 创建 RS-v2
+
     RS2->>RS2: 创建 Pod v2 (1个)
+
     Note over RS2: 等待 readinessProbe 通过
+
     Deploy->>RS1: 缩容旧 Pod (3→2)
+
     RS2->>RS2: 创建 Pod v2 (2个)
+
     Deploy->>RS1: 缩容旧 Pod (2→1)
+
     RS2->>RS2: 创建 Pod v2 (3个)
+
     Deploy->>RS1: 缩容旧 Pod (1→0)
+
     Note over Deploy: 旧RS保留(revisionHistoryLimit)<br/>用于回滚
+
 ```
 
 ### 2.3 两个关键参数
 
 ```yaml
+
 strategy:
+
   type: RollingUpdate
+
   rollingUpdate:
+
     maxSurge: 1        # 更新时最多多创建几个Pod
+
     maxUnavailable: 1  # 更新时最多允许几个Pod不可用
+
 ```
 
 | 参数 | 含义 | 选型建议 |
+
 |------|------|----------|
+
 | **maxSurge** | 更新期间最多"多出来"的 Pod 数 | 资源充足时设大→更新更快 |
+
 | **maxUnavailable** | 更新期间最多"少掉"的 Pod 数 | 对可用性敏感时设为 0 |
 
 > **maxSurge=0, maxUnavailable=1**：先杀旧再建新，零额外资源开销，但有短暂不可用。
+
 > **maxSurge=1, maxUnavailable=0**：先建新再杀旧，保证始终满副本，但多用一份资源。
 
 ### 2.4 回滚
 
 ```bash
+
 kubectl rollout history deployment/my-app      # 查看历史版本
+
 kubectl rollout undo deployment/my-app          # 回滚到上一版
+
 kubectl rollout undo deployment/my-app --to-revision=2  # 回滚到指定版本
+
 ```
 
 回滚原理：Deployment 保留旧的 ReplicaSet（副本数为 0），回滚时重新启用它即可。
@@ -161,16 +245,25 @@ Pod 是"朝生暮死"的——滚动更新时 IP 会变，重建后 IP 也会变
 ### 3.1 Service 工作原理
 
 ```mermaid
+
 graph LR
+
     Client[ 客户端 ] -->|访问 Service VIP| SVC[ Service<br/>ClusterIP: 10.96.0.100<br/>Port: 80 ]
+
     SVC -->|kube-proxy 负载均衡| P1[ Pod-A<br/>10.244.0.5 ]
+
     SVC -->|iptables/IPVS 规则| P2[ Pod-B<br/>10.244.1.8 ]
+
     SVC -->|标签选择器匹配| P3[ Pod-C<br/>10.244.2.3 ]
-    
+
     EP[ Endpoint Controller ] -.->|动态更新| SVC
+
     EP -.->|监听Pod Ready/NotReady| P1
+
     EP -.->|监听Pod Ready/NotReady| P2
+
     EP -.->|监听Pod Ready/NotReady| P3
+
 ```
 
 核心链路：Service 定义 `selector`（如 `app: my-app`）→ Endpoint Controller 持续监听匹配的 Pod → kube-proxy 在每个节点写入 iptables/IPVS 规则 → 客户端访问 VIP 时被负载均衡到真实 Pod。
@@ -178,39 +271,63 @@ graph LR
 ### 3.2 四大 Service 类型
 
 ```mermaid
+
 graph TD
+
     subgraph "外部访问能力"
+
         CI[ ClusterIP<br/>仅集群内可达<br/>默认类型 ] --> NP[ NodePort<br/>每个节点开放固定端口<br/>30000~32767 ]
+
         NP --> LB[ LoadBalancer<br/>自动创建云厂商负载均衡器 ]
+
     end
-    
+
     style CI fill:#264653 color:#fff
+
     style NP fill:#2a9d8f color:#fff
+
     style LB fill:#e9c46a color:#000
+
 ```
 
 | 类型 | 虚拟IP | 访问方式 | 典型场景 |
+
 |------|--------|----------|----------|
+
 | **ClusterIP** | 分配 VIP | `10.96.x.x:80`（集群内） | 微服务间内部通信（默认首选） |
+
 | **NodePort** | 分配 VIP + 固定端口 | `<任意节点IP>:30000~32767` | 开发测试 / 没有 LB 的环境 |
+
 | **LoadBalancer** | 分配 VIP | 云厂商 LB 的公网 IP | 生产环境对外暴露服务 |
+
 | **Headless** | 不分配 VIP | DNS 直接解析到 Pod IP | StatefulSet（MySQL 集群等需要固定网络标识） |
 
 ### 3.3 Deployment + Service 协作全景
 
 ```mermaid
+
 graph TD
+
     User[ 用户流量 ] --> LB[ LoadBalancer / NodePort ]
+
     LB --> SVC[ Service<br/>selector: app=nginx ]
+
     SVC -->|标签匹配| D[ Deployment<br/>replicas: 3 ]
+
     D --> RS[ ReplicaSet ]
+
     RS --> P1[ Pod nginx-1 ]
+
     RS --> P2[ Pod nginx-2 ]
+
     RS --> P3[ Pod nginx-3 ]
 
     Note1[ Pod 挂了? Deployment 自动创建新的 ] -.-> D
+
     Note2[ 滚动更新? Service 自动切换后端 ] -.-> SVC
+
     Note3[ 新 Pod 没就绪? readinessProbe 拦截 ] -.-> P1
+
 ```
 
 ---
@@ -218,18 +335,24 @@ graph TD
 ## 四、Deployment vs StatefulSet 对比
 
 | 特性 | Deployment | StatefulSet |
+
 |------|-----------|-------------|
+
 | 适用场景 | 无状态应用（Web API、微服务） | 有状态应用（MySQL、Redis、ZooKeeper） |
+
 | Pod 命名 | 随机后缀 `nginx-5c7d8f9b6-2x4k8` | 有序索引 `mysql-0, mysql-1` |
+
 | 网络标识 | 无稳定 DNS | 稳定 DNS `pod-name.service-name` |
+
 | 存储 | 共享或临时存储 | 每个 Pod 对应独立 PVC |
+
 | 启停顺序 | 并行无序 | 严格顺序 `0→1→2`，反向 `2→1→0` |
+
 | 扩缩容 | 任意并行 | 逐个增减，保证顺序 |
 
 ---
 
 ## 五、延伸追问
-
 ### Q1：Pod 的 restartPolicy 有哪几种？默认是什么？
 
 三种：`Always`（默认，Deployment 使用）、`OnFailure`（Job 使用，失败才重启）、`Never`（一次性调试 Pod）。
@@ -245,8 +368,11 @@ graph TD
 ### Q4：ClusterIP、NodePort、LoadBalancer 怎么选？
 
 - 集群内部微服务间通信 → **ClusterIP**（默认，不需要公网暴露）
+
 - 开发/测试需要从宿主机访问 → **NodePort**
+
 - 生产环境对外暴露 → **LoadBalancer**（自动创建云厂商 LB）
+
 - 需要固定网络标识（如数据库） → **Headless Service**（ClusterIP: None）
 
 ### Q5：requests 和 limits 的区别？
@@ -264,39 +390,56 @@ graph TD
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「Kubernetes 核心资源：Pod / Service / Deployment」到底是什么？**
-A：Pod 不是容器，而是"装容器的容器"。一个 Pod 内部有一个 pause 基础设施容器持有网络命名空间，其他业务容器加入进来共享同一个 IP 和端口空间——同 Pod 内的容器可以直接  互访。
-| 阶段 | 含义 | 常见原因 |
-|------|------|----------|
+
+A：K8s 三件套：Pod 是最小调度单元，Deployment 管副本与滚动更新，Service 给稳定入口。
 
 **Q2：一、Pod——最小的原子调度单元 —— 怎么理解？**
-A：Pod 不是容器，而是"装容器的容器"。一个 Pod 内部有一个 pause 基础设施容器持有网络命名空间，其他业务容器加入进来共享同一个 IP 和端口空间——同 Pod 内的容器可以直接  互访。
-| 阶段 | 含义 | 常见原因 |
-|------|------|----------|
-| **Pending** | 已被 API Server 接受，但未绑定节点 | 镜像拉取慢 / 资源不足调度不上 |
+
+A：像"装容器的容器"：内部 pause 容器持有网络命名空间，业务容器共享 IP 可 localhost 互通。生命周期有 Pending/Running/Succeeded/Failed/Unknown 五阶段；startup/liveness/readiness 三种探针分别管启动兜底、存活杀掉、就绪摘流量（readiness 失败就从 Service 摘掉）。
 
 **Q3：二、Deployment——应用管理的指挥官 —— 怎么理解？**
-A：你几乎不会直接创建 Pod。生产中由 Deployment 管理 Pod 的副本数、滚动更新和回滚。
-Deployment 不直接管理 Pod，而是通过 ReplicaSet 间接管理。这个额外层级存在的唯一理由就是支持滚动更新——更新时创建新的 ReplicaSet，同时逐步缩容旧的。
+
+A：生产里几乎不直接建 Pod，而是用 Deployment 经 ReplicaSet 间接管理——多出的这层只为支持滚动更新。更新时建新 RS、等新 Pod readiness 通过再缩容旧 RS；maxSurge（多建几个）和 maxUnavailable（少几个）控节奏，回滚靠保留旧 RS（副本数归零）。
 
 **Q4：三、Service——稳定的服务发现入口 —— 怎么理解？**
-A：Pod 是"朝生暮死"的——滚动更新时 IP 会变，重建后 IP 也会变。客户端不可能硬编码 Pod IP。Service 提供一个**固定的虚拟 IP（VIP）**和 DNS 名称，把流量负载均衡到后端健康的 Pod。
-核心链路：Service 定义 （如 ）→ Endpoint Controller 持续监听匹配的 Pod → kube-proxy 在每个节点写入 iptables/IPVS 规则 → 客户端访问 VIP 时被负载均…
 
-**Q5：四、Deployment vs StatefulSet 对比 —— 怎么理解？**
-A：| 特性 | Deployment | StatefulSet |
-|------|-----------|-------------|
-| 适用场景 | 无状态应用（Web API、微服务） | 有状态应用（MySQL、Redis、ZooKeeper） |
-| Pod 命名 | 随机后缀  | 有序索引  |
-| 网络标识 | 无稳定 DNS | 稳定 DNS  |
+A：Pod 朝生暮死 IP 会变，Service 给固定虚拟 IP（VIP）+ DNS，把流量负载均衡到健康 Pod：Endpoint Controller 监听就绪状态、kube-proxy 写 iptables/IPVS 规则。四类：ClusterIP（仅集群内）、NodePort（节点固定端口）、LoadBalancer（云 LB）、Headless（无 VIP，给 StatefulSet 固定标识）。
+
+**Q5：四、Deployment vs StatefulSet 与资源限制 —— 怎么理解？**
+
+A：Deployment 管无状态（随机名、并行）、StatefulSet 管有状态（有序索引 mysql-0、稳定 DNS、独立 PVC）。requests 是调度依据、limits 是运行时天花板（超内存 OOMKill、超 CPU 节流）；只设 limits 不设 requests 是常见陷阱，调度会不准。
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：一、Pod——最小的原子调度单元、二、Deployment——应用管理的指挥官、三、Service——稳定的服务发现入口、四、Deployment vs StatefulSet 对比、五、延伸追问、一句话总结。
 
+- Pod 最小调度单元，共享网络，pause 容器持有命名空间
+
+- 三探针：startup 兜底、liveness 杀掉、readiness 摘流量
+
+- Deployment 经 ReplicaSet 滚动更新，maxSurge/maxUnavailable 控节奏
+
+- Service 四类：ClusterIP/NodePort/LoadBalancer/Headless
+
+- StatefulSet 管有状态；requests 调度、limits 天花板
+
+**口诀**
+
+A：Pod 是最小调度场
+
+Deploy 管副本更新忙
+
+Service 稳入口分流广
+
+RS 续旧命不慌张
 
 ## 相关链接
 
 - 📋 目录：[[00-分布式-系统设计]]
-- 📚 学习清单：[[八股文学习清单]]
+
+- 📚 学习清单：[[八股文学习路线图]]
+
 - 🔗 [[01-Docker与docker-compose部署流程|Docker 基础]] — K8s 运行在容器之上
+
 - 🔗 [[02-微服务架构|微服务架构]] — K8s 是微服务部署的事实标准
+
 - 🔗 [[05-KubernetesGPU调度|K8s GPU 调度]] — GPU 资源扩展
+

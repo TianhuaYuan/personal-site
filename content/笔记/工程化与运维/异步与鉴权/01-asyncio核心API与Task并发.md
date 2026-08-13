@@ -65,8 +65,6 @@ flowchart TB
 import asyncio
 
 # ============================================================
-# ❌ 串行 — await 一个一个等，白写了 async
-# ============================================================
 async def download_serial(urls: list[str]) -> list[str]:
     results = []
     for url in urls:
@@ -75,8 +73,6 @@ async def download_serial(urls: list[str]) -> list[str]:
     return results
     # 10 个 URL → ~10s（每个 1s）
 
-# ============================================================
-# ✅ 并发 — create_task 全部发射 + gather 统一收
 # ============================================================
 async def download_concurrent(urls: list[str]) -> list[str]:
     tasks = [asyncio.create_task(fetch(url)) for url in urls]
@@ -220,10 +216,6 @@ async def main():
     await task
 
 
-# ❌ 错误5：在已有事件循环的环境用 asyncio.run()（如 Jupyter）
-# asyncio.run(main())   # RuntimeError
-
-# ✅ Jupyter 里直接用 await
 # await main()
 ```
 
@@ -249,34 +241,39 @@ for done in asyncio.as_completed(tasks):
 
 ---
 
+
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「asyncio 核心 API 与 Task 并发」到底是什么？**
-A：---
+A：asyncio 核心是用事件循环跑协程，create_task 发射、gather 收网才是真并发。
 
 **Q2：三个核心 API —— 怎么理解？**
-A：---
+A：async def 定义协程（调用只返回 coroutine 不执行）；asyncio.run() 建循环跑协程，全程只调一次；create_task() 把协程丢进后台立刻返回。就像餐厅：菜谱是协程，开门营业是 run，把单子甩给后厨是 create_task（coroutine / event loop）。
 
 **Q3：串行 vs 并发 —— 怎么理解？**
-A：[!note] 核心原则
- 是"发射"——立即返回不阻塞； 是"等待"——暂停当前协程等结果。**先 create_task 发射全部，再 gather 统一收**，这才是正确的并发姿势。
----
+A：串行是一个一个 await，等于白写 async；并发是先 create_task 把全部任务发射，再 gather 统一收。时间线从 3s 变 1s，像三桌菜同时炒而不是一桌炒完再下一桌（concurrency）。
 
-**Q4：gather vs Task 四种用法 —— 怎么理解？**
-A：---
+**Q4：gather 与 Task 四种用法 —— 怎么理解？**
+A：gather 按传入顺序返回全部结果；as_completed 谁先好先处理；return_exceptions 让某个挂了不影响其他；wait_for 加超时。像四种收单方式：等齐、先到先上、漏单不停、超时就撤（gather / as_completed / wait_for）。
 
-**Q5：常见错误 —— 怎么理解？**
-A：---
+**Q5：五个常见错误 —— 怎么理解？**
+A：忘 await 协程不执行；用 time.sleep 阻塞整个循环；普通函数里 await 报语法错；create_task 不保存引用会被 GC；已有循环里再 run 抛异常。像新手厨师：菜没下锅、占着灶台、在禁火区点火（common pitfalls）。
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：三个核心 API、串行 vs 并发、gather vs Task 四种用法、常见错误、速查。
+- 入口：asyncio.run() 建循环，全程只调一次
+- 发射：create_task 立即返回不阻塞，要保存引用
+- 收网：先发射全部再 gather，勿串行 await
+- 避坑：别用 time.sleep，await 才真正执行
 
+**口诀**
+A：async 写菜谱，run 开门营业忙；
+create_task 甩后厨，发射不堵当场畅；
+gather 收网等齐回，as_completed 先到上；
+忘 await 菜不熟，超时 wait_for 莫硬扛。
 
 ## 相关链接
 
 - 下一篇：[[02-aiohttp异步HTTP客户端]]
-- 项目实践：[[项目实战/ai-resume笔记/01_技术研读/01_架构概览|ai-resume: 架构概览]]
-- 项目实践：[[项目实战/cr-agent笔记/01-技术研读/04-三层容错与并发bug|cr-agent: 三层容错与并发bug]]
 
 ---
-→ [[技术学习清单#asyncio（AI 后端核心）]]
+→ [[技术学习路线图#asyncio（AI 后端核心）]]

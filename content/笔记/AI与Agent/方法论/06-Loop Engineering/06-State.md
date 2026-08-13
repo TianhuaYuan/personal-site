@@ -106,39 +106,38 @@ for step in range(MAX_STEPS):
 - **Anthropic (2025-09)**《Effective Context Engineering for AI Agents》：[anthropic.com/engineering/effective-context-engineering-for-ai-agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - **Chroma (2026)**《Context Rot: How Increasing Input Tokens Impacts LLM Performance》：[research.trychroma.com/context-rot](https://research.trychroma.com/context-rot)
 
-**相关链接**：
-- 系列清单：[[学习路线图/Agent 方法论与产品思维学习清单|Agent 方法论与产品思维学习清单]]
-- 上一层级：[[00-Agent 方法论与产品思维|Loop Engineering · 索引]]
-- 同系列：[[05-Sub-agents|Sub-agents]] · [[07-终止条件必须机器可检查|终止条件必须机器可检查]] · [[09-15个工具调用衰减|15 个工具调用衰减]]
 
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「State（外部状态/记忆）」到底是什么？**
-A：**State（外部状态 / 记忆） = 把 Agent 的「记性」搬到脑子外面**：模型两轮之间会忘，状态落盘才活得过一次 session。
-没有它，Agent 像个「每睡一觉就失忆的人」——第二天完全不记得昨天改到哪了，从头再来。
----
+A：State 把 Agent 的跨轮记忆外置落盘，让状态在 session 之间持久化、活得过一次会话。
 
 **Q2：一、核心观点 —— 怎么理解？**
-A：**State（外部状态 / 记忆） = 把 Agent 的「记性」搬到脑子外面**：模型两轮之间会忘，状态落盘才活得过一次 session。
-没有它，Agent 像个「每睡一觉就失忆的人」——第二天完全不记得昨天改到哪了，从头再来。
----
+A：像每睡一觉就失忆的人：模型两轮间会忘，状态落盘才记得昨天改到哪（External State，外部状态）。
 
 **Q3：二、定义与原理 —— 怎么理解？**
-A：**State** 是 Loop 在步骤之间、session 之间持久化的外部记忆。LLM 的上下文是易逝的（一次请求完就清空），所以一切「跨轮要记得的东西」都得**落盘**——文件、数据库、缓存。
-**短期记忆**：当前任务进行中、临时存，做完即弃。
-**长期记忆**：跨任务、跨 session 留存（如用户偏好、项目约定）。
-**外部状态**：文件系统 / 数据库 / 缓存等物理载体。
+A：像工作台面对比文件柜：上下文窗口是台面（有限 RAM），State 是柜子（近乎无限磁盘）（Context Window，上下文窗口）。
 
 **Q4：三、实践与示例 —— 怎么理解？**
-A：最小落盘 / 加载（概念极简）：
----
+A：像每步存个档：save_state/load_state 落盘，再判终止，崩溃重启接着跑（State Persistence，状态持久化）。
 
 **Q5：四、优势与局限 —— 怎么理解？**
-A：✅ **跨 session 续命**：长任务隔夜跑、崩溃重启都不丢进度。
-✅ **上下文瘦身**：把不常用的记忆移出窗口、用时再取，对抗 Context Rot（见 ）。
-✅ **可观测**：State 文件就是 Loop 的「黑匣子」，事后能复盘它到底记了啥。
-❌ **一致性难题**：并发 Agent 同时写 State 会互相覆盖——要加锁或按 worktree 分片（见 ）。
+A：像黑匣子也怕撞：跨 session 续命、瘦身、可观测；但并发写会覆盖、陈旧 State 是过时记忆（Context Rot，上下文腐败）。
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：一、核心观点、二、定义与原理、三、实践与示例、四、优势与局限、五、最新研究与企业数据（2024–2026）、六、学习资源。
+- 核心观点：State 把记性搬出脑子，落盘才活得过 session
+- 三类：短期 / 长期 / 外部状态（文件·库·缓存）
+- 实践：每步 save_state，再 verify 判终止
+- 坑：并发写互相覆盖、陈旧 State 是过时记忆
+
+**口诀**
+A：状态落盘记忆外，
+台面有限柜无限；
+每步存档防失忆，
+并发陈旧两坑险。
+
+## 相关链接
+- 系列清单：[[学习路线图/Agent方法论与产品思维学习路线图|Agent 方法论与产品思维学习路线图]]
+- 上一层级：[[00-Agent方法论与产品思维|Loop Engineering · 索引]]
+- 同系列：[[05-Sub-agents|Sub-agents]] · [[07-终止条件必须机器可检查|终止条件必须机器可检查]] · [[09-15个工具调用衰减|15 个工具调用衰减]]
 

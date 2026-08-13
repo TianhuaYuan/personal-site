@@ -106,40 +106,38 @@ if not review.passed:
 - **Anthropic (2024-12)**《Building Effective Agents》：[anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents)
 - **LangChain (2026)**《The Anatomy of an Agent Harness》：[langchain.com/blog/the-anatomy-of-an-agent-harness](https://www.langchain.com/blog/the-anatomy-of-an-agent-harness)
 
-**相关链接**：
-- 系列清单：[[学习路线图/Agent 方法论与产品思维学习清单|Agent 方法论与产品思维学习清单]]
-- 上一层级：[[00-Agent 方法论与产品思维|Loop Engineering · 索引]]
-- 同系列：[[04-Connectors|Connectors]] · [[06-State|State]] · [[09-15个工具调用衰减|15 个工具调用衰减]]
 
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「Sub-agents（子 Agent 编排）」到底是什么？**
-A：**Sub-agents（子 Agent 编排） = 让「写的人」和「查的人」分开**：Maker 写代码，Checker 独立验，消除「自己改作业自己打勾」的自评偏差。
-没有它，一个 Agent 既当运动员又当裁判，90% 的概率它会觉得自己写得贼好——然后把你仓库改崩。
----
+A：Sub-agents 把写代码的人和审查的人分开，用独立子 Agent 消除自评偏差。
 
 **Q2：一、核心观点 —— 怎么理解？**
-A：**Sub-agents（子 Agent 编排） = 让「写的人」和「查的人」分开**：Maker 写代码，Checker 独立验，消除「自己改作业自己打勾」的自评偏差。
-没有它，一个 Agent 既当运动员又当裁判，90% 的概率它会觉得自己写得贼好——然后把你仓库改崩。
----
+A：像考试不能自己改自己卷子：一个 Agent 既当运动员又当裁判，90% 概率觉得自己写得贼好然后改崩仓库。Sub-agents 让"写的人"（Maker）和"查的人"（Checker）分开，消除自评偏差。
 
 **Q3：二、定义与原理 —— 怎么理解？**
-A：**Sub-agent** 是 Loop 内被委派专项任务的独立 Agent 实例，往往带**自己的上下文窗口**（隔离！见  思想）。三种经典编排模式：
-**Maker-Checker（创造者-检查者）**：一个生成、一个独立审查，**不能是同一个**。
-**Supervisor-Worker（主管-工人）**：主管拆任务、动态派给工人。
-**Pipeline（流水线）**：A→B→C 接力，每段只管一环节。
+A：像三种分工模式：Maker-Checker（生成与审查必须分开）、Supervisor-Worker（主管拆任务动态派工人）、Pipeline（A→B→C 接力）。子 Agent 往往带自己的上下文窗口隔离，避免主 Agent 被中间结果淹没。
 
 **Q4：三、实践与示例 —— 怎么理解？**
-A：Maker-Checker 的最小骨架（概念极简）：
-**关键**：Checker 的输入应只是「代码 + 验收标准」，而不是 Maker 的整段思维链——否则它会顺着 Maker 的逻辑自我说服。
----
+A：像最小骨架：`maker.generate(task)` 产出代码，`checker.review(code)` 独立审查，不过就打回重做。铁律：Checker 输入只给"代码+验收标准"，不看 Maker 的思维链，否则会顺着逻辑自我说服。
 
 **Q5：四、优势与局限 —— 怎么理解？**
-A：✅ **消除自评偏差**：独立审查者让「自己改自己作业」的盲区无处遁形。
-✅ **隔离上下文**：子 Agent 各用各的窗口，主 Agent 不被中间结果淹没（对抗 Context Rot，见 ）。
-✅ **专长化**：审查 Agent、检索 Agent 各司其职，比全能单体更稳。
-❌ **协同开销**：多 Agent 通信本身吃 token、吃延迟，拆太碎反而慢。
+A：像双刃剑：优势是消除自评偏差、隔离上下文（主 Agent 不被淹没）、专长化（审查/检索各司其职）；局限是协同开销（通信吃 token 吃延迟）、无全局视野（Worker 各管一段需 Supervisor 兜底）。
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：一、核心观点、二、定义与原理、三、实践与示例、四、优势与局限、五、最新研究与企业数据（2024–2026）、六、学习资源。
+- 核心：写查分离，消除 LLM 自评偏差
+- 模式：Maker-Checker / Supervisor-Worker / Pipeline
+- 铁律：Checker 绝不能是 Maker，只看代码+标准
+- 权衡：隔离上下文抗腐烂，但协同有开销需兜底
+
+**口诀**
+A：写查要分开，自评最不可靠；
+Maker 生成完，Checker 独立挑；
+窗口各隔离，主脑不被泡；
+拆太碎反慢，Supervisor 兜底好。
+
+## 相关链接
+- 系列清单：[[学习路线图/Agent方法论与产品思维学习路线图|Agent 方法论与产品思维学习路线图]]
+- 上一层级：[[00-Agent方法论与产品思维|Loop Engineering · 索引]]
+- 同系列：[[04-Connectors|Connectors]] · [[06-State|State]] · [[09-15个工具调用衰减|15 个工具调用衰减]]
 

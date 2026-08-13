@@ -50,21 +50,15 @@ import uvicorn
 load_dotenv()
 
 # ============================================================
-# 配置
-# ============================================================
 SECRET_KEY = os.environ.get("JWT_SECRET", "dev-secret-change-in-production-!!!")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
 # ============================================================
-# 密码哈希
-# ============================================================
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-# ============================================================
-# 模拟数据库
 # ============================================================
 class FakeDB:
     def __init__(self):
@@ -92,8 +86,6 @@ db = FakeDB()
 
 
 # ============================================================
-# Pydantic 模型
-# ============================================================
 class RegisterRequest(BaseModel):
     username: str
     password: str
@@ -111,8 +103,6 @@ class RefreshRequest(BaseModel):
     refresh_token: str
 
 
-# ============================================================
-# Part 1: JWT 工具函数
 # ============================================================
 def _make_token(data: dict, expires_delta: timedelta, token_type: str = "access") -> str:
     to_encode = data.copy()
@@ -151,8 +141,6 @@ def verify_token(token: str, expected_type: Optional[str] = None) -> dict:
 
 
 # ============================================================
-# Part 2: FastAPI 依赖注入
-# ============================================================
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 
@@ -173,8 +161,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
     return {"user_id": user["id"], "username": user["username"]}
 
 
-# ============================================================
-# Part 3: FastAPI 路由
 # ============================================================
 app = FastAPI(title="JWT + Asyncio 实战")
 
@@ -241,8 +227,6 @@ async def public():
     return {"message": "Hello, 这是公开接口"}
 
 
-# ============================================================
-# 异常处理 — 401 统一响应
 # ============================================================
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
@@ -449,11 +433,39 @@ if __name__ == "__main__":
 
 ---
 
+
+## 速记卡（面试闪卡）
+
+**Q1：一句话讲清「JWT 综合实战与并发压测」到底是什么？**
+A：这篇笔记用单文件实现 JWT 双 Token 鉴权全链路，并用 aiohttp 做多用户并发压测验证无竞态。
+
+**Q2：完整代码 —— 怎么理解？**
+A：核心三件套：密码用 bcrypt 哈希；_make_token 用 jose 的 JWT（JSON Web Token，JSON 网络令牌）签发 access/refresh，带 iat/exp/type；get_current_user 依赖校验 access。手工走通 HTTP 里 token 怎么传，不用 Depends 封装。
+
+**Q3：测试 1：JWT 全链路（5 用户） —— 怎么理解？**
+A：模拟 5 个用户：注册 → 登录拿双 Token → 带 access 访问 /me → 用 refresh 换新 access → 再访问。最后测无 Token 和假 Token 都应返回 401。覆盖注册、登录、刷新、鉴权拒绝全链路。
+
+**Q4：测试 2：20 用户并发压测 —— 怎么理解？**
+A：用 asyncio.gather 同时跑 20 个用户生命周期（注册→登录→访问）。asyncio（异步 IO）并发下 20/20 成功、约 2.34s，证明 JWT 系统在并发下无竞态、无丢请求。
+
+**Q5：启动与运行 —— 怎么理解？**
+A：终端1 `python main.py` 起服务，终端2 `python main.py --test` 跑测试。入口用 sys.argv 区分服务模式与测试模式，uvicorn 跑在本地 8000 端口。
+
+**Q6：核心速记主线有哪些？**
+- JWT 双 Token：access 短期、refresh 长期，type 字段区分
+- 密码 bcrypt 哈希，jose 签发/校验 token
+- 全链路：注册→登录→访问→刷新→再访问
+- asyncio 并发压测验证无竞态
+
+**口诀**
+A：JWT 双令牌分长短，
+bcrypt 哈希防裸奔；
+注册登录刷新链，
+异步压测二十稳。
+
 ## 相关链接
 
 - 上一篇：[[04-FastAPI+JWT全链路实现]]
-- 项目实践：[[项目实战/ai-resume笔记/01_技术研读/01_架构概览|ai-resume: 架构概览]]
-- 项目实践：[[项目实战/cr-agent笔记/01-技术研读/10-安全加固四道防线|cr-agent: 安全加固四道防线]]
 
 ---
-→ [[技术学习清单#JWT 鉴权]]
+→ [[技术学习路线图#JWT 鉴权]]

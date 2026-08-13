@@ -158,8 +158,6 @@ metrics = [
 # 第4步：跑评测
 result = evaluate(dataset, metrics=metrics)
 
-# 输出示例：
-# {'faithfulness': 0.95, 'answer_relevancy': 0.88,
 #  'context_precision': 0.75, 'context_recall': 0.80}
 print(result)
 ```
@@ -223,7 +221,6 @@ def test_no_hallucination():
     hallucination = HallucinationMetric(threshold=0.9, minimum_score=0.85)
     assert_test(test_case, [hallucination])
 
-# 批量跑：pytest test_code_review.py
 # CI 里加一步 pytest tests/eval/ → 评测不通过 = pipeline 失败
 ```
 
@@ -354,51 +351,36 @@ async def multi_judge_evaluate(sample: dict) -> dict:
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「LLM-as-Judge评测工具链：Ragas / DeepEval / Langfuse 配置与接入」到底是什么？**
-A：LLM-as-Judge 把评测本身变成一个 LLM 调用：
-**为什么不用传统方法？** 因为 Agent 的输出是自然语言，而自然语言的「对错」是语义层面的：
-| 场景 | 期望回答 | 实际回答 | 规则匹配判 | LLM Judge 判 |
-|:----|:--------|:--------|:---------|:-----------|
+A：LLM-as-Judge 的核心思想是「用一个更聪明的 LLM 去评估另一个 LLM 的输出」——因为人类不可能给每一次 Agent 输出手工打分，而规则匹配又理解不了语义相似性。
 
 **Q2：一、什么是 LLM-as-Judge？ —— 怎么理解？**
-A：LLM-as-Judge 把评测本身变成一个 LLM 调用：
-**为什么不用传统方法？** 因为 Agent 的输出是自然语言，而自然语言的「对错」是语义层面的：
-| 场景 | 期望回答 | 实际回答 | 规则匹配判 | LLM Judge 判 |
-|:----|:--------|:--------|:---------|:-----------|
+A：LLM-as-Judge 把评测本身变成一个 LLM 调用： **为什么不用传统方法？** 因为 Agent 的输出是自然语言，而自然语言的「对错」是语义层面的： 代码审查："第10行有SQL注入风险"，"发现SQL注入漏洞，位于line 10"，❌ 0分（字符串不匹配），✅ 高分（语义等价）；
 
 **Q3：二、三大工具概览 —— 怎么理解？**
-A：| 工具 | 核心用途 | 适合场景 | 不适合 |
-|:----|:--------|:--------|:------|
-| **Ragas** | RAG 管道评测 | RAG 系统的检索+生成质量 | 非 RAG 场景（如纯对话） |
-| **DeepEval** | LLM 输出的单元测试 | CI 流水线中的自动化评测 | 复杂的多步 Agent 评测 |
+A：**Ragas**：RAG 管道评测，RAG 系统的检索+生成质量，非 RAG 场景（如纯对话）；**DeepEval**：LLM 输出的单元测试，CI 流水线中的自动化评测，复杂的多步 Agent 评测；**Langfuse**：全链路可观测 + 评测管理，线上追踪 + 实验对比 + 人工标注，离线批量评测（用 Ragas/DeepEval 更专业）。
 
 **Q4：三、Ragas：RAG 评测框架 —— 怎么理解？**
-A：Ragas（**RAG** **A**ssessment）专为 RAG 管道设计，核心思想是把评测拆成「检索指标」和「生成指标」。
-| 指标 | 含义 | 高是好还是低是好 | 典型阈值 |
-|:----|:----|:-------------|:-------|
-| **Faithfulness** | 回答是否基于检索内容，不是编的 | 高好（> 0.85） | 0.
+A：Ragas（**RAG** **A**ssessment）专为 RAG 管道设计，核心思想是把评测拆成「检索指标」和「生成指标」。 **Faithfulness**：回答是否基于检索内容，不是编的，高好（> 0.85），0.85；**Answer Relevancy**：回答是否切题，没跑偏，高好（> 0.80），0.80；
 
 **Q5：四、DeepEval：LLM 输出的单元测试框架 —— 怎么理解？**
-A：DeepEval 把评测变成**可 CI 执行的自动化测试**——Pytest 风格，直接用  断言。
-| Metric | 测什么 | 需要 expected_output？ |
-|:----|:----|:---:|
-|  | 回答是否切题 | 否 |
-|  | 回答是否基于给定上下文 | 否（需要 retrieval_context） |
-|  | 回答是否包含幻觉 | 是 |
-|  | 回答是否含有毒内容 | 否 |
+A：DeepEval 把评测变成**可 CI 执行的自动化测试**——Pytest 风格，直接用 `assert` 断言。 `AnswerRelevancyMetric`：回答是否切题，否；`FaithfulnessMetric`：回答是否基于给定上下文，否（需要 retrieval_context）；`HallucinationMetric`：回答是否包含幻觉，是；
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：一、什么是 LLM-as-Judge？、二、三大工具概览、三、Ragas：RAG 评测框架、四、DeepEval：LLM 输出的单元测试框架、五、Langfuse：可观测 + 评测一体化平台、六、LLM-as-Judge 的局限与应对。
+A：抓住这几根：一、什么是 LLM-as-Judge？、二、三大工具概览、三、Ragas：RAG 评测框架、四、DeepEval：LLM 输出的单元测试框架、五、Langfuse：可观测 + 评测一体化平台、六、LLM-as-Judge 的局限与应对
 
+**口诀**
+A：LLM-as-Judge：什么是 LLM-as-Judge？先想；
+三大工具概览配Ragas：RAG 评测框架，
+DeepEval：LLM 输出的单元测试框架不能忘，
+面试对答底气壮。
 
 ## 相关链接
 
 - 目录：[[00-AI]]
 - 上一篇：[[39-Agent评测体系：benchmark-case-指标设计]]
-- 项目实践：[[项目实战/cr-agent笔记/01-技术研读/09-LLM评测体系搭建#第二级：评测主流程（eval.py 🟡）|cr-agent: LLM评测体系]]
-- 项目实践：[[项目实战/cr-agent笔记/01-技术研读/00-17条架构决策总览#决策 14: LLM-as-Judge 评测体系（对齐 1 号项目）|cr-agent: 决策14-LLM-as-Judge]]
-- 系列参考：[[10-RAG 评估：检索指标 + 生成指标]]
-- 系列参考：[[13-RAG 参数调优：网格搜索实验框架]]
+- 系列参考：[[10-RAG评估：检索指标+生成指标]]
+- 系列参考：[[13-RAG参数调优：网格搜索实验框架]]
 
 ---
 
-→ [[技术学习清单#Harness 与评测]]
+→ [[技术学习路线图#Harness 与评测]]

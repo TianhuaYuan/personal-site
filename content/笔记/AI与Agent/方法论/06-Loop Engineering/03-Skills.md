@@ -63,7 +63,7 @@ description: 本项目如何运行测试与生成覆盖率报告
 - 数据库测试需先 `make db-up`
 ```
 
-Loop 在「该测试了」这一步加载它，而不是每次把整套测试约定写进 prompt。CLAUDE.md 过长（>200 行）时，经验法则就是把细节拆进 Skill（见 [[../01-认知升级/03-2026初 Harness Engineering|Harness Engineering]]）。
+Loop 在「该测试了」这一步加载它，而不是每次把整套测试约定写进 prompt。CLAUDE.md 过长（>200 行）时，经验法则就是把细节拆进 Skill（见 [[../01-认知升级/03-2026初HarnessEngineering|Harness Engineering]]）。
 
 ---
 
@@ -80,7 +80,7 @@ Loop 在「该测试了」这一步加载它，而不是每次把整套测试约
 ## 五、最新研究与企业数据（2024–2026）
 
 - **Harness 铁律**：HumanLayer (2026) 强调「需要每次都执行的事用 Hooks/ Skills，不要用 Prompt 提醒」；Skill 是概率性流程、Hook 是确定性执行，两者分工（[humanlayer.dev](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents)）。
-- **CLAUDE.md < 200 行**：超过此长度人与 Agent 都会「扫读」跳过，其余应移入 Skill（Harness 实践共识，见 [[../01-认知升级/03-2026初 Harness Engineering|Harness Engineering]]）。
+- **CLAUDE.md < 200 行**：超过此长度人与 Agent 都会「扫读」跳过，其余应移入 Skill（Harness 实践共识，见 [[../01-认知升级/03-2026初HarnessEngineering|Harness Engineering]]）。
 - Skill 对「吞吐量 / 质量」提升的具体量化数据，缺少一手测量——**(来源待核实：若有 Anthropic / 各大厂 Skill 采纳后的缺陷率对比数据，此处应引用)**。
 
 ---
@@ -89,7 +89,7 @@ Loop 在「该测试了」这一步加载它，而不是每次把整套测试约
 
 - **HumanLayer (2026)**《Harness Engineering for Coding Agents》—— Skills 与 Hooks 的分工
 - **Anthropic** Prompt / Context 工程文档：[docs.anthropic.com](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering)
-- **进阶**：[[../01-认知升级/03-2026初 Harness Engineering|Harness Engineering]] · [[04-Connectors|Connectors]]（Skill 内部如何调工具）
+- **进阶**：[[../01-认知升级/03-2026初HarnessEngineering|Harness Engineering]] · [[04-Connectors|Connectors]]（Skill 内部如何调工具）
 
 ---
 
@@ -107,41 +107,38 @@ Loop 在「该测试了」这一步加载它，而不是每次把整套测试约
 - **HumanLayer (2026)**《Harness Engineering for Coding Agents》：[humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents)
 - **Anthropic** 文档与指南：[docs.anthropic.com](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering)
 
-**相关链接**：
-- 系列清单：[[学习路线图/Agent 方法论与产品思维学习清单|Agent 方法论与产品思维学习清单]]
-- 上一层级：[[00-Agent 方法论与产品思维|Loop Engineering · 索引]]
-- 同系列：[[02-Worktrees|Worktrees]] · [[04-Connectors|Connectors]] · [[../01-认知升级/03-2026初 Harness Engineering|Harness Engineering]]
 
 ## 速记卡（面试闪卡）
 
 **Q1：一句话讲清「Skills（技能编码）」到底是什么？**
-A：**Skills（技能编码） = 把「老员工的经验」写成 Agent 能一键调用的说明书**：这个项目怎么测、怎么发版、撞过哪些坑，全沉淀成可复用流程。
-没有它，每次 Loop 跑起来都像「新来的实习生」，连  在哪都要重新摸索一遍。
----
+A：Skill 是把老员工经验写成 Agent 可一键调用的说明书，按需加载。
 
 **Q2：一、核心观点 —— 怎么理解？**
-A：**Skills（技能编码） = 把「老员工的经验」写成 Agent 能一键调用的说明书**：这个项目怎么测、怎么发版、撞过哪些坑，全沉淀成可复用流程。
-没有它，每次 Loop 跑起来都像「新来的实习生」，连  在哪都要重新摸索一遍。
----
+A：像把老员工经验写成操作手册：项目怎么测、怎么发版、撞过哪些坑，全沉淀成可复用流程。没有它，Loop 每次都像新实习生从头摸索。金句：犯错即固化成 Skill。
 
 **Q3：二、定义与原理 —— 怎么理解？**
-A：**Skill** 是一份被结构化描述的专项流程（典型如 ），Agent 在合适的时机**按需加载**。它解决 Loop 的两大痛点：
-**知识复用（Progressive Disclosure）**：别把所有指令塞进 System Prompt，用 Skill 按场景加载，省上下文。
-**行为一致**：所有 Agent 走同一套流程，不会因为「心情不同」给出不同结果。
+A：像按需取阅的活页夹：Skill 是结构化流程（SKILL.md），合适时机才加载，解决知识复用（Progressive Disclosure，省上下文）和行为一致两大痛点。渐进式披露叫 Progressive Disclosure。
 
 **Q4：三、实践与示例 —— 怎么理解？**
-A：一个项目测试 Skill 的骨架（概念极简）：
-`markdown
----
-name: project-testing
-description: 本项目如何运行测试与生成覆盖率报告
----
+A：像测试 SOP：SKILL.md 写"激活 venv → pytest -q 失败即停 → 覆盖率<80% 不过"，并标坑（别用 npm test）。Loop 到"该测试了"才加载，不每次写进 prompt。CLAUDE.md 超 200 行就拆进 Skill。
 
-**Q5：步骤 —— 怎么理解？**
-A：激活虚拟环境 
-跑 ，失败立即停
-覆盖率低于 80% 视为未通过
+**Q5：四、优势与局限 —— 怎么理解？**
+A：像复利存钱罐：写一次所有 session 都用（复利）、按需加载省上下文、改一处处处生效；但会过时变"错误经验"要版本管理，粒度也难拿捏（太粗没封装、太细捆死）。
 
 **Q6：核心速记主线有哪些？**
-A：抓住这几根：一、核心观点、二、定义与原理、三、实践与示例、步骤、坑、四、优势与局限。
+- 本质：结构化流程 SKILL.md，按需加载、省上下文
+- 价值：知识复用 + 行为一致，沉淀为复利
+- 铁律：每次犯错 → 固化成一条不再犯的 Skill/Hook
+- 坑：过期变错经，CLAUDE.md 超 200 行要拆分
+
+**口诀**
+A：Skill 是老员工，经验写成书；
+按需才加载，上下文不堵；
+过时变错经，版本要维护；
+犯了就固化，同类不再误。
+
+## 相关链接
+- 系列清单：[[学习路线图/Agent方法论与产品思维学习路线图|Agent 方法论与产品思维学习路线图]]
+- 上一层级：[[00-Agent方法论与产品思维|Loop Engineering · 索引]]
+- 同系列：[[02-Worktrees|Worktrees]] · [[04-Connectors|Connectors]] · [[../01-认知升级/03-2026初HarnessEngineering|Harness Engineering]]
 

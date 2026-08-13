@@ -238,31 +238,31 @@
     "syntax-highlighting": {
       "source": "github:quartz-community/syntax-highlighting",
       "resolved": "https://github.com/quartz-community/syntax-highlighting.git",
-      "commit": "5bfdc2c3f42d3d0326c4e777eb575f3fb68d51fb",
+      "commit": "071bdbd9b164be42018456c53e86a245c977649c",
       "installedAt": "2026-06-03T13:16:37.737Z"
     },
     "table-of-contents": {
       "source": "github:quartz-community/table-of-contents",
       "resolved": "https://github.com/quartz-community/table-of-contents.git",
-      "commit": "6984305e5dae0830c025450e160f12610406f7a4",
+      "commit": "02c30261c64610fd0faaa3181263a91d3ff60b45",
       "installedAt": "2026-06-03T13:32:36.265Z"
     },
     "tag-list": {
       "source": "github:quartz-community/tag-list",
       "resolved": "https://github.com/quartz-community/tag-list.git",
-      "commit": "c48324e2ba768e2a0a5c4c17cd0661b190d075c5",
+      "commit": "4b67adfe21efa5fa2bcfc1436effaea0d0d775e4",
       "installedAt": "2026-06-03T13:32:36.346Z"
     },
     "tag-page": {
       "source": "github:quartz-community/tag-page",
       "resolved": "https://github.com/quartz-community/tag-page.git",
-      "commit": "eabf3eec55c0bab7f49e69957341f34d2ae3c5a1",
+      "commit": "a651839686ed2bd7e58beb01709b9a682dc9add8",
       "installedAt": "2026-06-03T13:32:36.377Z"
     },
     "unlisted-pages": {
       "source": "github:quartz-community/unlisted-pages",
       "resolved": "https://github.com/quartz-community/unlisted-pages.git",
-      "commit": "f512d8672862c5891e63d755ba04b66277e6d760",
+      "commit": "3a01e0cb208dd6ef3c7520963198cd2991c6742c",
       "installedAt": "2026-06-03T13:32:36.647Z"
     }
   }
