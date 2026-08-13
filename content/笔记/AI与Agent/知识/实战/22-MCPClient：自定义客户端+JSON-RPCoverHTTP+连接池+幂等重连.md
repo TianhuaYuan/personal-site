@@ -13,7 +13,7 @@ created: "2026-07-21"
 
 MCP 协议里，**Server 暴露能力，Client 消费能力**。
 
-## 二、为什么需要"自定义"客户端？官方的不够吗？
+## 一、为什么需要"自定义"客户端？官方的不够吗？
 
 短答：**官方 Client 90% 场景够用，但生产环境你迟早要自己掌控连接。**
 
@@ -45,13 +45,13 @@ async with client:                             # async with 管理连接生命�
 
 所以"自定义客户端"不是"重写协议"，而是**在官方 Client 之上包一层工程化外壳**：把连接、重试、幂等、池化、监控都管起来。（来源：fastmcp.wiki 客户端传输、CSDN FastMCP Client 实践、字节 youthcamp 第 9 章）
 
-## 三、JSON-RPC over HTTP：Client 和 Server 到底怎么"对话"
+## 二、JSON-RPC over HTTP：Client 和 Server 到底怎么"对话"
 
 **JSON-RPC（JSON Remote Procedure Call，JSON 远程过程调用）** 是 MCP 的"说话格式"——一种极简的远程调用协议，请求和响应都是 JSON。
 
 **HTTP（HyperText Transfer Protocol，超文本传输协议）** 是"送信的邮路"。把两者拼起来就是：**用 HTTP 这个邮路，寄 JSON-RPC 格式的信**。
 
-### 2.1 一封信长啥样（请求）
+### 1.1 一封信长啥样（请求）
 
 ```json
 {
@@ -67,12 +67,12 @@ async with client:                             # async with 管理连接生命�
 - `params` —— 参数
 - `id` —— **本次请求的唯一编号**。Server 回信时原样带回，Client 靠它把"回信"对上"寄出的信"（这就是后面幂等重连的关键）
 
-### 2.2 两种"信"：有回执 vs 没回执
+### 1.2 两种"信"：有回执 vs 没回执
 
 - **请求（Request）**：带 `id`，Server **必须回**一封同样 `id` 的响应。
 - **通知（Notification）：不带 `id`，Server 收到就处理，不回**（如 `notifications/initialized`、进度通知）。Client 发完拉倒。
 
-### 2.3 HTTP 邮路的具体规矩（Streamable HTTP 版，见第 ⑩ 篇）
+### 1.3 HTTP 邮路的具体规矩（Streamable HTTP 版，见第 ⑩ 篇）
 
 - 主通道是 **POST** 一个端点（如 `/mcp`），body 是上面的 JSON
 - 请求头带 `Accept: application/json, text/event-stream` —— 告诉 Server"我既能收普通 JSON，也能收流式 SSE"
@@ -83,7 +83,7 @@ async with client:                             # async with 管理连接生命�
 
 ⚠️ **准确性硬约束**：**当前稳定版（2025-11-25）不支持 JSON-RPC 批处理**（2025-06-18 已移除，见第 ⑩ 篇）。所以 Client 每个 POST 只发**单个** JSON-RPC 消息，不要写"一次发一批"的过时代码。（来源：MCP 官方 release notes / Speakeasy 版本对照）
 
-## 四、自定义 Client 的调用全流程
+## 三、自定义 Client 的调用全流程
 
 一个"能打"的自定义 Client 核心就四步：**建会话 → 问能力 → 调工具 → 断线重连**。
 
@@ -110,7 +110,7 @@ graph TD
 
 （图 1：自定义 MCP Client 标准调用流。来源：CSDN 手写 Client、AWS 中文博客、fastmcp.wiki）
 
-### 4.1 为什么需要池
+### 3.1 为什么需要池
 
 如果你每调一次工具就 `async with client:` 新建连接、握手、建 Session、用完销毁——**开销爆炸**：
 
@@ -120,7 +120,7 @@ graph TD
 
 **连接池** = 提前建好一批连接放着，谁要用谁拿，用完归还，不销毁。类比：公司不让你每次寄快递都现买手机号，而是给你配一群"长期在线的接线员"，随用随叫。
 
-### 4.2 两种层面的"复用"
+### 3.2 两种层面的"复用"
 
 | 层面 | 机制 | 说明 |
 |-|-|-|
@@ -130,7 +130,7 @@ graph TD
 
 > 🔴 高优补充：`httpx.AsyncClient` 本身就是连接池实现——你项目里的 `httpx.AsyncClient` 单例已经天然有池，关键是把"`limits`、`max_connections`、健康检查、多 Server 路由"显式管起来，而不是"有个单例"就完事。
 
-### 4.3 手写一个多 Server 连接池（骨架级）
+### 3.3 手写一个多 Server 连接池（骨架级）
 
 字节 youthcamp 第 9 章给了一个清晰的 `ConnectionPool` 思路——管理"连接名 → MCPConnection"的字典，每个连接自己负责 `connect / reconnect / 健康检查`：
 
@@ -155,7 +155,7 @@ class ConnectionPool:
 - **健康检查**：定期 `client.ping()`，死的踢掉重连
 - **粘滞连接**：同一会话尽量落到同一后端（但第 ⑩ 篇说过：HTTP 负载均衡下 sticky session 不靠谱，因为前端 `fetch` 不转发 Cookie → 优先选**无状态模式**，2026-07-28 之后协议层直接无状态）
 
-## 六、幂等重连（Idempotent Reconnect）：断线重拨，但别重复下单
+## 五、幂等重连（Idempotent Reconnect）：断线重拨，但别重复下单
 
 这是本篇**最值钱**的一块。
 
@@ -236,7 +236,7 @@ class ResilientClient:
 
 > 🔴 **版本红线（必看）**：2026-07-28 无状态 RC **移除了 Resumable SSE 流**（"Resumable SSE streams via Last-Event-ID are not supported"）。也就是说，无状态化之后，断线恢复不再是协议层能力，要靠应用层自己用"显式 handle（如 basket_id）"做状态恢复（呼应第 ⑩ 篇 3.3）。写代码以 SDK 版本为准。
 
-## 七、手写 vs 用官方 Client：怎么选（对比表）
+## 六、手写 vs 用官方 Client：怎么选（对比表）
 
 | 维度 | 手写 `HttpMCPClient`（如 AWS 示例） | 官方 `fastmcp.Client` |
 |-|-|-|

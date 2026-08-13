@@ -18,7 +18,7 @@ tags:
 
 # Promise异步的终极武器
 
-## 五、Event Loop 完整流程（六步法）
+## 一、Event Loop 完整流程（六步法）
 
 
 

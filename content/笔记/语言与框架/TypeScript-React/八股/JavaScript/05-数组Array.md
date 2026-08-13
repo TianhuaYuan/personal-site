@@ -16,8 +16,8 @@ tags:
 
 # 数组Array列表
 
-## 四、数组（Array）—— JS 的列表
-### 4.1 创建和基本操作
+## 一、数组（Array）—— JS 的列表
+### 1.1 创建和基本操作
 
 ```javascript
 
@@ -41,7 +41,7 @@ console.log(nums.length);    // 5  ← Python 是 len(nums)
 
 ```
 
-### 4.2 常用方法对照
+### 1.2 常用方法对照
 
 | 操作 | JavaScript | Python |
 | :--- | :--- | :--- |

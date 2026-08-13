@@ -16,7 +16,7 @@ tags:
 
 # async与await语法糖
 
-## 六、经典输出题逐题拆解
+## 一、经典输出题逐题拆解
 ### 题1：setTimeout + 同步
 
 ```javascript

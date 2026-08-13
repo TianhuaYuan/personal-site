@@ -16,7 +16,7 @@ tags:
 
 # React Router原理
 
-## 六、React Router 原理
+## 一、React Router 原理
 
 
 
@@ -28,7 +28,7 @@ tags:
 
 
 
-### 6.1 三种路由模式
+### 1.1 三种路由模式
 
 
 
@@ -155,7 +155,7 @@ location / {
 
 
 
-### 6.2 React Router "页面不刷新"是怎么做到的？
+### 1.2 React Router "页面不刷新"是怎么做到的？
 
 
 
@@ -223,7 +223,7 @@ window.addEventListener('popstate', () => {
 
 
 
-### 6.3 React Router v7 三种使用模式（2026 重点）
+### 1.3 React Router v7 三种使用模式（2026 重点）
 
 
 
@@ -371,7 +371,7 @@ function App() {
 
 
 
-### 6.4 嵌套路由 + Outlet
+### 1.4 嵌套路由 + Outlet
 
 
 
@@ -493,7 +493,7 @@ function Dashboard() {
 
 
 
-### 6.5 loader / action 数据模式
+### 1.5 loader / action 数据模式
 
 
 
@@ -715,7 +715,7 @@ function Login() {
 
 
 
-### 6.6 2026 新特性速览（进阶亮点，提一嘴就行）
+### 1.6 2026 新特性速览（进阶亮点，提一嘴就行）
 
 
 
@@ -733,7 +733,7 @@ function Login() {
 
 
 
-### 6.7 常见原理追问
+### 1.7 常见原理追问
 
 
 

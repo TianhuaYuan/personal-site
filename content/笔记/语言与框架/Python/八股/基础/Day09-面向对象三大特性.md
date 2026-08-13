@@ -174,7 +174,7 @@ class Child(Parent):
 ```
 
 
-## 3. 多态（Polymorphism）
+## 1. 多态（Polymorphism）
 
 ```python
 # 多态：同一接口，不同实现
@@ -214,7 +214,7 @@ for bird in birds:
 > 这就是为什么 print 能接受任何对象——只要它有 `__str__` 方法。
 
 
-## 4. 愤怒的小鸟综合案例
+## 2. 愤怒的小鸟综合案例
 
 ```python
 import random

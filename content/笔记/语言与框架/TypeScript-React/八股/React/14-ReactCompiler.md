@@ -18,7 +18,7 @@ tags:
 
 # React Compiler新趋势
 
-## 四、React Compiler（2026 新趋势——进阶亮点）
+## 一、React Compiler（2026 新趋势——进阶亮点）
 
 
 
@@ -30,7 +30,7 @@ tags:
 
 
 
-### 4.1 它是什么？
+### 1.1 它是什么？
 
 
 
@@ -84,7 +84,7 @@ graph LR
 
 
 
-### 4.2 三问
+### 1.2 三问
 
 
 
@@ -346,7 +346,7 @@ function Profile({ isAdmin }: { isAdmin: boolean }) {
 
 
 
-### 4.3 一句话
+### 1.3 一句话
 
 
 

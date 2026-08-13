@@ -16,7 +16,7 @@ tags:
 
 # HTTP无状态Cookie与Session
 
-## 六、HTTP 无状态、Cookie、Session（必考题）
+## HTTP 无状态、Cookie、Session（必考题）
 
 
 

@@ -16,8 +16,8 @@ tags:
 
 # 函数Function
 
-## 五、函数（Function）
-### 5.1 三种定义方式
+## 一、函数（Function）
+### 1.1 三种定义方式
 
 ```javascript
 
@@ -69,7 +69,7 @@ multiply = lambda a, b: a * b   # JS const multiply = (a, b) => a * b;
 
 ```
 
-### 5.2 函数参数怎么写
+### 1.2 函数参数怎么写
 
 ```javascript
 
@@ -137,7 +137,7 @@ show(1, 2, 3);      // a: 1  b: 2 —— 多传的直接忽略
 
 ```
 
-### 5.3 方法（Method）—— 对象里的函数
+### 1.3 方法（Method）—— 对象里的函数
 
 **方法 = 写在对象里的函数。** 写法差不多，但多了 `this` 指向的坑。
 
@@ -215,9 +215,9 @@ class User:
 
 - 对象调用 `user.sayHi()` → JS 自动把 this 指向 user
 
-- 把方法抠出来再调 `const fn = user.sayHi; fn()` → this 又丢了（隐式丢失，见 5.8）
+- 把方法抠出来再调 `const fn = user.sayHi; fn()` → this 又丢了（隐式丢失，见 1.8）
 
-### 5.4 对象的简写语法（ES6）
+### 1.4 对象的简写语法（ES6）
 
 React 里非常常见，看到缩写要知道在干什么。
 
@@ -277,7 +277,7 @@ console.log(person.email);    // "zs@qq.com"
 
 ```
 
-### 5.5 箭头函数的简写规则
+### 1.5 箭头函数的简写规则
 
 ```javascript
 
@@ -309,7 +309,7 @@ const sayHi = () => console.log("hi");
 
 ```
 
-### 5.6 函数是一等公民（值）
+### 1.6 函数是一等公民（值）
 
 ```javascript
 
@@ -353,7 +353,7 @@ console.log(inner());          // "inner"
 
 **Python 对照**：Python 里函数也是一等公民，`def greet(): ...` 也可以 `say_hello = greet`。完全一样。
 
-### 5.7 回调函数（Callback）—— React 里天天写
+### 1.7 回调函数（Callback）—— React 里天天写
 
 ```javascript
 
@@ -387,7 +387,7 @@ setTimeout(function() {                   // 这个匿名函数就是"回调"
 
 ```
 
-### 5.8 箭头函数和普通函数的 this 差异
+### 1.8 箭头函数和普通函数的 this 差异
 
 **这是 JS 最重要的坑之一：箭头函数没有自己的 `this`。**
 

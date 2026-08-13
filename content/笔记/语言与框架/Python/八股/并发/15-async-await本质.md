@@ -14,8 +14,8 @@ tags:
 
 # async与await语法与本质
 
-## 三、async/await —— 语法与本质
-### 3.1 async def 做了什么？
+## 一、async/await —— 语法与本质
+### 1.1 async def 做了什么？
 
 ```python
 
@@ -59,7 +59,7 @@ result = asyncio.run(coro)   # result = 42
 
 > **认知刷新**：`async def` 并不让你的函数"异步"——它只是标记这个函数**内部可以用 await**，并且调用它会返回一个**协程对象**而不是立即执行。
 
-### 3.2 await 做了什么？
+### 1.2 await 做了什么？
 
 ```python
 
@@ -125,7 +125,7 @@ async def demo():
 
 ```
 
-### 3.3 三种可等待对象（Awaitable）
+### 1.3 三种可等待对象（Awaitable）
 
 > `await` 后面能放什么？三种东西：
 
@@ -161,7 +161,7 @@ future = loop.create_future()
 | **Task** | `asyncio.create_task()` | 后台并发——不阻塞当前协程 |
 | **Future** | `loop.create_future()` | 底层——库作者才直接操作 |
 
-### 3.4 async with / async for
+### 1.4 async with / async for
 
 ```python
 
@@ -221,19 +221,19 @@ while True:
 
 A：async def 调用返回协程对象不直接执行，必须 await 或事件循环驱动；await 暂停协程把控制权交还事件循环。
 
-**Q2：3.1 async def 做了什么？ —— 怎么理解？**
+**Q2：1.1 async def 做了什么？ —— 怎么理解？**
 
 A：async def 像"按下但不启动的开关"：调用只返回一个待执行的协程对象，必须 await 或 asyncio.run 才真正跑（coroutine 协程）。
 
-**Q3：3.2 await 做了什么？ —— 怎么理解？**
+**Q3：1.2 await 做了什么？ —— 怎么理解？**
 
 A：await 像"暂时让出柜台"：暂停当前协程、把等待对象交给事件循环、去跑别人，I/O 好了再被唤醒继续（event loop 事件循环）。
 
-**Q4：3.3 三种可等待对象（Awaitable） —— 怎么理解？**
+**Q4：1.3 三种可等待对象（Awaitable） —— 怎么理解？**
 
 A：三种可等对象像三层工具：协程（直接 await）、Task（create_task 后台并发）、Future（底层库作者用）（Task 任务 / Future 未来对象）。
 
-**Q5：3.4 async with / async for —— 怎么理解？**
+**Q5：1.4 async with / async for —— 怎么理解？**
 
 A：async with/for 像"能中途 await 的 with/for"：进出处可异步（如连接池），__enter__ 变 __aenter__，逻辑和普通一样（async context manager 异步上下文管理器）。
 

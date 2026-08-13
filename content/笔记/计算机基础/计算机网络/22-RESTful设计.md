@@ -14,8 +14,8 @@ tags:
 
 # RESTful设计架构风格
 
-## 三、RESTful 设计（架构风格）
-### 3.1 REST 是什么？
+## RESTful 设计（架构风格）
+### 1.1 REST 是什么？
 
 > **REST（Representational State Transfer）** 不是协议，是一种**API 设计风格**。核心思想：把一切都看作"资源"，用 HTTP 方法表示"对资源做什么操作"。
 
@@ -33,7 +33,7 @@ RESTful 设计 = 把所有操作统一成"找到资源位置 + 告诉我你要�
 
 ```
 
-### 3.2 RESTful 的核心原则
+### 1.2 RESTful 的核心原则
 
 | 原则 | 说明 | 例子 |
 | :--- | :--- | :--- |
@@ -65,7 +65,7 @@ graph TD
 
 ```
 
-### 3.3 URL 设计规范
+### 1.3 URL 设计规范
 #### ✅ 正确示范
 
 ```text
@@ -104,7 +104,7 @@ GET    /users/getAll       → ❌ 应该是 GET /users
 
 ```
 
-### 3.4 状态码配合 RESTful
+### 1.4 状态码配合 RESTful
 
 | 操作 | 成功状态码 | 说明 |
 | :--- | :---: | :--- |
@@ -116,7 +116,7 @@ GET    /users/getAll       → ❌ 应该是 GET /users
 | PATCH /users/1 | 200 | 部分更新成功 |
 | DELETE /users/1 | **204** | 删除成功（没有返回体） |
 
-### 3.5 完整 FastAPI 示例
+### 1.5 完整 FastAPI 示例
 
 ```python
 
@@ -232,7 +232,7 @@ def delete_user(user_id: int):
 
 ```
 
-### 3.6 非 CRUD 操作怎么设计？
+### 1.6 非 CRUD 操作怎么设计？
 
 有些操作不好用名词表示，比如"登录""发送验证码""导出报表"。
 

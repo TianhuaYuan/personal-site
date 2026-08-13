@@ -16,7 +16,7 @@ tags:
 
 # 虚拟DOMVirtualDOM
 
-## 三、虚拟 DOM & Diff 专有词
+## 一、虚拟 DOM & Diff 专有词
 ### 虚拟 DOM 节点结构
 
 > 就是一个普通 JS 对象，只有三个关键字段：

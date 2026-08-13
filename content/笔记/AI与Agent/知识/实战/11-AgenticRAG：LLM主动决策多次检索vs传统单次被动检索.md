@@ -208,7 +208,7 @@ flowchart TD
 
 ---
 
-## 四、Agentic RAG vs 传统 RAG：全维度对比
+## 五、Agentic RAG vs 传统 RAG：全维度对比
 
 | **对比维度** | **传统 RAG** | **Agentic RAG** |
 | --- | --- | --- |
@@ -224,7 +224,7 @@ flowchart TD
 
 ---
 
-## 五、Agentic RAG 四大核心 Agentic 模式
+## 六、Agentic RAG 四大核心 Agentic 模式
 
 *Agentic RAG 不是一种固定的架构，而是***四种 agentic 能力的组合运用**：
 
@@ -273,7 +273,7 @@ Agent 根据问题动态选择最合适的工具/数据源。
 
 ---
 
-### 6.1 CRAG（Corrective RAG）—— 纠正性检索增强
+### 4.1 CRAG（Corrective RAG）—— 纠正性检索增强
 
 **CRAG 是目前工程落地性价比最高**的 Agentic RAG 方案。核心思想：在"检索"和"生成"之间加一道"质检 + 纠错 + 提纯"关卡。
 
@@ -300,7 +300,7 @@ flowchart LR
 
 **评估器用的是**`微调后的 T5-large`**，轻量、推理快、算力成本低。整个 CRAG 方案**不需要微调大模型，纯工程层面就能实现。
 
-### 6.2 Self-RAG —— 自主反思检索
+### 4.2 Self-RAG —— 自主反思检索
 
 **Self-RAG 的核心创新是在生成过程中插入特殊的** `*reflection tokens*`：
 
@@ -313,7 +313,7 @@ flowchart LR
 
 **Self-RAG 的优点是**精度最高**（每个 token 生成级别都在反思），但缺点是**需要微调大模型来学习这些 reflection tokens，训练成本高、推理也慢。
 
-### 6.3 Adaptive-RAG —— 自适应路由
+### 4.3 Adaptive-RAG —— 自适应路由
 
 **Adaptive-RAG 的思路更简洁：在检索之前先用一个轻量级分类器判断问题的复杂度，然后路由到不同策略**。
 
@@ -496,7 +496,7 @@ A：Agentic RAG 让 LLM 在检索每个节点做决策，形成决策-评估-纠
 **Q2：一、RAG 演进：从搬运工到决策者 —— 怎么理解？**
 A：像图书馆管理员升级：Naive RAG 随手拿书（碰运气），Advanced RAG 会改写查询，Agentic RAG 变成研究助理——自己判断查不查、查哪、够不够、对不对（Agentic loop）。
 
-**Q3：二、传统 RAG 的三道坎 —— 怎么理解？**
+**Q3：传统 RAG 的三道坎 —— 怎么理解？**
 A：像只跑一趟的外卖：检索一次就生成，查偏了只能硬编（幻觉），多跳问题一步到位搞不定，所有问题一刀切策略（Single-shot）。无纠错、无多步、无适应。
 
 **Q4：三、Agentic 怎么干活？—— 不满意就重来 —— 怎么理解？**

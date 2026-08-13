@@ -14,8 +14,8 @@ tags:
 
 # asyncio核心API
 
-## 四、asyncio 核心 API —— 常见
-### 4.1 asyncio.run —— 程序的入口
+## 一、asyncio 核心 API —— 常见
+### 1.1 asyncio.run —— 程序的入口
 
 ```python
 
@@ -31,7 +31,7 @@ result = asyncio.run(main())     # "hello"
 
 ```
 
-### 4.2 asyncio.create_task —— 后台并发
+### 1.2 asyncio.create_task —— 后台并发
 
 > **常见**：`create_task` vs 直接 `await` 的区别。
 
@@ -107,7 +107,7 @@ create_task(coro)
 
 ```
 
-### 4.3 asyncio.gather —— 批量并发 + 收集结果
+### 1.3 asyncio.gather —— 批量并发 + 收集结果
 
 ```python
 
@@ -177,7 +177,7 @@ results = await asyncio.gather(
 
 ```
 
-### 4.4 asyncio.wait —— 更细粒度的控制
+### 1.4 asyncio.wait —— 更细粒度的控制
 
 ```python
 
@@ -211,7 +211,7 @@ for task in pending:
 | 完成条件 | 全部完成 | 支持 `FIRST_COMPLETED` / `FIRST_EXCEPTION` |
 | 使用场景 | "全部完成，给我所有结果" | "等第一个完成就行" 或 "加超时" |
 
-### 4.5 asyncio.wait_for —— 单个协程超时
+### 1.5 asyncio.wait_for —— 单个协程超时
 
 ```python
 
@@ -233,7 +233,7 @@ except asyncio.TimeoutError:
 
 ```
 
-### 4.6 asyncio.as_completed —— 谁先完成先处理谁
+### 1.6 asyncio.as_completed —— 谁先完成先处理谁
 
 ```python
 

@@ -18,7 +18,7 @@ tags:
 
 # useCallback缓存函数引用
 
-## 三、useCallback —— 缓存函数引用
+## 一、useCallback —— 缓存函数引用
 
 
 
@@ -30,7 +30,7 @@ tags:
 
 
 
-### 3.0 为什么函数也要"冻"？
+### 1.0 为什么函数也要"冻"？
 
 
 
@@ -136,7 +136,7 @@ function Parent() {
 
 
 
-### 3.1 依赖数组怎么填
+### 1.1 依赖数组怎么填
 
 
 
@@ -150,7 +150,7 @@ function Parent() {
 
 
 
-//    ⚠️ 里面不能读 state——会闭包陷阱（见 3.3）
+//    ⚠️ 里面不能读 state——会闭包陷阱（见 1.3）
 
 
 
@@ -200,7 +200,7 @@ const fn = useCallback(() => {
 
 
 
-### 3.2 useMemo vs useCallback —— 一张表记住
+### 1.2 useMemo vs useCallback —— 一张表记住
 
 
 
@@ -258,7 +258,7 @@ useMemo(() => fn, [deps]);     // 缓存"返回 fn"的计算结果 → 还是 fn
 
 
 
-### 3.3 三个高频对比
+### 1.3 三个高频对比
 
 
 
@@ -405,7 +405,7 @@ function Bad() {
 
 
 
-### 3.4 useCallback 的闭包陷阱
+### 1.4 useCallback 的闭包陷阱
 
 
 

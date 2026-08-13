@@ -16,8 +16,8 @@ tags:
 
 # 对象Object数据容器
 
-## 三、对象（Object）—— JS 的数据容器
-### 3.1 什么是对象？
+## 一、对象（Object）—— JS 的数据容器
+### 1.1 什么是对象？
 
 JS 的"对象"用 `{}` 包裹，里面是 `key: value` 键值对。**它 ≈ Python 的字典 + class 实例的混合体。**
 
@@ -69,7 +69,7 @@ console.log(user.height);       // undefined（Python 会 KeyError）
 
 - JS 对象没有 `dict` 的 `.keys()`、`.values()`、`.items()` 方法（有 `Object.keys(obj)` 替代）
 
-### 3.2 嵌套对象
+### 1.2 嵌套对象
 
 ```javascript
 

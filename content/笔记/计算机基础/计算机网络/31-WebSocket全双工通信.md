@@ -20,7 +20,7 @@ tags:
 
 ---
 
-## 🌰 先搞懂"为什么需要 WebSocket"
+## 一、先搞懂"为什么需要 WebSocket"
 
 HTTP 的工作方式：
 

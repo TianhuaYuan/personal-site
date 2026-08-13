@@ -14,8 +14,8 @@ tags:
 
 # send双向通信
 
-## 三、send —— 双向通信（⭐⭐重点）
-### 3.1 基本用法
+## 一、send —— 双向通信（⭐⭐重点）
+### 1.1 基本用法
 
 ```python
 
@@ -43,7 +43,7 @@ g.send("world")
 
 ```
 
-### 3.2 send 执行流程（逐行拆解）
+### 1.2 send 执行流程（逐行拆解）
 
 ```python
 
@@ -89,7 +89,7 @@ sequenceDiagram
 
 ```
 
-### 3.3 第一次必须 next 或 send(None)
+### 1.3 第一次必须 next 或 send(None)
 
 ```python
 
@@ -109,7 +109,7 @@ g.__next__()               # 方式 3（和 next(g) 等价）
 
 > **通俗比喻**：你还没开始打电话，就想说话——对方根本没在听。先 `next()` 让对方"接起电话"（执行到第一个 `yield`），然后才能 `send()` 说话。
 
-### 3.4 send 与 yield 的值传递全景
+### 1.4 send 与 yield 的值传递全景
 
 ```python
 
@@ -171,15 +171,15 @@ A：send() 是生成器方法，让 yield 既能产出值又能接收值，实�
 
 A：received = yield 这行同时干两件事：左边收到的值就是 send 传进来的，右边产出值给调用方。像打电话——你还没接起（next）就想说话，对方根本没在听；先 next() 让生成器"接起电话"停在第一个 yield，才能 send() 说话（协程，Coroutine）。
 
-**Q3：3.1 基本用法 —— 怎么理解？**
+**Q3：1.1 基本用法 —— 怎么理解？**
 
 A：echo() 里 while True: received = yield 配 g.send('hello')，yield 表达式值就变 'hello'。先 next(g) 启动，再 send 才生效——像先拨号接通再开口。这是生成器双向通信的最小可用模型（Generator Two-way Communication）。
 
-**Q4：3.2 send 执行流程 —— 怎么理解？**
+**Q4：1.2 send 执行流程 —— 怎么理解？**
 
 A：accumulator 中 x = yield total 暂停时先"产出 total"，下次 send(10) 进来，yield 值=10 赋给 x，累加后循环回 yield total 再产出。一轮 = 收尾上次产出 + 接收新值 + 跑一段 + 再产出（状态机，State Machine）。
 
-**Q5：3.3 第一次必须 next 或 send(None) —— 怎么理解？**
+**Q5：1.3 第一次必须 next 或 send(None) —— 怎么理解？**
 
 A：刚创建的生成器直接 g.send(10) 报 TypeError: can't send non-None value。因为还没启动、没停在 yield 处，值没地方放。三种启动：next(g) / g.send(None) / g.__next__()——本质都是先跑到第一个 yield 停住（生成器启动，Generator Priming）。
 
