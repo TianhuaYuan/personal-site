@@ -16,7 +16,6 @@ tags:
 
 # Cookie与Session与Token认证三兄弟
 
-## 第四章：Cookie、Session、Token——认证三兄弟到底什么关系
 
 
 
@@ -24,7 +23,7 @@ tags:
 
 
 
-### 4.0 先讲清楚：HTTP 为什么"无状态"
+### 1.0 先讲清楚：HTTP 为什么"无状态"
 
 
 
@@ -62,7 +61,7 @@ HTTP 协议本身不记得任何用户信息。
 
 
 
-### 4.1 Cookie——浏览器里的小本本
+### 1.1 Cookie——浏览器里的小本本
 
 
 
@@ -185,7 +184,7 @@ sequenceDiagram
 
 
 
-### 4.2 Session——服务器帮你记着你是谁
+### 1.2 Session——服务器帮你记着你是谁
 
 
 
@@ -269,7 +268,7 @@ sequenceDiagram
 
 
 
-### 4.3 Token（JWT）——服务器签个字，你自己带着
+### 1.3 Token（JWT）——服务器签个字，你自己带着
 
 
 
@@ -457,7 +456,7 @@ eyJhbGciOi... . eyJzdWIiOiI0MiIsInJvbGUiOiJ1c2VyIn0= . SflKxwRJ...
 
 
 
-### 4.4 双 Token 机制——为什么要有两个 Token
+### 1.4 双 Token 机制——为什么要有两个 Token
 
 
 

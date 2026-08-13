@@ -231,9 +231,9 @@ A：poll 用动态数组去掉 1024 上限；epoll 用红黑树 + 就绪链表�
 
 - 🔗 [[14-IO多路复用select_poll_epoll|14 IO多路复用select_poll_epoll]]
 
-- 🔗 [[15-epoll详解|15 epoll详解]]
+- 🔗 [[epoll详解|epoll详解]]
 
-- 🔗 [[18-poll详解|18 poll详解]]
+- 🔗 [[poll详解|poll详解]]
 
 - 🔗 [[语言与框架/Python/八股/00-Python|Python八股文]]
 

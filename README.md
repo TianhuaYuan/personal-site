@@ -1,4 +1,4 @@
-# PorterYuan 的学习笔记
+# PorterYuan 的个人学习博客
 
 我的个人学习站，主要放 AI 和编程相关的笔记，线上在 [porteryuan.top](https://porteryuan.top)。
 

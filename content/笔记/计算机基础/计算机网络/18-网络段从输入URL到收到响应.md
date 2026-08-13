@@ -14,7 +14,6 @@ tags:
 
 # 网络段从输入URL到收到响应
 
-## 第一章：网络段——从输入 URL 到收到响应
 ### 1.1 URL 解析——浏览器先看懂你输入了什么
 
 你输入：https://www.example.com:443/path?q=hello#section

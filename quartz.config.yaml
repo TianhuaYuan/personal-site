@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: PorterYuan · 学习笔记
+  pageTitle: PorterYuan · 个人学习博客
   pageTitleSuffix: ""
   enableSPA: true
   enablePopovers: true

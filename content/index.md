@@ -1,20 +1,20 @@
 ---
 
-title: "PorterYuan 技术笔记 · 首页"
+title: "PorterYuan 个人学习博客 · 首页"
 
 tags: [索引]
 
 created: "2026-08-09"
 
-description: "PorterYuan 的技术学习笔记：系统梳理 AI Agent / RAG 方向的核心技术与工程实践。深入讲解 MCP、检索增强生成（RAG）、向量数据库、LangGraph 等核心主题，并附八股文、LeetCode 题解与跨领域知识图谱。"
+description: "PorterYuan 的个人学习博客：系统梳理 AI Agent / RAG 方向的核心技术与工程实践。深入讲解 MCP、检索增强生成（RAG）、向量数据库、LangGraph 等核心主题，并附八股文、LeetCode 题解与跨领域知识图谱。"
 
 comments: false
 
 ---
 
-# 📚 PorterYuan 的技术笔记
+# 📚 PorterYuan 个人学习博客
 
-> 系统梳理 AI Agent / RAG、后端八股与算法的技术学习笔记 —— 深入讲解 MCP、检索增强生成（RAG）、向量数据库、LangGraph 等核心主题，并附八股文、LeetCode 题解与跨领域知识图谱，边学、边讲、边复盘。
+> 系统梳理 AI Agent / RAG、后端八股与算法的个人学习博客 —— 深入讲解 MCP、检索增强生成（RAG）、向量数据库、LangGraph 等核心主题，并附八股文、LeetCode 题解与跨领域知识图谱，边学、边讲、边复盘。
 
 ## 🚀 从这里开始
 

@@ -14,8 +14,7 @@ tags:
 
 # 混合并发实际项目怎么组合
 
-## 第六章：混合并发——实际项目怎么组合使用
-### 6.1 真实场景：Web API 服务器
+### 1.1 真实场景：Web API 服务器
 
 ```mermaid
 
@@ -39,7 +38,7 @@ graph TD
 
 ```
 
-### 6.2 三种 run_in_executor 模式
+### 1.2 三种 run_in_executor 模式
 
 ```python
 
@@ -105,7 +104,7 @@ async def mixed_workload():
 
 ```
 
-### 6.3 选型决策树——终极版
+### 1.3 选型决策树——终极版
 
 ```mermaid
 
