@@ -163,13 +163,9 @@ spec:
 ### 2.2 GPU资源类型
 
 | 资源类型 | 说明 |
-
 |----------|------|
-
 | nvidia.com/gpu | GPU设备 |
-
 | nvidia.com/gpu-memory | GPU显存 |
-
 | nvidia.com/gpu-core | GPU核心 |
 
 ## 3. 弹性扩缩容

@@ -43,25 +43,15 @@ tags:
 
 
 | 维度 | BackgroundTasks | Celery |
-
 | :--- | :--- | :--- |
-
 | **进程** | 同进程 | 独立 worker 进程 |
-
 | **任务队列** | 无，按添加顺序执行 | Redis/RabbitMQ 消息队列 |
-
 | **任务类型** | 轻量快速（秒级） | 重量可慢（秒到小时） |
-
 | **失败重试** | ❌ | ✅（`autoretry_for` / `retry`） |
-
 | **定时任务** | ❌ | ✅ Celery Beat |
-
 | **任务编排** | ❌ | ✅ Chain / Group / Chord |
-
 | **分布式** | ❌ 单机 | ✅ 多机多 worker |
-
 | **结果追踪** | ❌ | ✅ Result Backend |
-
 | **使用成本** | 🟢 零配置 | 🔴 需 Redis + worker 管理 |
 
 

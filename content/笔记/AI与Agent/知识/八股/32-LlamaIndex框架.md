@@ -48,19 +48,12 @@ graph TD
 LlamaIndex 支持 150+ 种数据源：
 
 | 类别 | 加载器 | 支持格式 |
-
 | ------ | -------- | --------- |
-
 | 文件 | SimpleDirectoryReader | PDF, Word, MD, TXT, HTML |
-
 | 数据库 | SQLDatabaseReader | MySQL, PostgreSQL |
-
 | 网页 | WebPageReader | 任意网页 |
-
 | API | GoogleDocsReader, NotionReader | Google Docs, Notion |
-
 | 云存储 | S3Reader, GCSReader | AWS S3, Google Cloud Storage |
-
 | 嵌入式 | WikipediaReader, SlackReader | Wikipedia, Slack |
 
 **最简单的方式：**
@@ -78,17 +71,11 @@ documents = SimpleDirectoryReader("./data").load_data()
 LlamaIndex 的核心是将文档组织为不同类型的索引：
 
 | 索引类型 | 原理 | 适用场景 |
-
 | --------- | ------ | --------- |
-
 | Vector Store Index | 向量相似度检索 | 通用 RAG（最常用） |
-
 | Summary Index | 按文档顺序遍历生成摘要 | 摘要、总览任务 |
-
 | Tree Index | 构建文档树，逐层摘要 | 层次化查询 |
-
 | Keyword Table Index | 关键词倒排索引 | 精确关键词匹配 |
-
 | Knowledge Graph Index | 构建知识图谱 | 关系推理、图查询 |
 
 #### Vector Store Index（最常用）
@@ -168,17 +155,11 @@ response = query_engine.query("什么是RAG？")
 **response_mode 选项：**
 
 | 模式 | 说明 |
-
 | ------ | ------ |
-
 | refine | 逐个文档精炼答案（质量最高，最慢） |
-
 | compact | 将多个文档压缩为一个 prompt（推荐） |
-
 | tree_summarize | 递归摘要生成最终答案 |
-
 | simple | 只用 Top-1 文档生成答案（最快） |
-
 |accumulate | 将所有文档的答案拼接 |
 
 ### 4. Response Synthesizer 响应合成器
@@ -301,19 +282,12 @@ graph LR
 ## LlamaIndex vs LangChain 选型
 
 | 场景 | 推荐 | 理由 |
-
 | ------ | ------ | ------ |
-
 | 纯 RAG 应用 | LlamaIndex | 原生深度支持，开箱即用 |
-
 | 复杂 Agent 工作流 | LangChain + LangGraph | Agent 能力更强 |
-
 | 数据分析/报告 | LlamaIndex | Tree/Summary 索引天然适配 |
-
 | 多工具协作 Agent | LangChain | 工具集成更丰富 |
-
 | 需要监控评估 | LangSmith (LangChain) | 成熟的可观测性平台 |
-
 | 快速原型 RAG | LlamaIndex | 最少代码量 |
 
 **两者可以结合使用：** 用 LlamaIndex 构建检索层，用 LangChain 构建 Agent 编排层。
@@ -323,23 +297,14 @@ graph LR
 ## 快速问答
 
 | 问题 | 参考答案 |
-
 | ------ | --------- |
-
 | LlamaIndex 的核心定位是什么？ | 专注于数据连接和检索的 LLM 框架。核心能力是将各种数据源索引化，并提供高效的查询接口 |
-
 | LlamaIndex 支持哪些索引类型？ | Vector Store（向量）、Summary（摘要）、Tree（树）、Keyword（关键词）、Knowledge Graph（知识图谱） |
-
 | Vector Store Index 和 Tree Index 的区别？ | Vector Store 用向量相似度检索，适合通用场景；Tree 用层次化摘要，适合"从全局到细节"的查询 |
-
 | response_mode 有哪些？怎么选？ | refine（逐个精炼，最慢最好）、compact（压缩上下文，推荐）、tree_summarize（递归摘要）、simple（最快最简单） |
-
 | LlamaIndex 如何处理多模态数据？ | 通过 Data Connector 加载图片/音频，使用多模态 Embedding 模型（如 CLIP）进行向量化，支持跨模态检索 |
-
 | Sub-Question Query Engine 是什么？ | 将复杂问题拆分为多个子问题，分别检索和回答后综合。适合需要多个知识来源的问题 |
-
 | LlamaIndex 的评估工具有哪些？ | FaithfulnessEvaluator、RelevancyEvaluator、CorrectnessEvaluator。可通过 llama-index-evaluation 包使用 |
-
 | LlamaIndex 在生产环境中的挑战？ | ① 索引更新策略 ② 大规模文档的构建时间 ③ 查询延迟优化 ④ 评估指标体系搭建 |
 
 ## 速记卡（面试闪卡）

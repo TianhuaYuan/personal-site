@@ -88,13 +88,9 @@ pip install sentence-transformers
 Chroma 提供三个"住法"：
 
 | 模式 | 类 | 数据住哪 | 适合场景 |
-
 |------|---|---------|---------|
-
 | 内存模式 | `chromadb.Client()` | 进程内存，退出没 | 快速试手 / 单元测试 |
-
 | 持久化模式 | `chromadb.PersistentClient(path="./db")` | 磁盘 SQLite，重启还在 | 个人项目 / 生产 |
-
 | 远程模式 | `chromadb.HttpClient(host="...", port=8000)` | 远端 Chroma 服务器 | 分布式 / 多应用共享 |
 
 > 类比：内存模式=**住酒店**（退房就清）、持久化=**买房**（东西一直在）、远程=**租仓库**（东西放别处，远程取）。
@@ -148,15 +144,10 @@ collection = client.get_or_create_collection(
 **Collection 内部长这样：**
 
 | 字段 | 类型 | 说明 |
-
 |------|------|------|
-
 | `id` | str | 唯一标识，你给或 Chroma 自动生成 |
-
 | `embedding` | float[] | 向量（默认 384 维） |
-
 | `document` | str | 原始文本 |
-
 | `metadata` | dict | 元数据标签（source/type/date 等），用来过滤 |
 
 ---
@@ -255,17 +246,11 @@ collection.delete(where={"source": "custom"})
 ### 4.4 入库最佳实践速查
 
 | 实践 | 说明 |
-
 |------|------|
-
 | 批量 ≥ 100 条 | 单次塞越多越快，循环 add 是反模式 |
-
 | 固定版本号 | `pip install chromadb==1.5.9`，升了降不了 |
-
 | 分块 200-500 字 | 保留语义完整性，技术文档可到 3000 |
-
 | 元数据精简 | 只留 source/type/date 必要字段 |
-
 | 持久化 | 生产用 PersistentClient，数据落 SQLite |
 
 ---
@@ -311,15 +296,10 @@ collection = client.get_or_create_collection(
 **嵌入函数选型对比：**
 
 | 模型 | 维度 | 语言 | 费用 | 适合场景 |
-
 |------|------|------|------|---------|
-
 | all-MiniLM-L6-v2 | 384 | 英文为主 | 免费 | 快速原型 |
-
 | BAAI/bge-small-zh | 512 | 中文优秀 | 免费 | 中文 RAG |
-
 | text-embedding-3-small | 1536 | 多语言 | 💰 | 精度优先 |
-
 | text-embedding-3-large | 3072 | 多语言 | 💰💰 | 最高精度 |
 
 ---
@@ -388,15 +368,10 @@ results = collection.query(
 **支持的操作符：**
 
 | 操作符 | 含义 | 示例 |
-
 |--------|------|------|
-
 | `$eq` / `$ne` | 等于/不等于 | `{"type": {"$ne": "广告"}}` |
-
 | `$gt` / `$gte` / `$lt` / `$lte` | 比较 | `{"date": {"$gte": "2026-01-01"}}` |
-
 | `$in` / `$nin` | 在/不在列表 | `{"source": {"$in": ["官方","博客"]}}` |
-
 | `$and` / `$or` / `$not` | 逻辑组合 | 见上例 |
 
 ### 6.3 全文过滤（关键词匹配）
@@ -468,13 +443,9 @@ collection = client.get_or_create_collection(
 ```
 
 | 参数 | 建议值 | 作用 | 代价 |
-
 |------|--------|------|------|
-
 | `ef_construction` | 100-300 | 索引建得越精细，检索越准 | 建索引变慢 |
-
 | `M` | 8-32 | 每层连接越多，图越稠密 | 内存变大 |
-
 | `hnsw:space` | cosine | 文本类似度首选余弦 | — |
 
 类比：HNSW 就像一个**社交网络**——`M` 是你加了多少好友（好友越多找人越容易），`ef_construction` 是你建好友圈时花了多大力气去认识对的人。

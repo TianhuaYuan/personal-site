@@ -28,11 +28,8 @@ tags:
 假设你坚持用一张表存所有数据：
 
 | id | username | email | order_1 | order_2 | order_3 |
-
 |----|----------|-------|---------|---------|---------|
-
 | 1 | zhangsan | zhang@qq.com | 键盘 | 鼠标 | 显示器 |
-
 | 2 | lisi | li@qq.com | 鼠标垫 | NULL | NULL |
 
 问题立刻暴露：
@@ -646,17 +643,11 @@ graph LR
 ### 5.2 选型速查
 
 | 需求 | 用什么 | 理由 |
-
 |------|--------|------|
-
 | 只要两边都有的数据 | **INNER JOIN** | 匹配不上的全扔掉 |
-
 | 左表全部保留，右表有就带上 | **LEFT JOIN** | 左表是主表 |
-
 | 右表全部保留，左表有就带上 | **RIGHT JOIN** | 等价于换顺序的 LEFT JOIN |
-
 | 找出"有 A 没 B"的 | **LEFT JOIN + WHERE B.id IS NULL** | 保留 A，筛掉匹配上的 |
-
 | 找出"AB 都有的" | **INNER JOIN** | 最简单 |
 
 ### 5.3 JOIN 常见错误
@@ -701,13 +692,9 @@ WHERE o.total > 100;  -- ← o.total 为 NULL 时条件不成立，LEFT JOIN 白
 三种常见位置：
 
 | 位置 | 形式 | 什么时候用 |
-
 |------|------|-----------|
-
 | WHERE 后面 | `WHERE 列 IN (SELECT ...)` | 用另一张表的数据做筛选条件 |
-
 | FROM 后面 | `FROM (SELECT ...) AS 别名` | 把查询结果当临时表再查 |
-
 | SELECT 后面 | `SELECT (SELECT ...) AS 别名` | 每行附带一个计算值 |
 
 ### 6.2 WHERE 子查询
@@ -877,17 +864,11 @@ ORDER BY order_count DESC;
 ### 6.5 子查询 vs JOIN —— 什么时候用哪个？
 
 | 场景 | 推荐 | 原因 |
-
 |------|------|------|
-
 | 查询结果要显示多表的列 | **JOIN** | 子查询 FROM 里也可以，但 JOIN 更直观 |
-
 | 只做筛选，不需要显示另一张表的列 | **子查询 WHERE IN** | `WHERE id IN (SELECT ...)` 最清晰 |
-
 | 比较一个值和聚合结果 | **子查询** | `WHERE total > (SELECT AVG(...))` |
-
 | 大表关联并返回大量行 | **JOIN** | 数据库对 JOIN 有索引优化，子查询可能更慢 |
-
 | NOT IN / NOT EXISTS | **子查询** | `WHERE id NOT IN (SELECT ...)` 语义明确 |
 
 ### 6.6 EXISTS 子查询
@@ -923,25 +904,15 @@ WHERE EXISTS (
 ## 速查表
 
 | 操作 | 语法 | 一句话解释 |
-
 |------|------|-----------|
-
 | **内连接** | `A INNER JOIN B ON A.x = B.x` | 只保留两表都有匹配的行 |
-
 | **左连接** | `A LEFT JOIN B ON A.x = B.x` | 左表全保留，右表配不上填 NULL |
-
 | **右连接** | `A RIGHT JOIN B ON A.x = B.x` | 右表全保留（等价于换顺序的 LEFT JOIN） |
-
 | **多表连接** | `A JOIN B ON ... JOIN C ON ...` | 链式拼接，一张接一张 |
-
 | **WHERE 子查询** | `WHERE 列 IN (SELECT ...)` | 用另一张表的数据当筛选条件 |
-
 | **FROM 子查询** | `FROM (SELECT ...) AS 别名` | 把查询结果当临时表继续查 |
-
 | **SELECT 子查询** | `SELECT (SELECT ...) AS 别名` | 每行附带一个计算结果 |
-
 | **EXISTS** | `WHERE EXISTS (SELECT 1 ...)` | 检查是否存在匹配行 |
-
 | **COALESCE** | `COALESCE(列, 默认值)` | 如果列是 NULL，返回默认值 |
 
 ---

@@ -21,15 +21,10 @@ RAG 系统的评估是确保系统质量的关键环节。需要从检索质量�
 ## RAG 评估的核心问题
 
 | 问题 | 对应指标 |
-
 | ------ | --------- |
-
 | 检索到的文档相关吗？ | Context Precision / Context Recall |
-
 | 模型回答忠于检索到的内容吗？ | Faithfulness |
-
 | 模型回答切题吗？ | Answer Relevance |
-
 | 系统面对噪声是否鲁棒？ | Noise Robustness |
 
 ## RAGAS 评估框架
@@ -39,15 +34,10 @@ RAGAS（Retrieval Augmented Generation Assessment）是目前最流行的 RAG �
 ### 核心指标
 
 | 指标 | 公式/说明 | 评估目标 |
-
 | ------ | --------- | --------- |
-
 | Context Precision | 相关文档在 Top-K 中的排名是否靠前 | 检索精度 |
-
 | Context Recall | 参考答案所需的信息是否被检索到 | 检索召回 |
-
 | Faithfulness | 生成内容是否可以从上下文中推导出来 | 忠实度 |
-
 | Answer Relevance | 生成的回答是否与问题相关 | 回答相关性 |
 
 ### Context Precision 检索精度
@@ -162,43 +152,28 @@ Recall = 2/3 = 0.67
 ### 检索层指标
 
 | 指标 | 说明 | 优化方向 |
-
 | ------ | ------ | --------- |
-
 | Hit Rate | Top-K 中是否包含至少一个相关文档 | 增大 K、混合检索 |
-
 | MRR (Mean Reciprocal Rank) | 第一个相关文档的排名倒数 | Re-ranker、优化排序 |
-
 | NDCG | 考虑排名位置的评估 | 排序模型优化 |
-
 | MAP | 所有相关文档的平均精度 | 综合优化 |
 
 ### 生成层指标
 
 | 指标 | 说明 | 计算方式 |
-
 | ------ | ------ | --------- |
-
 | Faithfulness | 忠实度 | LLM-as-Judge |
-
 | Answer Relevance | 回答相关性 | 逆向问题生成 + 相似度 |
-
 | Correctness | 正确性 | 与参考答案对比 |
-
 | Completeness | 完整性 | 是否覆盖了所有要点 |
 
 ### 端到端指标
 
 | 指标 | 说明 |
-
 | ------ | ------ |
-
 | 任务完成率 | 最终是否成功完成用户任务 |
-
 | 用户满意度 | 人工评估或用户反馈 |
-
 | 响应时间 | 从提问到回答的总延迟 |
-
 | 成本效率 | 每次查询的平均成本 |
 
 ## 评估方法
@@ -239,15 +214,10 @@ judge_prompt = """
 使用标准数据集进行客观评估：
 
 | 数据集 | 评估内容 |
-
 | -------- | --------- |
-
 | MS MARCO | 段落检索、问答 |
-
 | Natural Questions | 真实问题检索 |
-
 | HotpotQA | 多跳推理 |
-
 | TriviaQA | 事实性问答 |
 
 ### 3. A/B 测试
@@ -269,17 +239,11 @@ graph LR
 ### 4. 人工评估
 
 | 维度 | 评分标准 |
-
 | ------ | --------- |
-
 | 准确性 | 信息是否正确 |
-
 | 相关性 | 是否回答了问题 |
-
 | 完整性 | 是否遗漏关键信息 |
-
 | 可读性 | 回答是否清晰易懂 |
-
 | 引用质量 | 引用是否准确、充分 |
 
 ## 评估流水线
@@ -340,25 +304,15 @@ graph TD
 一个典型的 RAG 系统涉及**三类可调参数**三类可调参数，组合起来搜索空间爆炸：
 
 | 参数类别 | 具体参数 | 典型取值范围 |
-
 | --- | --- | --- |
-
 | 分块参数 | chunk_size | 128 / 256 / 512 / 1024 / 2048 |
-
 |  | chunk_overlap | 0 / 64 / 128 / 256 |
-
 |  | 分块策略 | 递归切分 / 语义分块 / 结构化 |
-
 | 检索参数 | top_k | 1 / 2 / 3 / 5 / 8 / 10 |
-
 |  | 检索类型 | 纯向量 / 纯BM25 / 混合检索 |
-
 |  | rerank | 无 / bge-reranker / cohere |
-
 |  | similarity_threshold | 0.5 / 0.6 / 0.7 / 0.8 |
-
 | 生成参数 | temperature | 0 / 0.3 / 0.7 |
-
 |  | LLM 模型 | GPT-4o / Claude / 开源模型 |
 
 <aside>
@@ -407,15 +361,10 @@ flowchart TD
 chunk_size 是 RAG 调优中**影响最大的单一参数**影响最大的单一参数，没有之一。
 
 | chunk_size | 优势 | 劣势 | 适用场景 |
-
 | --- | --- | --- | --- |
-
 | 128~256 | 检索精度极高，噪声少 | 上下文碎片化，语义不完整 | 精确问答、FAQ、事实检索 |
-
 | 256~512 | 精度与上下文的最佳平衡点 | — | 大多数 RAG 场景的首选 |
-
 | 512~1024 | 上下文完整，适合长答案 | 可能引入噪声，检索精度下降 | 报告生成、综合分析 |
-
 | 1024~2048 | 信息覆盖最全 | 噪声严重，LLM 注意力分散 | 探索性搜索、知识浏览 |
 
 <aside>
@@ -427,13 +376,9 @@ chunk_size 是 RAG 调优中**影响最大的单一参数**影响最大的单一
 ### 2.2 chunk_overlap 的选择
 
 | overlap | 效果 | 建议场景 |
-
 | --- | --- | --- |
-
 | 0 | 无重叠，无冗余 | chunk_size 小 + 文档结构清晰 |
-
 | 10%~20% | 最佳平衡点 | 大多数场景的默认选择 |
-
 | >30% | 冗余严重，检索结果高度重复 | 仅当 chunk_size 极大时考虑 |
 
 **经验公式**经验公式：`overlap ≈ chunk_size × 0.15 ~ 0.2`overlap ≈ chunk_size × 0.15 ~ 0.2
@@ -443,15 +388,10 @@ chunk_size 是 RAG 调优中**影响最大的单一参数**影响最大的单一
 ### 2.3 分块策略对比
 
 | 策略 | 原理 | 优势 | 劣势 | 推荐场景 |
-
 | --- | --- | --- | --- | --- |
-
 | 递归切分 | 按分隔符层级递归切分 | 简单高效，保留语义边界 | 不考虑语义连贯性 | 默认首选 |
-
 | 语义分块 | 基于句子 embedding 相似度断点 | 语义完整性最强 | 计算成本高 | 高精度问答 |
-
 | 结构化分块 | 按文档标题/章节结构切分 | 保留文档层次结构 | 依赖文档格式清晰 | 技术文档/法律文本 |
-
 | 句子窗口 | 单句建索引，命中后扩窗 | 检索精度 + 丰富上下文 | 实现复杂 | 长文档问答 |
 
 ---
@@ -462,15 +402,10 @@ chunk_size 是 RAG 调优中**影响最大的单一参数**影响最大的单一
 top_k 控制传给 LLM 的上下文数量，直接影响**召回率 vs. 噪声**召回率 vs. 噪声的平衡。
 
 | top_k | 召回率 | 噪声量 | Token 消耗 | 适用场景 |
-
 | --- | --- | --- | --- | --- |
-
 | 1~2 | 低 | 极低 | 少 | 简单事实性问答 |
-
 | 3~5 | 中高 | 可控 | 适中 | 大多数场景的最佳区间 |
-
 | 5~8 | 高 | 较高 | 多 | 复杂分析、多方面问题 |
-
 | 8~10 | 很高 | 高 | 很多 | 探索性搜索、研究调研 |
 
 <aside>
@@ -482,13 +417,9 @@ top_k 控制传给 LLM 的上下文数量，直接影响**召回率 vs. 噪声**
 ### 3.2 检索类型选择
 
 | 检索类型 | 原理 | 擅长 | 不擅长 |
-
 | --- | --- | --- | --- |
-
 | 纯向量检索 | embedding 余弦相似度 | 语义相近的查询 | 精确专有名词、编号 |
-
 | 纯 BM25 | 关键词词频匹配 | 精确术语、编号、代码 | 语义相近但表述不同 |
-
 | 混合检索 + RRF | 向量 + BM25 + 倒数排名融合 | 兼顾语义和精确匹配 | — |
 
 <aside>
@@ -500,11 +431,8 @@ top_k 控制传给 LLM 的上下文数量，直接影响**召回率 vs. 噪声**
 ### 3.3 Rerank 的价值
 
 | 配置 | Precision@5 | Faithfulness | 说明 |
-
 | --- | --- | --- | --- |
-
 | 无 Rerank | 0.55 | 0.72 | 基线 |
-
 | 加 Rerank | 0.78 | 0.91 | Precision 提升 42%，幻觉率大幅下降 |
 
 **Rerank 的本质**Rerank 的本质：检索是"粗筛"（从万级文档中选百级），Rerank 是"精排"（从百级中选十级给 LLM）。跳过 Rerank = 把噪声直接喂给 LLM。
@@ -571,17 +499,11 @@ flowchart TD
 </aside>
 
 | 阶段 | 调优参数 | 固定参数 | 组合数 |
-
 | --- | --- | --- | --- |
-
 | 第一阶段 | chunk_size × overlap | top_k=5, 向量检索, 无 Rerank | 5×3 = 15 |
-
 | 第二阶段 | top_k × 检索类型 | 最优分块, 无 Rerank | 4×3 = 12 |
-
 | 第三阶段 | rerank × threshold | 最优分块 + 检索 | 3×4 = 12 |
-
 | 第四阶段 | temperature | 全部最优 | 3×1 = 3 |
-
 | 总计 | — | — | 42 |
 
 从 360 缩减到 42，效率提升 **8.5 倍**8.5 倍。
@@ -948,19 +870,12 @@ results = param_tuner.tune()
 假设我们完成了第一阶段（分块参数）的网格搜索：
 
 | chunk_size | overlap | Hit@5 | Precision@5 | Recall@5 | F1 |
-
 | --- | --- | --- | --- | --- | --- |
-
 | 256 | 0 | 0.72 | 0.68 | 0.58 | 0.63 |
-
 | 256 | 64 | 0.78 | 0.72 | 0.65 | 0.68 |
-
 | 512 | 128 | 0.88 | 0.80 | 0.82 | 0.81 |
-
 | 512 | 256 | 0.86 | 0.74 | 0.84 | 0.79 |
-
 | 1024 | 128 | 0.82 | 0.60 | 0.88 | 0.71 |
-
 | 1024 | 256 | 0.84 | 0.55 | 0.90 | 0.68 |
 
 **分析**分析：
@@ -1106,19 +1021,12 @@ flowchart LR
 ## 十、参考资料
 
 | 来源 | 链接 | 内容 |
-
 | --- | --- | --- |
-
 | CSDN - RAGs性能调优实战 | https://blog.csdn.net/gitblog_00658/article/details/151743762 | Chunk Size 与 Top-K 调优策略 |
-
 | CSDN - ParamTuner 超参数优化 | https://blog.csdn.net/ppoojjj/article/details/140310019 | LlamaIndex ParamTuner 网格搜索 |
-
 | CSDN - RAG评估与优化指南 | https://blog.csdn.net/zhangzhentiyes/article/details/148527841 | RAGAS/ARES 评估框架实战 |
-
 | CSDN - RAG 文本切分方法 | https://juejin.cn/post/7545087762838126630 | 分块策略全面对比 |
-
 | LlamaIndex 官方文档 | https://docs.llamaindex.io/ | ParamTuner / RayTuneParamTuner |
-
 | RAGAS 官方文档 | https://docs.ragas.io/ | RAG 评估指标与框架 |
 
 ---
@@ -1179,15 +1087,10 @@ RAG 系统 = **检索器（Retriever）**检索器（Retriever） + **生成器�
 ### 1.2 分层评估的诊断价值
 
 | 症状 | 检索层指标 | 生成层指标 | 问题定位 |
-
 | --- | --- | --- | --- |
-
 | 回答完全错误 | Recall 低 | Faithfulness 低 | 检索没召回 |
-
 | 回答部分正确但有幻觉 | Recall 高 | Faithfulness 低 | LLM 编造 |
-
 | 回答正确但不完整 | Recall 中 | Faithfulness 高 | TopK 太小 |
-
 | 回答跑题 | Recall 高 | Relevance 低 | Prompt 问题 |
 
 <aside>
@@ -1207,11 +1110,8 @@ RAG 系统 = **检索器（Retriever）**检索器（Retriever） + **生成器�
 在信息检索中，我们把结果分为四类：
 
 |  | 实际相关 | 实际不相关 |
-
 | --- | --- | --- |
-
 | 被系统检索 | TP（真正例） | FP（假正例） |
-
 | 未被检索 | FN（假负例） | TN（真负例） |
 
 ### 2.2 核心检索指标
@@ -1313,17 +1213,11 @@ RAG 系统 = **检索器（Retriever）**检索器（Retriever） + **生成器�
 **RAG 场景意义**RAG 场景意义：问答场景中，通常第一个片段命中最重要。MRR 越高，说明正确答案越靠前。
 
 | rank | 得分 |
-
 | --- | --- |
-
 | 1 | 1.0 |
-
 | 2 | 0.5 |
-
 | 3 | 0.33 |
-
 | 4 | 0.25 |
-
 | 5 | 0.2 |
 
 ---
@@ -1361,19 +1255,12 @@ RAG 系统 = **检索器（Retriever）**检索器（Retriever） + **生成器�
 ### 2.3 检索指标对比速查表
 
 | 指标 | 关注重点 | 适用场景 | 公式复杂度 | 是否需要分级标注 |
-
 | --- | --- | --- | --- | --- |
-
 | Precision | 结果纯度 | 控制噪声传入 LLM | 简单 | 否 |
-
 | Recall | 结果覆盖 | 确保不遗漏关键信息 | 简单 | 否 |
-
 | F1 | 平衡性 | 综合评估检索能力 | 简单 | 否 |
-
 | Hit@K | 是否有正确答案 | 快速验证召回能力 | 简单 | 否 |
-
 | MRR | 正确答案位置 | 问答场景 | 简单 | 否 |
-
 | NDCG | 排序质量 | 搜索结果排序 | 复杂 | 是 |
 
 ---
@@ -1381,15 +1268,10 @@ RAG 系统 = **检索器（Retriever）**检索器（Retriever） + **生成器�
 ### 2.4 检索常见问题诊断
 
 | 指标异常 | 可能原因 | 优化方向 |
-
 | --- | --- | --- |
-
 | Recall 低 | chunk 过大/过小、Embedding 弱、无关键词检索 | 调 chunk_size、换 Embedding 模型、加 BM25 混合检索 |
-
 | Precision 低 | 大量无关片段召回 | 加 Rerank、调相似度阈值、优化 query 改写 |
-
 | MRR 低 | 正确答案排名靠后 | 换更强的 Rerank 模型、调向量检索参数 |
-
 | Hit@3 < 0.8 | 检索器基础能力不够 | 重新选型检索方案 |
 
 ---
@@ -1519,17 +1401,11 @@ RAG 系统 = **检索器（Retriever）**检索器（Retriever） + **生成器�
 ### 3.3 生成指标对比速查表
 
 | 指标 | 评估对象 | 是否有参考 | 核心用途 | 评估方式 |
-
 | --- | --- | --- | --- | --- |
-
 | Faithfulness | 回答 vs Context | 无参考 | 防幻觉 | LLM-as-Judge |
-
 | Answer Relevance | 回答 vs Query | 无参考 | 防跑题 | LLM-as-Judge |
-
 | Answer Correctness | 回答 vs Ground Truth | 有参考 | 测准确性 | Embedding/LLM |
-
 | Context Precision | Context vs Query | 无参考 | 测检索纯度 | LLM-as-Judge |
-
 | Context Recall | Context vs Ground Truth | 有参考 | 测检索覆盖 | LLM-as-Judge |
 
 ---
@@ -1539,13 +1415,9 @@ RAG 系统 = **检索器（Retriever）**检索器（Retriever） + **生成器�
 **幻觉类型**幻觉类型：
 
 | 类型 | 定义 | 示例 |
-
 | --- | --- | --- |
-
 | 事实性幻觉 | 编造不存在的事实 | "公司成立于2010年"（实际是2015年） |
-
 | 逻辑性幻觉 | 推理过程错误 | "A>B, B>C, 所以 C>A" |
-
 | 引用性幻觉 | 声称引用文档但文档无此内容 | "根据第3条..."（实际没有） |
 
 **幻觉率计算**幻觉率计算：幻觉率 = 含幻觉的样本数 / 总测试样本数 × 100%
@@ -1562,17 +1434,11 @@ RAGAS（Retrieval-Augmented Generation Assessment）是 RAG 评估的行业标�
 **核心指标**核心指标：
 
 | 指标 | 类别 | 说明 |
-
 | --- | --- | --- |
-
 | context_precision | 检索 | 上下文精确度 |
-
 | context_recall | 检索 | 上下文召回率 |
-
 | faithfulness | 生成 | 忠实度 |
-
 | answer_relevancy | 生成 | 答案相关性 |
-
 | answer_correctness | 生成 | 答案正确性（需参考） |
 
 ### 4.2 安装与基础使用
@@ -1688,23 +1554,14 @@ flowchart TD
 ### 行业参考标准
 
 | 指标 | 合格线 | 优秀线 | 说明 |
-
 | --- | --- | --- | --- |
-
 | Recall@K | ≥ 80% | ≥ 90% | 关键信息不能漏 |
-
 | Precision@K | ≥ 60% | ≥ 75% | 噪声控制 |
-
 | F1-Score | ≥ 0.7 | ≥ 0.85 | 综合平衡 |
-
 | Hit@3 | ≥ 0.7 | ≥ 0.85 | 基础召回能力 |
-
 | MRR | ≥ 0.6 | ≥ 0.8 | 正确答案位置 |
-
 | Faithfulness | ≥ 0.85 | ≥ 0.95 | 防幻觉核心 |
-
 | Answer Relevance | ≥ 0.8 | ≥ 0.9 | 贴合问题 |
-
 | Hallucination Rate | ≤ 10% | ≤ 5% | 越低越好 |
 
 ### 诊断矩阵
@@ -1732,15 +1589,10 @@ quadrantChart
 </aside>
 
 | 象限 | Recall | Faithfulness | 问题定位 | 优化优先级 |
-
 | --- | --- | --- | --- | --- |
-
 | 第一象限 | 高 | 低 | LLM 没用好文档 / Prompt 问题 | 调 Prompt、加约束 |
-
 | 第二象限 | 高 | 高 | 理想状态 | 保持监控 |
-
 | 第三象限 | 低 | 低 | 检索器根本不行 | 换检索方案 |
-
 | 第四象限 | 低 | 高 | 检索召回不够 | 调 chunk、加混合检索 |
 
 ---
@@ -1813,19 +1665,12 @@ quadrantChart
 ## 九、参考资料
 
 | 来源 | 链接 | 内容 |
-
 | --- | --- | --- |
-
 | CSDN - RAG测评系统全链路搭建指南 | https://blog.csdn.net/m0_58868237/article/details/162827441 | 检索+生成指标详解与代码实现 |
-
 | CSDN - RAG评估指标理论篇 | https://blog.csdn.net/ngadminq/article/details/147857146 | 指标公式与定义 |
-
 | CSDN - RAG项目完整效果评估体系 | https://blog.csdn.net/2501_92990656/article/details/162809923 | 三层评估体系与 RAGAS 实战 |
-
 | CSDN - RAGAS 框架详解 | https://blog.csdn.net/u013538542/article/details/158312178 | RAGAS 指标原理与使用 |
-
 | 51CTO - LLM-as-Judge 实现 | https://www.51cto.com/article/816568.html | LLM 评估系统实践 |
-
 | RAGAS 官方文档 | https://docs.ragas.io/ | 官方指标定义与 API |
 
 ---
@@ -1915,23 +1760,14 @@ RAGAS 用 Judge 评，分层定位问题藏。
 ## 快速问答
 
 | 问题 | 参考答案 |
-
 | ------ | --------- |
-
 | RAG 评估的核心指标有哪些？ | Context Precision（检索精度）、Context Recall（检索召回）、Faithfulness（忠实度）、Answer Relevance（回答相关性）|
-
 | Faithfulness 和 Answer Relevance 的区别？ | Faithfulness 评估回答是否基于检索到的上下文（不编造）；Answer Relevance 评估回答是否切题（回答了问题） |
-
 | RAGAS 框架是什么？ | 开源的 RAG 评估框架，使用 LLM-as-Judge 方法，自动计算 Context Precision/Recall、Faithfulness、Answer Relevance |
-
 | 如何评估检索质量？ | Hit Rate、MRR、NDCG、MAP 等信息检索指标。需要标注相关文档作为 ground truth |
-
 | 什么是 LLM-as-Judge？ | 用强 LLM（如 GPT-4）作为评估器，根据定义的评分标准对 RAG 输出进行打分。灵活但成本高 |
-
 | 如何构建 RAG 评估数据集？ | 收集真实用户问题 → 标注参考答案 → 标注相关文档。建议至少 100-200 条，覆盖多种问题类型 |
-
 | Faithfulness 低怎么办？ | ① Prompt 强调只基于上下文 ② 降低 temperature ③ 增加上下文相关性 ④ 使用 Re-ranker ⑤ 添加兜底策略 |
-
 | 除了 RAGAS 还有哪些评估工具？ | DeepEval（开源）、LangSmith（LangChain 平台）、Phoenix（Arize AI）、TruLens（开源）|
 
 ## 相关链接

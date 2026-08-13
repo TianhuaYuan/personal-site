@@ -25,25 +25,17 @@ created: "2026-07-21"
 ### SA-ROC 三区框架
 
 | 区 | 风险 | 行为 |
-
 |---|------|------|
-
 | 🟢 Green | 低风险高置信 | 自动执行 |
-
 | 🟡 Gray | 中风险中置信 | 必须人审 |
-
 | 🔴 Red | 不可逆高代价 | 仅人操作 |
 
 ### 三种交互模式
 
 | 模式 | 什么时候用 | 代价 |
-
 |------|-----------|------|
-
 | 同步闸门 | 不可逆、代价高的动作（删库/转账） | 延迟最高；依赖 reviewer 在线 |
-
 | 异步升级 | 中风险、可并行的决策 | 拒绝后的恢复路径要预先设计 |
-
 | 并行反馈 | 低风险常规操作 + 异常触发 | 必须动作可回滚 |
 
 ### LangGraph HITL 三原语
@@ -270,13 +262,9 @@ HITL_REQUEST_EXAMPLE = {
 ### 2026 三大框架统一审批原语
 
 | 框架 | 审批 API | 默认姿态 |
-
 |------|---------|---------|
-
 | Microsoft Agent Framework | 工具审批中间件 | 技能提供方带来的工具**默认需审批** |
-
 | LangChain / LangGraph | HumanInTheLoopMiddleware（interrupt_on 映射） | 默认关，按工具开 |
-
 | OpenAI Agents SDK | needsApproval（本地工具）/ require_approval（MCP 服务器） | 按工具/MCP 逐个开 |
 
 ##

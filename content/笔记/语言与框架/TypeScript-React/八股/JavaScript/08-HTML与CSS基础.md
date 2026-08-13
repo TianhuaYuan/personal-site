@@ -57,13 +57,9 @@ React.createElement("div", { className: "box" },
 **JSX 和 HTML 的三个关键差异**（先记住，后面遇到不再解释）：
 
 | 写法 | HTML | JSX (React) |
-
 |:---|:---|:---|
-
 | 类名 | `class="box"` | `className="box"` |
-
 | 内联样式 | `style="color: red"` | `style={{ color: "red" }}` |
-
 | 自闭合标签 | `<img src="...">` | `<img src="..." />` |
 
 > **为什么 className 不是 class？** 因为 `class` 是 JS 的关键字（`class User {}`），React 为了避免冲突用了 `className`。没别的深意，就是个命名躲避。
@@ -123,13 +119,9 @@ React.createElement("div", { className: "box" },
 **div vs span 速记**：
 
 | | div | span |
-
 |:---|:---|:---|
-
 | 换行 | 独占一行（块级） | 不换行（行内） |
-
 | 宽度 | 撑满父容器 | 只包内容 |
-
 | 用途 | 布局分区 | 文字样式 |
 
 ```html
@@ -856,21 +848,13 @@ space-around:  ...[A]...[B]...[C]...
 ### 4.7 Flexbox 速查卡
 
 | 写在哪 | 属性 | 作用 | 常用值 |
-
 |:---|:---|:---|:---|
-
 | 容器 | `display: flex` | 开启 Flex | `flex` |
-
 | 容器 | `flex-direction` | 主轴方向 | `row`（默认）/ `column` |
-
 | 容器 | `justify-content` | 主轴对齐 | `center` / `space-between` |
-
 | 容器 | `align-items` | 交叉轴对齐 | `center` / `flex-start` |
-
 | 容器 | `gap` | 项目间距 | `16px` / `24px` |
-
 | 容器 | `flex-wrap` | 是否换行 | `wrap` / `nowrap` |
-
 | 项目 | `flex: 1` | 吃光剩余空间 | `1` / `2`（双份） |
 
 ---
@@ -1104,15 +1088,10 @@ space-around:  ...[A]...[B]...[C]...
 你在写 React + TS 时，CSS 有几种常见的存放方式（先知道，后面学）：
 
 | 方式 | 写法 | 特点 |
-
 |:---|:---|:---|
-
 | **全局 CSS 文件** | 一个 `index.css` 全项目用 | 简单但容易冲突 |
-
 | **CSS Modules** | `Card.module.css` 只影响导入它的组件 | 自动隔离，不会冲突 |
-
 | **Tailwind CSS** | `className="px-4 py-2 bg-blue-500"` | 用工具类拼样式，不写 CSS 文件 |
-
 | **CSS-in-JS** | `const Box = styled.div\`...\`` | 样式直接写在 TS 文件里 |
 
 > 你现在不需要选——这篇笔记教的是**CSS 属性的底层含义**。不管用哪种方案，你都要知道 `padding: 16px` 是什么意思。
@@ -1142,33 +1121,19 @@ const styles: React.CSSProperties = {
 ## 九、HTML/CSS 速查卡（一页纸）
 
 | 你要写什么 | HTML | CSS | React (JSX) |
-
 |:---|:---|:---|:---|
-
 | 容器 | `<div>` | `div { ... }` | `<div className="...">` |
-
 | 行内容器 | `<span>` | `span { ... }` | `<span>` |
-
 | 标题 | `<h1>`~`<h6>` | `h1 { font-size: 2em; }` | `<h1>` |
-
 | 段落 | `<p>` | `p { ... }` | `<p>` |
-
 | 链接 | `<a href="...">` | `a { color: blue; }` | `<a href="...">` |
-
 | 图片 | `<img src="..." />` | `img { max-width: 100%; }` | `<img src={url} />` |
-
 | 输入框 | `<input />` | `input { border: 1px solid; }` | `<input value={v} onChange={fn} />` |
-
 | 按钮 | `<button>` | `button { ... }` | `<button onClick={fn}>` |
-
 | 无序列表 | `<ul><li>` | `ul { list-style: none; }` | `{items.map(i => <li key={i.id}>)}` |
-
 | 样式 | `style="color: red"` | `.class { color: red; }` | `className="class"` / `style={{ color: "red" }}` |
-
 | 水平居中 | — | `text-align: center` 或 `margin: 0 auto` | Flex: `justify-content: center` |
-
 | 垂直居中 | — | `align-items: center` | Flex: `align-items: center` |
-
 | 间距 | — | `margin` / `padding` | `gap` / `margin` / `padding` |
 
 ---

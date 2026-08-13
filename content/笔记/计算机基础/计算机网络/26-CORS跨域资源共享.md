@@ -49,13 +49,9 @@ graph TD
 ### 简单请求——同时满足三个条件（缺一不可）
 
 | 条件 | 说明 |
-
 | :--- | :--- |
-
 | ① 方法 | GET、POST、HEAD（三者之一） |
-
 | ② 头部 | 只能用"安全列表"内的请求头：Accept、Accept-Language、Content-Language、Content-Type<br/>不能加自定义头（如 Authorization、X-Token 等） |
-
 | ③ Content-Type | 只能是这三种：`application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain` |
 
 > 注意：`application/json` 不是安全列表里的 Content-Type！只要 Content-Type 是 `application/json` → 非简单请求！
@@ -63,13 +59,9 @@ graph TD
 ### 非简单请求——以下任何一条满足都是
 
 | 条件 | 说明 |
-
 | :--- | :--- |
-
 | ① 方法 | PUT、DELETE、PATCH、OPTIONS |
-
 | ② 头部 | 带了自定义请求头（Authorization、X-Custom-Header、Content-Type 之外的头） |
-
 | ③ Content-Type | `application/json`（你项目里 99% 的接口都是这个！） |
 
 这就是为什么你的项目一定会触发 OPTIONS 预检——因为你用 axios 发 POST，Content-Type 默认就是 `application/json`。
@@ -217,19 +209,12 @@ graph TD
 ### 2.4 六个关键 CORS 响应头——缺一报错
 
 | Header | 干什么？ | 缺了会怎样？ |
-
 | :--- | :--- | :--- |
-
 | ① Access-Control-Allow-Origin<br/>例: http://localhost:3000 | 告诉浏览器"这些来源可以读我"<br/>可以是具体域名，不能用 * + 凭证同用 | 最常见的 CORS 报错原因 |
-
 | ② Access-Control-Allow-Methods<br/>例: GET, POST, PUT, DELETE | 告诉浏览器"这些方法我允许"<br/>非简单请求必须包含你要用的方法 | 预检返回的方法不在列表里→拦截 |
-
 | ③ Access-Control-Allow-Headers<br/>例: Content-Type, Authorization | 告诉浏览器"这些请求头我允许"<br/>非简单请求必须包含你要用的头 | 你带了 Authorization 但没列在这→拦截 |
-
 | ④ Access-Control-Allow-Credentials<br/>例: true | 告诉浏览器"允许携带 Cookie/凭证"<br/>必须和前端 withCredentials 配对 | 设为 true 才能真正跨域传 Cookie |
-
 | ⑤ Access-Control-Max-Age<br/>例: 86400（24小时） | 预检结果缓存多久（秒）<br/>建议设 86400，浏览器有上限（Chrome 2h） | 每次请求都预检，多一次往返 |
-
 | ⑥ Access-Control-Expose-Headers<br/>例: X-Total-Count | 告诉浏览器"这些响应头 JS 可以读"<br/>你的自定义响应头 JS 读不到→加在这 | JS 默认只能读 safe-listed 响应头 |
 
 ### 特别注意——两个经典翻车场景

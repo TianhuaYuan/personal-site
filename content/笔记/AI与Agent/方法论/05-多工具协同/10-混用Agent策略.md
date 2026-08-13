@@ -86,29 +86,19 @@ graph TD
 ### 3.1 按任务类型
 
 | 任务类型 | 分配 | 原因 |
-
 |----------|------|------|
-
 | 多文件重构 | Claude Code | Loop Engineering 最强 |
-
 | 批量任务 | Codex | 云端并行最快 |
-
 | 中文场景 | OpenCode | 模型可换、中文友好 |
-
 | 日常开发 | Cursor + Claude Code | IDE 集成 + 全闭环 |
 
 ### 3.2 按阶段 / 角色
 
 | 阶段 | 分配 |
-
 |------|------|
-
 | 设计 | Claude Code（全局理解强） |
-
 | 实现 | Cursor + Claude Code（实时补全 + 闭环） |
-
 | 测试 | Codex（批量执行快） |
-
 | 部署 | Claude Code（全流程管理） |
 
 ---

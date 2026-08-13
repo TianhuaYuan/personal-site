@@ -121,11 +121,8 @@ flowchart TD
 
 
 | 阶段 | 执行顺序 |
-
 | :--- | :--- |
-
 | 请求 | B 前 → A 前 → 路由 |
-
 | 响应 | 路由 → A 后 → B 后 |
 
 
@@ -143,17 +140,11 @@ FastAPI 继承自 Starlette，直接 `app.add_middleware(...)` 即可：
 
 
 | 中间件 | 作用 |
-
 | :--- | :--- |
-
 | `CORSMiddleware` | 跨域（见 [[08-CORS跨域配置]]） |
-
 | `GZipMiddleware` | 响应压缩，省带宽 |
-
 | `HTTPSRedirectMiddleware` | 强制 HTTP→HTTPS |
-
 | `TrustedHostMiddleware` | 限制允许访问的 Host |
-
 | `SessionMiddleware` | 基于 cookie 的会话 |
 
 
@@ -173,15 +164,10 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 
 | 场景 | 用中间件 | 用 Depends |
-
 | :--- | :--- | :--- |
-
 | 全局统一逻辑（日志/计时/CORS） | ✅ 每个请求都过 | ❌ |
-
 | 特定路由需要的资源（db/当前用户） | ❌ | ✅ 精准注入 |
-
 | 需要访问路由函数返回值做包装 | ✅ 后处理改响应 | ⚠️ 较绕 |
-
 | 需要请求级缓存/复用 | 中 | ✅ `use_cache` |
 
 

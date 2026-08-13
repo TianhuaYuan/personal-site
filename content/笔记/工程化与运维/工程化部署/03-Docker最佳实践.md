@@ -171,15 +171,10 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 ### 2.3 参数说明
 
 | 参数 | 说明 | 默认值 |
-
 |------|------|--------|
-
 | interval | 检查间隔 | 30s |
-
 | timeout | 超时时间 | 3s |
-
 | start-period | 启动等待时间 | 0s |
-
 | retries | 重试次数 | 3 |
 
 ### 2.4 健康检查脚本

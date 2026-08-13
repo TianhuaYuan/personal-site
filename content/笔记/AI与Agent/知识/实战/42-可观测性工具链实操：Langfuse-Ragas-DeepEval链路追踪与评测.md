@@ -61,13 +61,9 @@ flowchart TD
 ### 三层分别需要什么工具
 
 | 层次 | 需要追踪什么 | 用什么工具 | 谁来看 |
-
 |:----|:----------|:---------|:------|
-
 | **基础设施层** | CPU / 内存 / 请求量 / 错误率 | Prometheus + Grafana | DevOps |
-
 | **LLM 调用层** | Token 用量 / 延迟 / Prompt/Response 内容 | Langfuse | 开发者 + PM |
-
 | **质量评测层** | Faithfulness / Relevance / 幻觉率 | Ragas + DeepEval | 开发者 + QA |
 
 ---
@@ -722,19 +718,12 @@ flowchart TD
 ### 工具选型速查
 
 | 我想要... | 用什么 | 怎么接 |
-
 |:---------|:------|:------|
-
 | 看每次请求的执行链路 | Langfuse | FastAPI 中间件 + `@observe` 装饰器 |
-
 | 看 Token 用量和成本 | Langfuse | `@observe(as_type="generation")` |
-
 | CI 里自动跑 LLM 质量评测 | DeepEval | Pytest 文件 + GitHub Actions |
-
 | 离线批量评测 RAG 质量 | Ragas | 定时脚本 + 从 Langfuse 拉数据 |
-
 | 评测分数统一存储 | Langfuse | `langfuse.score()` API |
-
 | 版本对比（改了 Prompt 后质量变化） | Langfuse | Experiments 功能 |
 
 ## 速记卡（面试闪卡）

@@ -209,15 +209,10 @@ async def stream(last_event_id: Annotated[int | None, Header()] = None):
 
 
 | 维度 | SSE（StreamingResponse） | WebSocket |
-
 | :--- | :--- | :--- |
-
 | 方向 | 服务器→客户端（单向） | 双向全双工 |
-
 | 协议 | 普通 HTTP（长连接） | 独立 WS 协议（握手升级） |
-
 | 客户端 API | 浏览器原生 `EventSource` | 需 `WebSocket` 对象 |
-
 | 适用 | 日志流、LLM 逐字、通知推送 | 聊天、实时游戏、协同编辑 |
 
 

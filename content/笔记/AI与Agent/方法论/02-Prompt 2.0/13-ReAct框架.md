@@ -120,19 +120,12 @@ flowchart TD
 ## 核心要点
 
 | 要点 | 速记 |
-
 |------|------|
-
 | 核心 | Reasoning + Acting 交替循环 |
-
 | 类比 | 边走边看地图导航 |
-
 | 流程 | Thought → Action → Observation → … |
-
 | 适合 | 路径不确定（搜索/客服/问答） |
-
 | 不适合 | 步骤固定、成本敏感 |
-
 | 一手依据 | ReAct 论文 (arXiv:2210.03629) |
 
 **下一篇**：[[14-Plan-and-Execute框架|Plan-and-Execute 框架]]——路径能预先规划时，换一种打法。

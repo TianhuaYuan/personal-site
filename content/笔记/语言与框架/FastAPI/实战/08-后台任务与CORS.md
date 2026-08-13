@@ -173,15 +173,10 @@ http://localhost:3000
 两个 URL，只要**任何一个**不同，就是"跨域"：
 
 | 前端 | 后端 | 跨域？ | 原因 |
-
 |------|------|--------|------|
-
 | `http://localhost:3000` | `http://localhost:8000` | ✅ | 端口不同 |
-
 | `http://localhost:3000` | `https://localhost:3000` | ✅ | 协议不同 |
-
 | `http://localhost:3000` | `http://api.example.com` | ✅ | 域名不同 |
-
 | `http://localhost:3000` | `http://localhost:3000` | ❌ | 完全相同 |
 
 **为什么会拦截？** 这是浏览器的**同源策略**——JavaScript 只能请求和当前页面同源的地址，防止恶意网站偷你的数据。
@@ -433,15 +428,10 @@ def process_data_in_background(user_id: int):
 ## 速查表
 
 | 概念 | 一句话解释 | 关键代码 |
-
 |------|---------|---------|
-
 | `BackgroundTasks` | 响应返回后再执行的任务 | `background_tasks.add_task(func, arg)` |
-
 | `CORSMiddleware` | 允许跨域请求 | `app.add_middleware(CORSMiddleware, ...)` |
-
 | `allow_origins` | 允许哪些前端域名访问 | `["https://yourdomain.com"]` |
-
 | `allow_credentials` | 允许前端携带 Cookie | `True` / `False` |
 
 ---

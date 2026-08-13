@@ -198,17 +198,11 @@ tool_definition = {
 ```
 
 | 要素 | LLM 用它做什么 | 写烂了的后果 |
-
 |------|---------------|-------------|
-
 | `name` | 指定"我要调哪个工具" | 名字太像另一个工具 → 选错 |
-
 | `description` | 判断"什么时候该调" | 该调不调，不该调乱调 |
-
 | `parameters.properties` | 知道"要传什么参数" | 参数名写错 → LLM 瞎编 |
-
 | `parameters.enum` | 限制参数取值范围 | `unit: "摄氏度"` |
-
 | `required` | 知道"哪些参数必须传" | 漏传必填参数 → 报错 |
 
 ### 手动实现一次 Function Calling
@@ -396,17 +390,11 @@ if __name__ == "__main__":
 ### Function Calling 运行时变量速查
 
 | 变量 | 类型 | 实际值 |
-
 |------|------|--------|
-
 | `msg.tool_calls` | `list` | `[{id, type, function}]` |
-
 | `tc.function.name` | `str` | `"get_weather"` |
-
 | `tc.function.arguments` | **`str`** | `"{\"city\":\"北京\"}"` ⚠️ 是字符串不是 dict |
-
 | `args = json.loads(...)` | `dict` | `{"city": "北京"}` |
-
 | `func(**args)` | — | `func(city="北京")` |
 
 > [!warning] **最容易搞混的一个**：`tc.function.arguments` 是**字符串**，必须 `json.loads()` 解析后才能当 dict 用。
@@ -533,17 +521,11 @@ while not done:
 ### 为什么 ReAct 比"一步到位"强
 
 | | 一步到位（纯 LLM） | ReAct Agent |
-
 |------|------|------|
-
 | 数学计算 | 靠"记忆"算，大数容易错 | 调 calculator，精确 |
-
 | 实时信息 | 训练数据截止后的全瞎猜 | 调搜索/天气 API |
-
 | 复杂多步任务 | "一口气"回答，中间步骤不可见 | 每步可观察、可纠错 |
-
 | 出错时 | 不知道哪一步错了 | 从 Observation 能看到哪步出问题 |
-
 | Token 消耗 | 1 次调用 | N 次调用（每次带全量上下文） |
 
 **代价也很明显**：Agent 的 Token 消耗是普通对话的 ~4 倍（Anthropic 2026 数据）。

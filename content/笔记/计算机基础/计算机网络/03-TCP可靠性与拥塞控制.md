@@ -125,15 +125,10 @@ flowchart LR
 
 
 | 算法 | 触发时机 | cwnd 变化 | 白话 |
-
 | :--- | :--- | :--- | :--- |
-
 | **慢启动 Slow Start** | 连接刚建立 / 超时重传后 | 每收 1 ACK +1 MSS，**指数增长** | 先小口试探，快速探带宽 |
-
 | **拥塞避免 Congestion Avoidance** | cwnd ≥ ssthresh（慢启动阈值） | 每 RTT +1 MSS，**线性增长** | 接近容量了，悠着点 |
-
 | **快重传 Fast Retransmit** | 收到 **3 个重复 ACK**（DupACK） | 不等超时，**立即重传**丢的包 | 只丢一个？赶紧补，别等 |
-
 | **快恢复 Fast Recovery** | 快重传之后（Reno 新增） | cwnd = ssthresh + 3，之后线性恢复 | 网络没那么糟，别回解放前 |
 
 
@@ -179,15 +174,10 @@ sequenceDiagram
 
 
 | 维度 | 流量控制 Flow Control | 拥塞控制 Congestion Control |
-
 | :--- | :--- | :--- |
-
 | 保护对象 | 接收方（别撑爆它的缓冲区） | 网络（别压垮路由器/链路） |
-
 | 控制依据 | 接收窗口 rwnd（接收方给） | 拥塞窗口 cwnd（发送方自己估） |
-
 | 机制 | 滑动窗口 + 窗口字段 | 慢启动 / 拥塞避免 / 快重传 / 快恢复 |
-
 | 关系 | 发送窗口 = min(cwnd, rwnd) | 两者共同限制发送速率 |
 
 

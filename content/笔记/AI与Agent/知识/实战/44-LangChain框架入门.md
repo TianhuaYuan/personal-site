@@ -136,17 +136,11 @@ result = chain.invoke({"resume_text": resume_text})
 ```
 
 | | 昨天手写 | 今天 LangChain |
-
 |------|----------|----------------|
-
 | 拼 Prompt | `"提取技能：\n" + resume_text` | `{resume_text}` 占位符 |
-
 | 调模型 | `client.chat.completions.create()` | `model` 组件，统一 `.invoke()` |
-
 | 拆响应 | `.choices[0].message.content` | `parser` 自动处理 |
-
 | 换模型 | 改 `api_key` + `base_url` | 只改 `model` 参数 |
-
 | 加流式 | 手写 for 循环 | 链式 `.stream()` 一行搞定 |
 
 ### LangChain 帮不了你的
@@ -241,17 +235,11 @@ pip install -U langchain-core langchain langchain-openai python-dotenv
 ```
 
 | 包 | 干什么 | 今天用吗 |
-
 |------|------|:---:|
-
 | `langchain-core` | Prompt 模板、LCEL 管道、Output Parser | ✅ |
-
 | `langchain` | 高层工具 | 🟡 |
-
 | `langchain-openai` | `ChatOpenAI` 统一接口 | ✅ |
-
 | `langchain-community` | 向量库、文档加载器（后续才用） | ❌ |
-
 | `langgraph` | 复杂 Agent（后续才用） | ❌ |
 
 > [!note] `langchain-core` 是"积木块"，`langchain-openai` 是"发动机"，`langgraph` 是"交通调度系统"。

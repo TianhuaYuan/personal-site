@@ -27,19 +27,12 @@ tags:
 ## 🔁 前置复习
 
 | 前几天学的 | 今天怎么用 |
-
 |-----------|-----------|
-
 | `CREATE TABLE` + 数据类型 / 约束 | SQLAlchemy 用 Python 类定义表结构，自动生成 `CREATE TABLE` |
-
 | `INSERT INTO ... VALUES` | `session.add(对象)` → ORM 帮你生成 INSERT |
-
 | `SELECT ... WHERE` | `session.query().filter()` → ORM 帮你生成 SELECT + WHERE |
-
 | `UPDATE ... SET ... WHERE` | 先查出来改属性，`session.commit()` → ORM 帮你生成 UPDATE |
-
 | `DELETE FROM ... WHERE` | `session.delete(对象)` → ORM 帮你生成 DELETE |
-
 | `JOIN / GROUP BY` | `session.query().join()` → ORM 也能做关联查询 |
 
 ---
@@ -128,13 +121,9 @@ print(user.username)  # zhangsan — 属性名即列名，不会搞混
 ### 1.3 为什么选 SQLAlchemy？
 
 | 框架 | 特点 | 适合场景 |
-
 |------|------|---------|
-
 | **SQLAlchemy** | 功能最全，生态最广，FastAPI 官方推荐 | 正式项目、复杂查询 |
-
 | Django ORM | 和 Django 深度绑定，简单好用 | Django 项目 |
-
 | Tortoise ORM | 异步原生，轻量 | 异步项目（但不成熟） |
 
 > **选 SQLAlchemy，因为 FastAPI 官方教程就用它，社区资源最多。**
@@ -151,15 +140,10 @@ pip install fastapi uvicorn sqlalchemy pymysql
 ```
 
 | 包 | 作用 | 一句话理解 |
-
 |----|------|-----------|
-
 | `fastapi` | Web 框架，写 API 接口 | 你的"厨房"，处理点单和做菜 |
-
 | `uvicorn` | ASGI 服务器，运行 FastAPI | 你的"服务员"，把顾客请求端进厨房 |
-
 | `sqlalchemy` | ORM，Python 对象 ↔ 数据库表 | 你的"翻译器" |
-
 | `pymysql` | Python 连 MySQL 的驱动 | 你的"通往仓库的路" |
 
 ### 2.2 项目结构
@@ -377,19 +361,12 @@ class User(Base):
 ### 4.3 字段映射对照表
 
 | MySQL 写法 | SQLAlchemy 写法 | 说明 |
-
 |-----------|----------------|------|
-
 | `INT PRIMARY KEY AUTO_INCREMENT` | `Column(Integer, primary_key=True, autoincrement=True)` | 主键自增 |
-
 | `VARCHAR(50) NOT NULL` | `Column(String(50), nullable=False)` | 非空字符串 |
-
 | `VARCHAR(100) UNIQUE` | `Column(String(100), unique=True)` | 唯一约束 |
-
 | `FLOAT DEFAULT 0` | `Column(Float, default=0)` | 默认值 |
-
 | `DATETIME DEFAULT NOW()` | `Column(DateTime, server_default=func.now())` | 数据库层默认值 |
-
 | `COMMENT '备注'` | `Column(..., comment="备注")` | 列注释 |
 
 > [!WARNING] `default` vs `server_default`——新手必踩的坑
@@ -473,13 +450,9 @@ class Order(Base):
 ### 4.5 `ForeignKey` 和 `relationship` 的区别
 
 | | `ForeignKey` | `relationship` |
-
 |---|---|---|
-
 | **是什么** | 数据库层的约束 | Python 层的便捷属性 |
-
 | **存不存在于数据库** | ✅ 生成 `FOREIGN KEY` 约束 | ❌ 数据库里没有这一列 |
-
 | **作用** | 保证数据引用合法 | 让你用 `order.user` 直接拿到用户对象 |
 
 ```python
@@ -552,31 +525,20 @@ def get_db() -> Generator[Session, None, None]:
 ```
 
 | 参数 | 含义 | 一句话理解 |
-
 |------|------|-----------|
-
 | `autocommit=False` | 不自动提交，必须手动 `db.commit()` | 别替我做主，我自己按发送 |
-
 | `autoflush=False` | 不自动把内存中的改动刷到数据库 | 别替我发半成品 |
-
 | `bind=engine` | 绑定到哪个引擎 | 告诉话筒连哪个总机 |
 
 ### 5.3 Session 的核心操作一览
 
 | 操作 | SQL 等价 | ORM 写法 |
-
 |------|---------|---------|
-
 | 插入一行 | `INSERT INTO ...` | `db.add(对象)` + `db.commit()` |
-
 | 查所有行 | `SELECT * FROM ...` | `db.query(Model).all()` |
-
 | 按条件查 | `SELECT * WHERE ...` | `db.query(Model).filter(条件).all()` |
-
 | 查一行 | `SELECT * WHERE id=X LIMIT 1` | `db.query(Model).filter(Model.id == X).first()` |
-
 | 改一行 | `UPDATE ... SET ... WHERE ...` | 改对象属性 + `db.commit()` |
-
 | 删一行 | `DELETE FROM ... WHERE ...` | `db.delete(对象)` + `db.commit()` |
 
 ### 5.4 增删改查速览（纯 ORM）
@@ -693,13 +655,9 @@ class UserResponse(BaseModel):
 为什么分三个模型？
 
 | 模型 | 用途 | 为什么不能合并？ |
-
 |------|------|---------------|
-
 | `UserCreate` | 创建时校验——必填字段必须有 | 创建时需要 username，但创建时没有 id |
-
 | `UserUpdate` | 更新时校验——传什么改什么 | 更新时所有字段选填，创建时必填 |
-
 | `UserResponse` | 返回时格式——该暴露的暴露 | 返回时多了 id，且不包含密码等敏感信息 |
 
 ### 6.2 完整 CRUD 接口——逐行注释版
@@ -1043,55 +1001,34 @@ sqlalchemy.exc.IntegrityError: (pymysql.err.IntegrityError) (1062, "Duplicate en
 ### SQLAlchemy ORM 核心写法
 
 | 操作 | 写法 | SQL 等价 |
-
 |------|------|---------|
-
 | 查所有 | `db.query(Model).all()` | `SELECT * FROM table` |
-
 | 按条件查 | `db.query(Model).filter(Model.col == val).all()` | `SELECT * WHERE col = val` |
-
 | 查一个 | `db.query(Model).filter(...).first()` | `SELECT * WHERE ... LIMIT 1` |
-
 | 按主键查 | `db.get(Model, id)` | `SELECT * WHERE id = X` |
-
 | 插入 | `db.add(对象); db.commit()` | `INSERT INTO ...` |
-
 | 更新 | `对象.属性 = 新值; db.commit()` | `UPDATE SET ... WHERE id=X` |
-
 | 删除 | `db.delete(对象); db.commit()` | `DELETE FROM ... WHERE id=X` |
-
 | 刷新 | `db.refresh(对象)` | 重新 SELECT 拿最新数据 |
-
 | 回滚 | `db.rollback()` | 撤销未 commit 的改动 |
 
 ### FastAPI 路由模板
 
 | 操作 | 装饰器 | 状态码 |
-
 |------|--------|--------|
-
 | 查所有 | `@app.get("/items")` | 200 |
-
 | 查一个 | `@app.get("/items/{id}")` | 200 |
-
 | 创建 | `@app.post("/items")` | 201 |
-
 | 更新 | `@app.put("/items/{id}")` | 200 |
-
 | 删除 | `@app.delete("/items/{id}")` | 200 |
 
 ### CRUD 对应 HTTP 方法
 
 | HTTP 方法 | 语义 | 幂等？ | SQL 对应 |
-
 |----------|------|--------|---------|
-
 | GET | 读取 | ✅ 幂等 | SELECT |
-
 | POST | 创建 | ❌ 非幂等 | INSERT |
-
 | PUT | 全量更新 | ✅ 幂等 | UPDATE |
-
 | DELETE | 删除 | ✅ 幂等 | DELETE |
 
 ---

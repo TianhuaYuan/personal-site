@@ -70,13 +70,9 @@ graph TD
 ```
 
 | 角色 | 说明 | 示例 |
-
 | ------ | ------ | ------ |
-
 | Host | 宿主应用，管理 MCP Client | Claude Desktop, Cursor IDE |
-
 | Client | 与 MCP Server 保持 1:1 连接 | Host 内部组件 |
-
 | Server | 提供工具、资源和提示 | GitHub MCP Server, 文件系统 MCP Server |
 
 ## MCP 三大核心能力
@@ -121,15 +117,10 @@ graph TD
 提供对数据源的**只读访问**，类似 GET 请求。
 
 | 维度 | Resources | Tools |
-
 | ------ | ----------- | ------- |
-
 | 操作 | 只读 | 读写都可 |
-
 | 类比 | REST GET | REST POST/PUT/DELETE |
-
 | 触发方式 | 应用/用户选择 | LLM 决定调用 |
-
 | 安全级别 | 低风险 | 需要更多控制 |
 
 ### 3. Prompts 提示模板
@@ -139,21 +130,13 @@ MCP Server 可以提供预定义的提示模板，帮助 LLM 更好地使用其�
 ## MCP vs Function Calling
 
 | 维度 | Function Calling | MCP |
-
 | ------ | ----------------- | ----- |
-
 | 标准化 | 各厂商 API 不同 | 统一开放协议 |
-
 | 发现机制 | 静态定义 | 动态发现（运行时获取工具列表） |
-
 | 传输方式 | HTTP API | stdio / HTTP + SSE |
-
 | 资源管理 | 无 | 内置 Resources |
-
 | 提示管理 | 无 | 内置 Prompts |
-
 | 生态 | 各自为政 | 统一生态 |
-
 | 安全模型 | 各自实现 | 协议级规范 |
 
 ## 实际 MCP 示例
@@ -232,13 +215,9 @@ MCP 的解法：**在中间插一层标准协议**。工具团队把能力封成
 **三个核心角色（必背）**：
 
 | 角色 | 是什么 | 例子 |
-
 |-|-|-|
-
 | **MCP Host（宿主）** | 运行 AI 模型的环境，用户直接面对的应用 | Claude Desktop、Cursor、VS Code AI 插件、ChatGPT 桌面端，或**你自己用 LangGraph 搭的 Agent 平台** |
-
 | **MCP Client（客户端）** | 嵌在 Host 内部、负责和 Server 通信的那一层 | 通常**每个 Server 对应一个 Client 会话**；你看不到它，一般也不用自己写 |
-
 | **MCP Server（服务端）** | 轻量服务，按 MCP 标准把能力（工具 / 资源 / 提示词）暴露出去 | 开发者最常接触的就是它 |
 
 > 注意：Host **不是直接「裸连」所有工具**。它先通过 Client 连到 Server，Server 再去碰真实数据源（文件、数据库、第三方 API）。这一层抽象让边界变清楚：AI 应用只认 MCP，底层怎么查库怎么调 API 由 Server 自己处理。
@@ -276,29 +255,17 @@ graph TD
 它们解决的是**不同层**的问题：
 
 | 维度 | Function Calling | MCP |
-
 |-|-|-|
-
 | 本质 | 结构化的工具调用**输出格式** | 工具 / 数据源接入模型的**协议标准** |
-
 | 解决问题 | 模型怎么表达「我要调工具」 | 工具怎么以统一方式**暴露**给模型 |
-
 | 定位层级 | 模型输出层 / 交互层 | 平台层 / 工具治理层 |
-
 | 作用范围 | 单个 AI 应用**内部** | 跨 AI 应用、跨语言、跨团队 |
-
 | 工具复用 | 同一工具代码无法跨应用复用 | 工具一次开发，所有 MCP Host 都能用 |
-
 | 部署方式 | 工具逻辑与 AI 应用**耦合**部署 | 工具作为独立 MCP Server **独立**部署维护 |
-
 | 实现语言 | 通常与宿主应用同语言 | 任意语言均可实现 Server（Python/TS/Go…） |
-
 | 工具发现 | 通常**写死**在代码里 | 支持**运行时动态发现**（tools/list） |
-
 | 权限 / 认证 | 由应用自己实现 | 协议层支持更规范的模式（OAuth 2.1 / JWT） |
-
 | 跨设备调用 | 限于本地环境 | 支持远程 / 云工具调用 |
-
 | 生态依赖 | 深度绑定具体 LLM 平台（如 OpenAI） | 模型无关，工具方可跨平台复用 |
 
 ### 3.2 最直观的理解：通话方式 vs 标准插槽
@@ -322,15 +289,10 @@ graph TD
 ### 3.3 什么时候该用哪个（选型指南）
 
 | 场景 | 推荐 | 原因 |
-
 |-|-|-|
-
 | 快速验证单一模型能力 | Function Calling | 开发简单，无额外协议开销 |
-
 | 企业级多工具集成 | MCP | 避免供应商锁定，支持未来换模型 |
-
 | 严格权限控制的金融场景 | MCP + Function Calling | MCP 协议层做审计，Function Calling 做解析 |
-
 | 跨平台智能硬件控制 | 纯 MCP | 设备-模型-云标准化通信 |
 
 ```mermaid
@@ -361,13 +323,9 @@ graph LR
 MCP Server 向 Host 暴露三类标准能力（常考，配生活类比记忆）：
 
 | 能力 | 是什么 | 触发方 | 生活类比 | 例子 |
-
 |-|-|-|-|-|
-
 | **Tools（工具）** | 可调用函数，LLM 主动触发的**动作** | LLM 按用户意图自主决定 | **手**：去切菜、拌料、下单 | executeSQL、sendEmail、callRestAPI |
-
 | **Resources（资源）** | 只读内容，供 LLM **获取上下文** | LLM 或 Host 按需读取 | **眼 / 食材**：冰箱里有什么 | 数据库 Schema、配置文件、日志片段 |
-
 | **Prompts（提示词）** | 可参数化的**提示词模板**，供 Host 复用 | Host 在特定场景调用 | **词典 / 家训**：少放辣 | 代码 Review 模板、SQL 优化提示 |
 
 要点：
@@ -397,13 +355,9 @@ MCP Server 向 Host 暴露三类标准能力（常考，配生活类比记忆）
 MCP 底层通信是 **JSON-RPC 2.0**（见 4.4），但它不绑定某种传输方式。三种传输：
 
 | 传输方式 | 适用场景 | 说明 |
-
 |-|-|-|
-
 | **stdio（标准输入输出）** | 本地 IDE / 个人使用 | Client 把 Server 当本地子进程启动，通过 stdin/stdout 通信，延迟低，不支持远程 |
-
 | **Streamable HTTP** | 生产环境（**推荐**） | 2025-03-26 新规范，单一 `/mcp` 端点，支持 POST/GET 与 SSE 流式，可无状态部署在负载均衡后 |
-
 | **SSE（Server-Sent Events）** | 兼容旧系统 | 早期 HTTP+SSE 两端点架构，已被 Streamable HTTP 取代，仍广泛兼容 |
 
 > 选型口诀：**本地工具 / 文件 / 个人用 → stdio；团队服务 / 远程 API / 多用户 → Streamable HTTP**。涉及写操作和敏感数据，不管哪种传输都要额外做鉴权、限流、审计。
@@ -485,23 +439,14 @@ FastMCP / 规范支持给工具打**注解（annotations）**：`readOnlyHint`�
 MCP 从 2024-11 开源到 2026 成为基础设施，是软件史上最快的协议采用之一：
 
 | 时间 | 版本 / 事件 | 影响 |
-
 |-|-|-|
-
 | 2024-11-25 | Anthropic 开源 MCP，首发 stdio 传输 + Python/TS SDK + 5 个参考 Server | 本地工具集成基础 |
-
 | 2025-02 \~ 03 | Zed / Replit / Codeium 支持；**OpenAI 宣布支持**（Agents SDK + ChatGPT 桌面端） | 成为事实标准（双巨头背书） |
-
 | 2025-03-26 | 引入 **Streamable HTTP**，取代旧 HTTP+SSE 两端点 | 远程生产部署标准化 |
-
 | 2025-06-18 | 加入 **Elicitation**、Resource Indicators（RFC 8707，修复 token 跨服务泄露） | 企业级安全 + 人机闭环 |
-
 | 2025-11-25 | v2025-11-25：OpenID Connect 发现、增量授权（最小权限）、URL Mode Elicitation、实验性 Tasks、双向 Sampling | 从单向调用走向协调层（**当前稳定版**） |
-
 | 2025-12 | Anthropic 将 MCP 捐给 **Linux Foundation / Agentic AI Foundation**（与 OpenAI、Google、Microsoft 等共建） | 治理中立化 |
-
 | 2026 Q1 | 社区注册表索引 **18,000+ MCP Server**；SDK 月下载量达数千万（Python + TS） | 生态规模化 |
-
 | **2026-07-28（RC）** | **无状态核心**：移除 initialize 握手与 Mcp-Session-Id；新增 Mcp-Method/Mcp-Name 路由头、ttlMs/cacheScope 缓存、W3C Trace Context；Roots/Sampling/Logging 弃用；MCP Apps + Tasks 升级为扩展；授权对齐 OAuth 2.1/OIDC | **破坏性变更，7/28 定稿**，详见下节 |
 
 > 一句话：MCP 还在快速演进，**落地前先确认你用的客户端和 SDK 版本支持的规范口径**（2025-06-18 之后新增的 Elicitation 等，旧教程不一定覆盖；2026-07-28 的破坏性改动更要注意）。
@@ -533,17 +478,11 @@ MCP 从 2024-11 开源到 2026 成为基础设施，是软件史上最快的协�
 2025-04 Google 发布 **A2A（Agent-to-Agent，智能体间协议）。它和 MCP 竞争吗？不** —— 它们在不同层，是互补的双层方案：
 
 | 维度 | MCP | A2A |
-
 |-|-|-|
-
 | 核心关注 | 工具 / 资源**访问**（纵向） | 智能体**间协作**（横向） |
-
 | 通信方向 | 纵向：Agent → 资源 | 横向：Agent ↔ Agent |
-
 | 状态模型 | 基本无状态（请求-响应） | 有状态任务生命周期（submitted→working→completed） |
-
 | 服务发现 | `mcp://` Server URL | Agent Card（`/.well-known/agent.json`） |
-
 | 起源 | Anthropic（2024-11） | Google（2025-04） |
 
 > 一句话区分：**MCP 取数据，A2A 派任务**。简单查数据库用 MCP；需要另一个有独立推理能力的 Agent 处理复杂任务，用 A2A。实战里常组合：编排 Agent 用 A2A 收到委派任务，内部再用 MCP 去查数据库、调 API。A2A 官方原话：「MCP provides helpful tools and context to agents; A2A provides agent-to-agent communication.」
@@ -683,13 +622,9 @@ MCP 从 2024-11 开源到 2026 成为基础设施，是软件史上最快的协�
 MCP 规范对三者"谁说了算"有明确定位，这是理解它们的核心：
 
 | 原语 | 谁控制（who controls） | 本质 | 有无副作用 | 类比 |
-
 |-|-|-|-|-|
-
 | **Tool** | **模型控制**（Model-controlled） | 执行动作 / 函数 | 可能有（改世界） | 菜谱步骤 / `POST` |
-
 | **Resource** | **应用控制**（Application-controlled） | 读取数据 / 上下文 | 无（只读） | 食材 / `GET` |
-
 | **Prompt** | **用户控制**（User-controlled） | 预设指令模板 | 无 | 话术卡片 |
 
 > 规范原文强调：Tool 是**模型自动发现并调用**的；Resource 由**应用**（Host）决定何时注入上下文；Prompt 由**用户**主动选。这个"控制权"区别决定了你该把能力注册成哪种。（来源：MCP 官方规范 Tools/Resources/Prompts 章节）
@@ -857,15 +792,10 @@ def read_file(path: str) -> str:
 这是 Tool 专属、也最容易被忽略的字段。四个 hint（提示）描述工具行为，主机（Host）据此决定"要不要弹确认框 / 能不能自动重试"：
 
 | 注解字段 | 含义 | 主机可能的行为 |
-
 |-|-|-|
-
 | `readOnlyHint: true` | 只读，不改世界 | 可自动执行，无需确认 |
-
 | `destructiveHint: true` | 破坏性、不可撤销 | **要求用户明确确认** |
-
 | `idempotentHint: true` | 幂等，重复执行安全 | 可安全重试（呼应第 ⑥⑦⑪ 篇） |
-
 | `openWorldHint: true` | 影响外部开放系统 | 谨慎执行 |
 
 > 🔴 **重要安全提醒（规范原文）：客户端 MUST 把 annotations 当不可信**，除非来自可信 Server。即"工具自己说自己只读"不等于真只读——主机仍要按第 ⑦ 篇的"三道闸门"做确认与权限控制。这是常见坑：annotations 是"建议"，不是"保证"。
@@ -939,13 +869,9 @@ mcp.add_tool(search_fn)         # 运行时把函数注册成 Tool
 ### 5.4 三种模式对比
 
 | 模式 | 上手 | Schema 生成 | 控制粒度 | 适用 |
-
 |-|-|-|-|-|
-
 | 装饰器（FastMCP） | 极简 | 自动 | 中 | 90% 生产 Server |
-
 | 命令式（low-level SDK） | 复杂 | 手动 | 细 | 自定义传输 / 协议钻探 |
-
 | 运行时动态 | 中 | 看写法 | 动态 | 插件 / 多租户 / 权限路由 |
 
 ```mermaid
@@ -979,31 +905,18 @@ graph LR
 MCP 规范演进快，字段随版本变。写代码前先确认目标版本：
 
 | 字段 / 能力 | 2024-11-05 | 2025-06-18 | 2025-11-25 | 2026-07-28 RC |
-
 |-|-|-|-|-|
-
 | `name` / `description` / `inputSchema` | ✅ | ✅ | ✅ | ✅ |
-
 | `title`（显示名） | ❌ | ✅ 新增 | ✅ | ✅ |
-
 | `outputSchema` | ❌ | ✅ 新增 | ✅ | ✅ |
-
 | `structuredContent`（结构化输出） | ❌ | ✅ 新增 | ✅ | ✅ |
-
 | `annotations`（四 hint） | 部分 | ✅ | ✅ | ✅ |
-
 | Resource 模板 `{param}` | ✅ | ✅ | ✅ | ✅ |
-
 | JSON-RPC 批处理 | ❌ | ❌（2025-03-26 加、本版移除） | ❌ | ❌ |
-
 | JSON Schema 默认 2020-12 | ❌ | ❌ | ✅（SEP-1613） | ✅ |
-
 | 输入错误→`isError`（SEP-1303） | ❌ | ❌ | ✅ 建议 | ✅ |
-
 | 工具图标 metadata（SEP-973） | ❌ | ❌ | ✅ | ✅ |
-
 | `tools/list` 缓存 `ttlMs`/`cacheScope` | 基础分页 | 基础 | 增强 | ✅（正式） |
-
 | Resumable SSE / `Last-Event-ID` | ✅ | ✅ | ✅ | ❌ 移除 |
 
 > 🔴 **实战建议**：**以你依赖的 SDK / Server 实际支持版本为准**。写 `outputSchema` / `title` 时若对接旧版客户端可能不识别——先 `initialize` 协商 `protocolVersion`（见第 ⑧ 篇握手）。如不确定，标注"以官方文档为准"。2026-07-28 是 RC（最终版同日发布），生产建议先锁 2025-11-25。
@@ -1153,13 +1066,9 @@ Tool 出手 Resource 看，Prompt 套路供；
 ## 快速问答
 
 | 问题 | 参考答案 |
-
 | ------ | --------- |
-
 | MCP 是什么？解决什么问题？ | MCP 是 Anthropic 提出的开放协议，统一 LLM 与外部工具/数据源的连接方式。解决了碎片化集成问题 |
-
 | MCP 的三大核心能力？ | Tools（工具调用）、Resources（资源访问，只读）、Prompts（提示模板） |
-
 | MCP 和 Function Calling 的关系？ | Function Calling 是 LLM 的能力，MCP 是工具集成的协议标准。MCP Server 提供的 Tools 可以通过 Function Calling 被 LLM 调用 |
 
 ## 相关链接

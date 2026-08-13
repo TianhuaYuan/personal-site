@@ -105,17 +105,11 @@ LLM 基于结果生成：
 **工具定义的要点：**
 
 | 字段 | 说明 | 最佳实践 |
-
 | ------ | ------ | --------- |
-
 | name | 函数名 | 使用 snake_case，语义清晰 |
-
 | description | 功能描述 | 写给 LLM 看，越清晰越好 |
-
 | parameters | 参数定义 | 使用 JSON Schema 标准 |
-
 | required | 必填参数 | 明确区分必填和可选 |
-
 | enum | 枚举值 | 限定可选范围 |
 
 ## OpenAI Function Calling API
@@ -198,15 +192,10 @@ response = client.chat.completions.create(
 ### tool_choice 参数
 
 | 值 | 说明 |
-
 | ------ | ------ |
-
 | auto | 模型自行决定是否调用工具（默认） |
-
 | none | 强制不调用任何工具 |
-
 | required | 强制必须调用一个工具 |
-
 | {"type":"function","function":{"name":"xxx"}} | 强制调用指定工具 |
 
 ## Parallel Function Calls 并行调用
@@ -252,17 +241,11 @@ response = client.chat.completions.create(
 ## Function Calling vs RAG
 
 | 维度 | Function Calling | RAG |
-
 | ------ | ----------------- | ----- |
-
 | 目的 | 执行操作 / 获取实时数据 | 检索知识库生成回答 |
-
 | 数据源 | 外部 API / 工具 | 内部文档 / 知识库 |
-
 | 返回内容 | 结构化数据 | 文本片段 |
-
 | 实时性 | 实时 | 取决于索引更新频率 |
-
 | 典型场景 | 查天气、下单、发邮件 | 问答、知识检索 |
 
 **两者可以结合：** 先通过 RAG 检索内部知识，再通过 Function Calling 获取实时信息。
@@ -271,17 +254,11 @@ response = client.chat.completions.create(
 ### 常见错误类型
 
 | 错误 | 处理策略 |
-
 | ------ | --------- |
-
 | 函数不存在 | 返回错误信息，LLM 调整策略 |
-
 | 参数格式错误 | 返回验证错误，LLM 重试 |
-
 | API 超时 | 重试 + 降级方案 |
-
 | 权限不足 | 返回权限错误，LLM 告知用户 |
-
 | 返回结果异常 | 验证结果合理性，异常时告警 |
 
 ### 错误处理最佳实践
@@ -305,17 +282,11 @@ response = client.chat.completions.create(
 ## 安全考量
 
 | 风险 | 防御措施 |
-
 | ------ | --------- |
-
 | Prompt Injection | 输入过滤 + 角色隔离 |
-
 | 越权操作 | 权限最小化 + 白名单 |
-
 | 数据泄露 | 敏感数据脱敏 |
-
 | 无限循环 | 设置最大调用次数 |
-
 | 恶意参数 | 参数验证和清理 |
 
 ---
@@ -377,23 +348,14 @@ tool_choice四档，放权收权自主观；
 ## 快速问答
 
 | 问题 | 参考答案 |
-
 | ------ | --------- |
-
 | Function Calling 的本质是什么？ | LLM 输出结构化的函数调用请求（JSON），由外部系统执行，结果返回给 LLM 继续生成。LLM 本身不执行函数 |
-
 | Function Calling 和 Agent 的关系？ | Function Calling 是 Agent 的核心能力之一。Agent 通过 Function Calling 来调用工具、执行操作 |
-
 | 如何防止 LLM 调用不该调用的工具？ | ① tool_choice="none" 限制 ② 只在需要时暴露工具 ③ 权限最小化 ④ 后端验证每次调用的合法性 |
-
 | 什么是 Parallel Function Calls？ | LLM 一次返回多个函数调用请求，可以并行执行。减少 LLM 调用次数和延迟 |
-
 | Function Calling 的常见错误？ | ① 参数格式不符 ② 函数不存在 ③ API 超时 ④ 返回结果异常。需要完善的错误处理和重试机制 |
-
 | 如何优化 Function Calling 的延迟？ | ① 并行调用 ② 减少工具定义数量（太多影响推理）③ 缓存常见调用结果 ④ 异步执行 |
-
 | Function Calling 对模型有什么要求？ | 需要模型经过 function calling 训练（如 GPT-4、Claude、Qwen 等），普通模型可能无法正确生成调用格式 |
-
 | 如何测试 Function Calling？ | ① 单元测试：验证参数提取正确性 ② 集成测试：端到端调用链路 ③ 边界测试：异常输入、权限验证 |
 
 ## 相关链接

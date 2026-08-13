@@ -69,33 +69,12 @@ graph TD
 
 
 | | Hash 路由 | History 路由 | Memory 路由 |
-
-
-
 | :--- | :--- | :--- | :--- |
-
-
-
 | URL 样子 | `example.com/#/about` | `example.com/about` | 不体现 URL / 自定义 |
-
-
-
 | 底层 API | `hashchange` 事件 | `history.pushState` + `popstate` | 内存中的栈 |
-
-
-
 | `#` 后的内容发到服务端？ | ❌ 不发——服务器只看到 `/` | ✅ 发——服务器看到 `/about` | N/A |
-
-
-
 | 需要服务端配置？ | ❌ 不需要 | ✅ 需要——所有路径 fallback 到 `index.html` | ❌ 不需要 |
-
-
-
 | 刷新 `example.com/about` | 实际访问 `example.com/` → 前端读 hash → 路由到 about | 服务端收到 `/about` 请求 → fallback 到 `index.html` → 前端路由到 about | 刷新后状态丢失 |
-
-
-
 | 什么时候用 | 静态部署、无需服务端控制 | 正式生产环境（SEO + 美观） | SSR、测试、非浏览器环境 |
 
 
@@ -257,21 +236,9 @@ window.addEventListener('popstate', () => {
 
 
 | 模式 | 怎么写 | 特点 | 适合 |
-
-
-
 | :--- | :--- | :--- | :--- |
-
-
-
 | **声明式**（Declarative） | `<BrowserRouter>` + `<Routes>` + `<Route>` | 最简单——纯组件写法 | 小项目、快速原型 |
-
-
-
 | **数据模式**（Data/Library） | `createBrowserRouter` + `RouterProvider` | 带 loader / action 数据加载 | 需要数据预取的中大型项目 |
-
-
-
 | **框架模式**（Framework） | 文件系统路由 + 自动 SSR + 自动代码分割 | 完整框架——约定大于配置 | 生产级全栈应用 |
 
 
@@ -755,29 +722,11 @@ function Login() {
 
 
 | 特性 | 做什么 | 一句话 |
-
-
-
 | :--- | :--- | :--- |
-
-
-
 | `unstable_useRouterState`（v7.15.1） | 统一获取路由状态 | 可能取代 `useLocation` / `useParams` / `useSearchParams` 的万能 Hook |
-
-
-
 | URL Masking（v7.13.1） | URL 遮罩 | 导航到图片弹窗但 URL 显示图片详情页——用户刷新后看到完整页面 |
-
-
-
 | React Transitions 集成 | 路由切换用 `startTransition` | 导航时不阻塞用户交互 |
-
-
-
 | Middleware（v8 未来） | loader/action 前后执行中间件 | 认证检查、日志记录——不用在每个 loader 里重复写 |
-
-
-
 | Turbo Stream | 替代 defer，流式传输数据 | SSR 场景下分批推送数据 |
 
 

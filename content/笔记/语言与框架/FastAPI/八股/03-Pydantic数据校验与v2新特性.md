@@ -71,25 +71,15 @@ class UserCreate(BaseModel):
 ## v1 → v2 到底改了啥（重点）
 
 | 维度 | v1 | v2 |
-
 | :--- | :--- | :--- |
-
 | 校验核心语言 | Python | **Rust**（`pydantic-core`），快数倍 |
-
 | 配置类 | `class Config:` | `model_config = {...}`（dict） |
-
 | 字段校验器 | `@validator` | **`@field_validator`**（推荐） |
-
 | 对象级校验 | `@root_validator` | **`@model_validator`** |
-
 | ORM 模式 | `orm_mode=True` | `from_attributes=True` |
-
 | 允许任意类型 | `allow_population_by_field_name` | `populate_by_name` |
-
 | JSON Schema 额外 | `Field(..., extra={...})` | `json_schema_extra={...}` |
-
 | 字段别名属性 | `alias` 返回字段名 | 没设 alias 时返回 `None`（v1 返回字段名） |
-
 | 约束改名 | `min_items` / `regex` | `min_length` / `pattern` |
 
 ## v2 亮点 API

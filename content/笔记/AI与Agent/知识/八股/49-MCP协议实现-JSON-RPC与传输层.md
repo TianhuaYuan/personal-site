@@ -51,11 +51,8 @@ sequenceDiagram
 ## 传输方式
 
 | 方式 | 说明 | 适用场景 |
-
 | ------ | ------ | --------- |
-
 | stdio | 标准输入输出 | 本地进程通信 |
-
 | HTTP + SSE | HTTP POST + Server-Sent Events | 远程/网络通信 |
 
 ### stdio 模式
@@ -264,17 +261,11 @@ async with client:
 够简单，但生产里有几个它**默认不帮你兜底**的事，逼你走上"自定义"之路：
 
 | 诉求 | 官方默认 | 自定义客户端要解决 |
-
 |-|-|-|
-
 | 连接池 / 复用 | 仅 STDIO 的 `keep_alive=True` 复用子进程；HTTP 每次 `async with` 重建 | 多 Server 连接池、统一复用、限流 |
-
 | 重连 + 幂等 | Streamable HTTP 有"自动重连"，但**幂等靠你自己** | 写操作重发会重复扣款，需幂等键 |
-
 | 可观测性 | 靠 OpenTelemetry（v3.0+） | 自己埋 trace_id / 耗时 / 失败率 |
-
 | 多 Server 路由 | 手动一个一个连 | `ConnectionPool` 按名字管理多 Server |
-
 | 自定义头部 / 认证 | 支持 `BearerAuth` | 动态 JWT、租户头、`X-*` 透传 |
 
 所以"自定义客户端"不是"重写协议"，而是**在官方 Client 之上包一层工程化外壳**：把连接、重试、幂等、池化、监控都管起来。（来源：fastmcp.wiki 客户端传输、CSDN FastMCP Client 实践、字节 youthcamp 第 9 章）
@@ -391,13 +382,9 @@ graph TD
 ### 4.2 两种层面的"复用"
 
 | 层面 | 机制 | 说明 |
-
 |-|-|-|
-
 | STDIO 传输 | `keep_alive=True`（默认） | FastMCP 在多个 `async with` 间**复用同一个子进程**，省去反复启动进程（来源：fastmcp.wiki、generalzy） |
-
 | HTTP 传输 | HTTP `keep-alive` + 客户端连接池 | 同一 TCP 连接上复用多个 HTTP 请求；`httpx.AsyncClient` 自带连接池（用 `httpx.Limits` 控大小），省 TCP/TLS 握手 |
-
 | 多 Server | `ConnectionPool` | 一个池管理 N 个 Server 的连接，按名字取（来源：字节 youthcamp 第 9 章） |
 
 > 🔴 高优补充：`httpx.AsyncClient` 本身就是连接池实现——你项目里的 `httpx.AsyncClient` 单例已经天然有池，关键是把"`limits`、`max_connections`、健康检查、多 Server 路由"显式管起来，而不是"有个单例"就完事。
@@ -533,19 +520,12 @@ class ResilientClient:
 ## 6. 手写 vs 用官方 Client：怎么选（对比表）
 
 | 维度 | 手写 `HttpMCPClient`（如 AWS 示例） | 官方 `fastmcp.Client` |
-
 |-|-|-|
-
 | 上手成本 | 高，要自己拼 JSON-RPC、管 Session | 低，`Client(url)` 一行 |
-
 | 传输选择 | 手动 | 自动推断（HTTP/STDIO/SSE） |
-
 | 连接复用 | 自己写池 | STDIO `keep_alive` 自带；HTTP 靠 httpx 连接池 |
-
 | 重连 / 幂等 | 自己写（reconnect/idempotency-key） | 自动重连自带；幂等仍需自己加 |
-
 | 认证 | 手写 header | `BearerAuth("token")` 辅助类 |
-
 | 适用 | 特殊协议、嵌入式、深度定制 | 90% 生产场景 |
 
 > 实战建议：**先用官方 Client 跑通，再把"池 + 幂等 + 监控"包一层**当自定义 Client。除非你要钻协议细节或塞进受限环境，否则别从零手写（来源：chatforest FastMCP 生产指南、fastmcp.wiki）。
@@ -727,13 +707,9 @@ Server 露工具，Client 配连通。
 ## 快速问答
 
 | 问题 | 参考答案 |
-
 | ------ | --------- |
-
 | MCP 的两种传输方式？ | stdio（本地进程通信，安全但仅限本地）和 HTTP+SSE（远程通信，支持多客户端） |
-
 | 为什么 MCP 选择 JSON-RPC？ | JSON-RPC 是轻量级的远程过程调用协议，简单、跨语言、易于实现，且支持双向通信 |
-
 | MCP Server 如何被发现？ | Client 在连接时通过 initialize 请求获取 Server 的能力列表，运行时动态发现 |
 
 ## 相关链接

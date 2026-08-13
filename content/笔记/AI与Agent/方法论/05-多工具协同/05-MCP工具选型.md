@@ -94,17 +94,11 @@ graph TD
 ## 四、常见 MCP Server（按需取用）
 
 | MCP Server | 作用 | 典型场景 |
-
 |------------|------|----------|
-
 | **filesystem** | 文件读写 | 本地文件操作 |
-
 | **git** | Git 操作 | 版本控制 |
-
 | **github** | GitHub API | PR / Issue 管理 |
-
 | **postgres** | 数据库操作 | 数据查询 |
-
 | **slack** | Slack API | 消息通知 |
 
 > 反例：一个纯前端项目硬接 postgres + slack，纯属给模型喂噪声。

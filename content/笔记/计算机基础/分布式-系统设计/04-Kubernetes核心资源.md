@@ -45,17 +45,11 @@ stateDiagram-v2
 ```
 
 | 阶段 | 含义 | 常见原因 |
-
 |------|------|----------|
-
 | **Pending** | 已被 API Server 接受，但未绑定节点 | 镜像拉取慢 / 资源不足调度不上 |
-
 | **Running** | 已绑定节点，至少一个容器在运行 | 正常状态 |
-
 | **Succeeded** | 所有容器正常退出，不再重启 | Job/CronJob 完成 |
-
 | **Failed** | 至少一个容器非零退出 | OOMKill / 应用 crash |
-
 | **Unknown** | 节点失联 | 网络分区 / kubelet 宕机 |
 
 ### 1.2 三种探针（Probes）
@@ -111,17 +105,11 @@ resources:
 ### 1.4 Pod 本质速记
 
 | 特性 | 说明 |
-
 |------|------|
-
 | 最小调度单元 | 调度器调度的不是容器，而是 Pod |
-
 | 网络共享 | 同 Pod 容器共享 IP，localhost 互通 |
-
 | 短暂生命周期 | 死了就换新的，IP 也会变 |
-
 | pause 容器 | 基础设施容器，持有网络命名空间 |
-
 | 重启策略 | Always（默认）、OnFailure、Never |
 
 ---
@@ -211,11 +199,8 @@ strategy:
 ```
 
 | 参数 | 含义 | 选型建议 |
-
 |------|------|----------|
-
 | **maxSurge** | 更新期间最多"多出来"的 Pod 数 | 资源充足时设大→更新更快 |
-
 | **maxUnavailable** | 更新期间最多"少掉"的 Pod 数 | 对可用性敏感时设为 0 |
 
 > **maxSurge=0, maxUnavailable=1**：先杀旧再建新，零额外资源开销，但有短暂不可用。
@@ -291,15 +276,10 @@ graph TD
 ```
 
 | 类型 | 虚拟IP | 访问方式 | 典型场景 |
-
 |------|--------|----------|----------|
-
 | **ClusterIP** | 分配 VIP | `10.96.x.x:80`（集群内） | 微服务间内部通信（默认首选） |
-
 | **NodePort** | 分配 VIP + 固定端口 | `<任意节点IP>:30000~32767` | 开发测试 / 没有 LB 的环境 |
-
 | **LoadBalancer** | 分配 VIP | 云厂商 LB 的公网 IP | 生产环境对外暴露服务 |
-
 | **Headless** | 不分配 VIP | DNS 直接解析到 Pod IP | StatefulSet（MySQL 集群等需要固定网络标识） |
 
 ### 3.3 Deployment + Service 协作全景
@@ -335,19 +315,12 @@ graph TD
 ## 四、Deployment vs StatefulSet 对比
 
 | 特性 | Deployment | StatefulSet |
-
 |------|-----------|-------------|
-
 | 适用场景 | 无状态应用（Web API、微服务） | 有状态应用（MySQL、Redis、ZooKeeper） |
-
 | Pod 命名 | 随机后缀 `nginx-5c7d8f9b6-2x4k8` | 有序索引 `mysql-0, mysql-1` |
-
 | 网络标识 | 无稳定 DNS | 稳定 DNS `pod-name.service-name` |
-
 | 存储 | 共享或临时存储 | 每个 Pod 对应独立 PVC |
-
 | 启停顺序 | 并行无序 | 严格顺序 `0→1→2`，反向 `2→1→0` |
-
 | 扩缩容 | 任意并行 | 逐个增减，保证顺序 |
 
 ---

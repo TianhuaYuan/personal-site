@@ -52,15 +52,10 @@ flowchart TD
 ```
 
 | 维度 | CLAUDE.md | AGENTS.md |
-
 |------|-----------|-----------|
-
 | **适用范围** | 仅 Claude Code | 20+ 工具（Codex/Cursor/Copilot/Zed…） |
-
 | **能力** | 丰富：分层、子 Agent、Skills、条件加载 | 简单：单一 Markdown 基线 |
-
 | **治理** | Anthropic 产品文件 | Linux Foundation Agentic AI Foundation 开放标准 |
-
 | **劣势** | 绑定单一工具（vendor lock-in） | 表达不了工具专属能力 |
 
 ### 2.2 原理：为什么「一份通用」胜「八份专属」

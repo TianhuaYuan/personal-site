@@ -52,13 +52,9 @@ Maker 像主厨，要设计、要颠勺、要火候——贵得有理。Checker 
 ## 三、模型选型（经验分层）
 
 | 层级 | 模型 | 成本 | 适用 |
-
 |------|------|------|------|
-
 | **L1** | Haiku | 低 | 简单验证、规则检查 |
-
 | **L2** | Sonnet | 中 | 复杂审查、跨模型互审 |
-
 | **L3** | Opus | 高 | 最终决策、关键判断 |
 
 **推荐组合**：Maker = Opus/Sonnet（生成），Checker = Haiku（验证），硬门禁 = 确定性测试（pytest/ruff/mypy）。
@@ -114,17 +110,11 @@ run("pytest && ruff check . && mypy .")  # 硬门禁：确定性测试
 ## 核心要点
 
 | 要点 | 速记 |
-
 |------|------|
-
 | 核心 | Checker 用便宜模型，硬门禁用确定性测试 |
-
 | 类比 | 大厨炒菜、试菜员尝咸淡 |
-
 | 组合 | Maker=Opus/Sonnet，Checker=Haiku，门禁=pytest/ruff/mypy |
-
 | 依据 | Anthropic：子任务可交更小更便宜的模型 |
-
 | 提醒 | 关键决策仍用强模型；弱 Checker 会漏 |
 
 **下一篇**：[[12-MakervsChecker自检|Maker vs Checker 自检]]——为什么不用同一个 Agent 既当 Maker 又当 Checker？

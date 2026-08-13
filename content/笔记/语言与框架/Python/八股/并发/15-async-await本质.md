@@ -156,13 +156,9 @@ future = loop.create_future()
 ```
 
 | 可等待对象 | 谁创建 | 什么时候用 |
-
 | :--- | :--- | :--- |
-
 | **协程（Coroutine）** | `async def` 函数调用 | 直接 await——串行等待 |
-
 | **Task** | `asyncio.create_task()` | 后台并发——不阻塞当前协程 |
-
 | **Future** | `loop.create_future()` | 底层——库作者才直接操作 |
 
 ### 3.4 async with / async for

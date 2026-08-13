@@ -108,17 +108,11 @@ flowchart LR
 ## 核心要点
 
 | 要点 | 速记 |
-
 |------|------|
-
 | 核心 | Creator 写 + Checker 审，双重校验 |
-
 | 类比 | 四眼原则；运动员≠裁判 |
-
 | 铁律 | 绝不让同一 Agent 自检 |
-
 | 一手证据 | Anthropic：独立上下文是质量关键杠杆 |
-
 | 兜底 | 硬门禁用确定性测试 |
 
 **下一篇**：[[10-Maker-Checker落地|Maker-Checker 落地]]——概念清楚了，怎么用 Claude Code hook 自动跑验证？

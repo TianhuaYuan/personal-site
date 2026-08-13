@@ -427,15 +427,10 @@ const evenNumbers = myFilter(numbers, (n) => n % 2 === 0);  // [2, 4, 6]
 
 
 | 概念 | 一句话解释 | 关键代码 |
-
 |------|---------|---------|
-
 | 泛型 | 类型参数，调用时才确定类型 | `function f<T>(x: T): T` |
-
 | 泛型约束 | 限制泛型的范围 | `<T extends { length: number }>` |
-
 | `keyof` | 获取对象所有 key 的联合类型 | `keyof User` |
-
 | 泛型接口 | 接口带类型参数 | `interface Box<T> { value: T }` |
 
 

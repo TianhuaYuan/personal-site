@@ -44,29 +44,17 @@ console.log(nums.length);    // 5  ← Python 是 len(nums)
 ### 4.2 常用方法对照
 
 | 操作 | JavaScript | Python |
-
 | :--- | :--- | :--- |
-
 | 取长度 | `arr.length` | `len(arr)` |
-
 | 追加到最后 | `arr.push(x)` | `arr.append(x)` |
-
 | 移除最后一项 | `arr.pop()` | `arr.pop()` |
-
 | 取子数组 | `arr.slice(1, 3)` | `arr[1:3]` |
-
 | 删除/插入 | `arr.splice(1, 2, "x")` | `arr[1:3] = ["x"]` |
-
 | 查找索引 | `arr.indexOf(x)` | `arr.index(x)` |
-
 | 判断包含 | `arr.includes(x)` | `x in arr` |
-
 | 用分隔符拼接 | `arr.join("、")` | `"、".join(arr)` ⚠️ 反了！ |
-
 | 映射 | `arr.map(fn)` | `[fn(x) for x in arr]` |
-
 | 过滤 | `arr.filter(fn)` | `[x for x in arr if fn(x)]` |
-
 | 查找 | `arr.find(fn)` | `next(x for x in arr if fn(x), None)` |
 
 ```javascript

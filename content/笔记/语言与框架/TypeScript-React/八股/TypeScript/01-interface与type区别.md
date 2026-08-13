@@ -29,17 +29,11 @@ TypeScript 里声明"对象形状"有两把锤子：`interface` 和 `type`。**i
 ## 二、核心区别速查
 
 | 维度 | interface | type |
-
 |---|---|---|
-
 | 描述对象形状 | ✅ | ✅ |
-
 | 声明合并（同名重复声明自动合并） | ✅ 独有能力 | ❌ 报错 |
-
 | 联合 `A | B` / 交叉 `A & B` | ❌ | ✅ |
-
 | 元组 / 基本类型别名 `type ID = string` | ❌ | ✅ |
-
 | extends / implements | ✅ | ✅（交叉模拟 extends） |
 
 ```ts
@@ -329,17 +323,11 @@ const user: UserWithAll = {
 ## 三、interface vs type 怎么选？
 
 | 特性 | `interface` | `type` |
-
 |------|-----------|--------|
-
 | 定义对象形状 | ✅ | ✅ |
-
 | 定义联合类型 | ❌ | ✅ |
-
 | 定义基本类型别名 | ❌ | ✅ |
-
 | 继承（扩展） | `extends` | `&` 交叉类型 |
-
 | 声明合并 | ✅ 同名自动合并 | ❌ 同名报错 |
 
 ```typescript
@@ -373,19 +361,12 @@ interface User { age: number; }
 ## 速查表
 
 | 概念 | 一句话解释 | 关键代码 |
-
 |------|---------|---------|
-
 | `interface` | 定义对象的形状 | `interface User { name: string }` |
-
 | 可选属性 | 属性可以不传 | `email?: string` |
-
 | 只读属性 | 属性不能修改 | `readonly id: number` |
-
 | 接口继承 | 子接口继承父接口 | `interface Dog extends Animal {}` |
-
 | `type` | 给任意类型起别名 | `type ID = string | number` |
-
 | 交叉类型 | 同时满足多个类型 | `HasName & HasAge` |
 
 ---

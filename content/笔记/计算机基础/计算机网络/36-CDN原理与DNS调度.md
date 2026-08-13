@@ -350,13 +350,9 @@ CDN 节点缓存的内容通常是有 TTL 的，过期了就要回源重新取�
 源服务器通过 HTTP 响应头来控制 CDN 的缓存行为：
 
 | 指令 | 含义 | 说明 |
-
 | :--- | :--- | :--- |
-
 | `Cache-Control: max-age=3600` | CDN 节点缓存 1 小时 | 1 小时内用户请求直接返回缓存，1 小时后回源验证 |
-
 | `Cache-Control: s-maxage=86400` | 专门控制 CDN（代理缓存）的 TTL | 比 max-age 优先级高。max-age 控制浏览器，s-maxage 控制 CDN |
-
 | `Cache-Control: no-cache` | CDN 不缓存这个响应 | 每次都要回源 |
 
 CDN 节点一般也会自己配置缓存规则：就算源服务器没响应头，CDN 也可以强制缓存某些文件类型。`.jpg` 默认缓存 7 天，`.html` 默认缓存 0 秒。

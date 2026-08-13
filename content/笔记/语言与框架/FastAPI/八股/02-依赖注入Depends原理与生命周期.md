@@ -97,13 +97,9 @@ flowchart TD
 
 
 | 形态 | 写法 | 典型用途 |
-
 | :--- | :--- | :--- |
-
 | 共享逻辑函数 | `def common_params(q, skip, limit)` | 分页、公共查询参数 |
-
 | 资源型（yield） | `def get_db(): ... yield db ... db.close()` | 数据库连接、事务 |
-
 | 类依赖 | `class Pagination: def __init__(self, page, size)` | 分组参数、带状态 |
 
 
@@ -203,13 +199,9 @@ async def dashboard(admin: dict = Depends(get_admin_user)):
 
 
 | 框架 | 注入方式 | 特点 |
-
 | :--- | :--- | :--- |
-
 | FastAPI | 方法参数注入 `Depends()` | 轻量、Pythonic、依赖即函数 |
-
 | Spring | `@Autowired` 构造器注入 | 重、IoC 容器管理生命周期 |
-
 | Flask | 通常手动 `g.xxx` 或上下文 | 无原生 DI，靠 `flask.g` 凑 |
 
 

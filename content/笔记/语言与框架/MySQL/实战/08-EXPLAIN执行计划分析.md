@@ -69,21 +69,13 @@ graph TD
 **重要性**：⭐⭐⭐⭐⭐（最重要的字段之一）
 
 | type值 | 说明 | 性能 | 示例 |
-
 |--------|------|------|------|
-
 | `system` | 表只有一行记录 | ⭐⭐⭐⭐⭐ | 系统表 |
-
 | `const` | 通过主键或唯一索引查找 | ⭐⭐⭐⭐⭐ | `WHERE id = 1` |
-
 | `eq_ref` | 关联查询中使用主键或唯一索引 | ⭐⭐⭐⭐ | `JOIN ON a.id = b.id` |
-
 | `ref` | 使用非唯一索引查找 | ⭐⭐⭐ | `WHERE name = 'Alice'` |
-
 | `range` | 索引范围扫描 | ⭐⭐⭐ | `WHERE id > 100` |
-
 | `index` | 全索引扫描 | ⭐⭐ | `SELECT id FROM users` |
-
 | `ALL` | 全表扫描 | ⭐ | `SELECT * FROM users` |
 
 **优化目标**：至少达到 `ref` 级别，避免 `ALL`。
@@ -123,17 +115,11 @@ rows: 1               -- 只需要扫描1行
 **重要性**：⭐⭐⭐⭐
 
 | Extra值 | 说明 | 性能 |
-
 |---------|------|------|
-
 | `Using index` | 覆盖索引，无需回表 | ⭐⭐⭐⭐⭐ |
-
 | `Using where` | 在存储引擎层过滤后，还需在Server层过滤 | ⭐⭐⭐ |
-
 | `Using temporary` | 使用临时表 | ⭐⭐ |
-
 | `Using filesort` | 使用文件排序 | ⭐⭐ |
-
 | `Select tables optimized away` | 优化器已优化 | ⭐⭐⭐⭐⭐ |
 
 ## 3. 常见执行计划分析

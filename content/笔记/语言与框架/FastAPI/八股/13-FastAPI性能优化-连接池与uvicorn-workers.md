@@ -41,15 +41,10 @@ tags:
 
 
 | 参数 | 含义 | 建议 |
-
 | :--- | :--- | :--- |
-
 | `pool_size` | 平时保持的常驻连接数 | 核数×2 左右 |
-
 | `max_overflow` | 高峰最多额外建几个 | 如 10 |
-
 | `pool_pre_ping` | 拿连接前先探活，防拿到断连 | `True` |
-
 | `pool_recycle` | 连接超过 N 秒强制回收重建 | 如 3600 |
 
 
@@ -103,11 +98,8 @@ FastAPI 是单进程单事件循环，受 GIL 限制只能用一个核跑 Python
 
 
 | 模式 | 命令 | 行为 |
-
 | :--- | :--- | :--- |
-
 | 单进程 | `uvicorn main:app` | 1 进程 1 核 |
-
 | 多进程 | `uvicorn main:app --workers 4` | 4 进程 4 核 |
 
 
@@ -167,17 +159,11 @@ graph TD
 
 
 | 优化 | 做法 | 效果（量级） |
-
 | :--- | :--- | :--- |
-
 | 连接池 | 复用连接 | QPS↑ 明显 |
-
 | 多 workers | 用满多核 | QPS↑ ~核数倍 |
-
 | GZip 压缩 | `GZipMiddleware` | 传输省 ~90% |
-
 | 修 N+1 | `selectinload` | DB 查询从 N+1 → 2 |
-
 | Redis 缓存 | 热点结果缓存 | 重复请求近乎 0 延迟 |
 
 

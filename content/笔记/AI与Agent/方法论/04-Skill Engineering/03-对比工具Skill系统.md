@@ -52,15 +52,10 @@ graph TD
 ```
 
 | 维度 | Claude Code Skills | Codex 类规则 | Cursor Rules | AGENTS.md（跨工具） |
-
 |------|-------------------|-------------|-------------|---------------------|
-
 | **位置** | `.claude/skills/` | 项目根规则文件 | `.cursor/rules/` | 仓库根 `AGENTS.md` |
-
 | **结构** | 多文件（SKILL.md + references/ + scripts/） | 单文件 | 单文件（可条件加载） | 单文件 Markdown |
-
 | **加载** | 渐进式（触发才读） | 全量/条件 | 条件加载 | 启动时读最近一份 |
-
 | **复杂度** | 高（复杂场景） | 低（简单直接） | 中（IDE 集成） | 中（跨工具基线） |
 
 > ⚠️ 工具生态变化极快：Codex / Cursor 的具体路径与格式会随版本变动，上面为当前常见形态；**跨工具请以 AGENTS.md 为可移植基线**（[agents.md](http://agents.md/)）。

@@ -40,17 +40,11 @@ graph LR
 ### 1.2 核心概念
 
 | 概念 | 说明 |
-
 |------|------|
-
 | Dashboard | 仪表盘，包含多个面板 |
-
 | Panel | 面板，展示单个指标 |
-
 | Data Source | 数据源，如Prometheus |
-
 | Query | 查询，获取指标数据 |
-
 | Alert | 告警规则 |
 
 ## 2. 预置面板

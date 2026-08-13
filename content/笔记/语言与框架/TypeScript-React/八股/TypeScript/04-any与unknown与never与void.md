@@ -81,15 +81,10 @@ function log(): void { console.log("hi"); }           // 不返回有用值
 
 
 | 类型 | 能赋给谁 | 能赋给它啥 | 典型用途 |
-
 | --- | :---: | :---: | --- |
-
 | `any` | 任意 | 任意 | 迁移旧 JS、临时逃生（尽量少用） |
-
 | `unknown` | 仅 `unknown`/`any` | 任意 | 接收未知外部输入（API/JSON） |
-
 | `never` | 任意（它是底部） | 无（没有值属于 never） | 穷尽检查兜底、抛错函数 |
-
 | `void` | 仅 `void`/`any`/`undefined` | `undefined`/`null` | 无返回值函数 |
 
 
@@ -433,17 +428,11 @@ function setAlignment(align: "left" | "center" | "right") {
 
 
 | 概念 | 一句话解释 | 关键代码 |
-
 |------|---------|---------|
-
 | 类型标注 | 给变量声明类型 | `let name: string = "张三"` |
-
 | 类型推断 | TS 自动推断类型 | `let x = 42` → `number` |
-
 | `any` | 关掉类型检查（尽量别用） | `let x: any = "随便"` |
-
 | 联合类型 | 可以是多种类型之一 | `string | number` |
-
 | 字面量类型 | 只能是特定的值 | `"up" | "down"` |
 
 

@@ -81,25 +81,10 @@ function ChatRoom({ roomId }: { roomId: string }) {
 
 
 | | 类组件（你不写这个） | Hooks（你写的） |
-
-
-
 | :--- | :--- | :--- |
-
-
-
 | 状态 | `this.state = {}` + `this.setState()` | `const [x, setX] = useState(0)` |
-
-
-
 | 副作用 | 散落在三个生命周期方法里 | 集中在 `useEffect`，setup 和 cleanup 写在一起 |
-
-
-
 | 复用逻辑 | HOC 套了一层又一层 | 自定义 Hook，一行调用 |
-
-
-
 | 有无 `this` | 有，要 `.bind(this)` | 没有 `this`，纯函数 |
 
 

@@ -106,13 +106,9 @@ curl -X POST "http://127.0.0.1:8000/users" \
 **判断规则（从左到右依次检查）：**
 
 | 条件 | 数据来源 | 例子 |
-
 |------|---------|------|
-
 | 参数名在路径里 `{xxx}` | **路径参数** | `@app.get("/users/{user_id}")` 的 `user_id` |
-
 | 参数类型是 BaseModel 子类 | **请求体** | `user: UserCreate` |
-
 | 其他情况 | **查询参数** | `skip: int = 0` |
 
 ```python
@@ -285,15 +281,10 @@ async def list_items(
 ```
 
 | 请求 | 结果 |
-
 |------|------|
-
 | `/items?q=py` | ❌ 422：`q` 只有 2 个字符，不满足 `min_length=3` |
-
 | `/items?q=python` | ✅ 正常 |
-
 | `/items?q=python&skip=-1` | ❌ 422：`skip` 必须 >= 0 |
-
 | `/items?q=python&limit=200` | ❌ 422：`limit` 必须 <= 100 |
 
 ### 2.3 Path —— 给路径参数加约束
@@ -405,25 +396,15 @@ class UserCreate(BaseModel):
 **Field 常用参数速查：**
 
 | 参数 | 含义 | 例子 |
-
 |------|------|------|
-
 | `...` | 必填字段 | `Field(...)` |
-
 | `default` | 默认值 | `Field(default="未知")` |
-
 | `min_length` | 字符串最短长度 | `Field(min_length=3)` |
-
 | `max_length` | 字符串最长长度 | `Field(max_length=20)` |
-
 | `gt` | greater than（大于） | `Field(gt=0)` |
-
 | `ge` | greater than or equal（大于等于） | `Field(ge=0)` |
-
 | `lt` | less than（小于） | `Field(lt=100)` |
-
 | `le` | less than or equal（小于等于） | `Field(le=100)` |
-
 | `description` | 描述（显示在 API 文档里） | `Field(description="用户名")` |
 
 **测试效果：**
@@ -451,15 +432,10 @@ user = UserCreate(username="张三", age=200)
 这两个容易搞混，但用途完全不同：
 
 | | `Field()` | `Body()` |
-
 |---|---|---|
-
 | **定义位置** | BaseModel 内部 | 函数参数上 |
-
 | **作用** | 约束字段本身（长度、范围、描述） | 声明参数从请求体取 |
-
 | **影响范围** | 模型在哪用都生效 | 只影响当前函数参数 |
-
 | **典型场景** | 所有请求体都需要校验 | 多个 BaseModel 混用或单个字段从 body 取 |
 
 ```python
@@ -733,19 +709,12 @@ Body: {"name": "键盘", "price": 299.0, "tags": ["电子"]}
 ## 速查表
 
 | 概念 | 一句话解释 | 关键代码 |
-
 |------|---------|---------|
-
 | 请求体 | POST/PUT 发送的 JSON 数据 | `def f(user: UserCreate)` |
-
 | `BaseModel` | 定义请求体结构 | `class User(BaseModel): ...` |
-
 | `Field()` | 给请求体字段加约束（长度、范围） | `name: str = Field(..., min_length=3)` |
-
 | `Query()` | 给查询参数加约束 | `q: str = Query(..., min_length=3)` |
-
 | `Path()` | 给路径参数加约束 | `user_id: int = Path(..., gt=0)` |
-
 | `Body()` | 显式声明请求体字段 | `info: str = Body(...)` |
 
 ---

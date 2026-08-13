@@ -263,17 +263,11 @@ graph LR
 ```
 
 | | useEffect | useLayoutEffect |
-
 | --- | --- | --- |
-
 | 执行时机 | 浏览器绘制之后 | 浏览器绘制之前 |
-
 | 阻塞绘制 | ❌ 不阻塞 | ✅ 阻塞 |
-
 | 用户体验 | 可能看到闪烁 | 一次性看到最终效果 |
-
 | 性能影响 | 无（不阻塞帧） | 有（阻塞帧，可能导致卡顿） |
-
 | 推荐场景 | API 请求、日志、事件绑定 | DOM 测量、样式调整 |
 
 ---
@@ -482,23 +476,14 @@ useEffect(() => {
 ## 最佳实践
 
 | 场景 | 用哪个 |
-
 | --- | --- |
-
 | 调 API 拿数据 | useEffect |
-
 | 绑定 DOM 事件 | useEffect |
-
 | 打日志 / 埋点 | useEffect |
-
 | 读 DOM 尺寸 | **useLayoutEffect** |
-
 | 同步改样式 | **useLayoutEffect** |
-
 | 动画初始状态 | **useLayoutEffect** |
-
 | 恢复滚动位置 | **useLayoutEffect** |
-
 | 其他情况 | 默认 useEffect |
 
 ---

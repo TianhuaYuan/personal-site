@@ -125,23 +125,14 @@ Cookie 是浏览器提供的存储容器——服务器可以往里面放东西�
 
 
 | 属性 | 说明 |
-
 | :--- | :--- |
-
 | **Name/Value** | 键值对。`session_id=abc123` |
-
 | **Domain** | 哪些域名可以读取这个 Cookie。设为 `.example.com` 则子域名共享 |
-
 | **Path** | 哪些路径可以读取。设为 `/` 则全站可用 |
-
 | **Expires** | 绝对过期时间。不设 = 会话 Cookie，关浏览器就消失 |
-
 | **Max-Age** | 相对过期时间（秒）。优先级 > Expires |
-
 | **HttpOnly** | 设了 JS 读不到。防 XSS 脚本偷 Cookie |
-
 | **Secure** | 只有 HTTPS 才发送。防明文抓包 |
-
 | **SameSite** | 跨站时发不发（见下表） |
 
 
@@ -151,13 +142,9 @@ Cookie 是浏览器提供的存储容器——服务器可以往里面放东西�
 
 
 | 值 | 行为 | 场景 |
-
 | :--- | :--- | :--- |
-
 | **Strict** | 最严，a.com 的页面里点链接跳到 b.com，Cookie 不带 | 银行等高安全场景 |
-
 | **Lax** | 适度，a.com 里点链接跳 b.com 会带，但 img/iframe/ajax 不带（浏览器默认） | 大多数网站 |
-
 | **None** | 不限制，但必须配 Secure | 需要跨站请求的场景 |
 
 
@@ -501,11 +488,8 @@ eyJhbGciOi... . eyJzdWIiOiI0MiIsInJvbGUiOiJ1c2VyIn0= . SflKxwRJ...
 
 
 | Token | 用途 | 有效期 | 存储 | 特点 |
-
 | :--- | :--- | :---: | :--- | :--- |
-
 | **Access Token** | 日常业务请求 | 短（15 分 ~ 2 小时） | 内存 / localStorage | 即使泄露，15 分钟后自动失效 |
-
 | **Refresh Token** | 只换新 Access Token | 长（7 天 ~ 30 天） | HttpOnly Cookie / 安全存储 | 踢人时拉黑，用户换不了 Access Token → 被迫重新登录 |
 
 

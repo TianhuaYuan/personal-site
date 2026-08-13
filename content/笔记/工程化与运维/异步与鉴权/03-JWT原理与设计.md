@@ -73,13 +73,9 @@ sequenceDiagram
 术语对应：
 
 | 说法 | 术语 |
-
 |------|------|
-
 | 服务器记的"本子" | Session（会话数据） |
-
 | 给你的编号"abc123" | session_id |
-
 | 你每次请求带着编号 | Cookie |
 
 ### Session 的问题
@@ -235,17 +231,11 @@ flowchart TB
 术语对应：
 
 | 说法 | 术语 |
-
 |------|------|
-
 | 密码 | 密钥 (secret key) |
-
 | 数学运算 | HMAC-SHA256 (HS256) |
-
 | 算出的指纹 | 签名 (signature) |
-
 | 内容+指纹一起发给用户 | 签发 Token |
-
 | 服务器检查指纹 | 验证 Token |
 
 > 把 HS256 理解成一个黑盒：`f(内容, 密码) → 指纹`。同一个输入永远输出同一个指纹，换一点内容指纹就全变了。
@@ -317,19 +307,12 @@ flowchart LR
 ## Payload 标准字段
 
 | 字段 | 全称 | 含义 | 示例 |
-
 |------|------|------|------|
-
 | `sub` | Subject | 这个 Token 是谁的——通常写 user_id | `"1"` |
-
 | `iat` | Issued At | 什么时候签发的 | `1719500000` |
-
 | `exp` | Expiration | 什么时候过期 | `1719501800`（30分钟后） |
-
 | `iss` | Issuer | 谁签发的——写你的应用名 | `"my-fastapi-app"` |
-
 | `aud` | Audience | 谁能用这个 Token | `"my-frontend"` |
-
 | `jti` | JWT ID | Token 唯一编号 | `随机uuid` |
 
 > 实际只要记住三个：`sub`（用户）、`exp`（过期时间）、`iat`（签发时间）。其他项目阶段再加。

@@ -106,29 +106,19 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
 ## 四大陷阱（常踩）
 
 | 陷阱 | 解法 |
-
 | :--- | :--- |
-
 | `AsyncSession` 和 `Session` 混用 | 统一用 `AsyncSession` + `async_sessionmaker` |
-
 | `expire_on_commit=True` 导致响应后访问属性崩 | 设 `expire_on_commit=False` |
-
 | 关系懒加载在 async 下报错（无事件循环执行 lazy SQL） | 用 `selectinload`/`joinedload` 提前加载，见 ORM N+1 |
-
 | session 没正常关闭导致连接泄露 | 始终用 `async with` 管理生命周期 |
 
 ## 2.0 vs 1.x 关键差异
 
 | 维度 | 1.x | 2.0 |
-
 | :--- | :--- | :--- |
-
 | 查询 API | `session.query(Model)` | `select(Model)` + `execute` |
-
 | 引擎 | `create_engine` | 异步用 `create_async_engine` |
-
 | 映射声明 | `declarative_base()` | `DeclarativeBase`（`mapped_column` 风格） |
-
 | 配置 | `class Config` | `model_config` / `mapped_column` |
 
 ## 原理：异步引擎怎么不阻塞事件循环

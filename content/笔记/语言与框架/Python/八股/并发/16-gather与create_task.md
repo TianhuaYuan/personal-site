@@ -204,17 +204,11 @@ for task in pending:
 ```
 
 | | gather | wait |
-
 | :--- | :--- | :--- |
-
 | 返回值 | 结果列表（按传入顺序） | 两个集合：`(done, pending)` |
-
 | 异常处理 | 默认抛异常；可设 `return_exceptions` | 异常存在 task 里，不自动抛 |
-
 | 超时 | 不支持 | 支持 `timeout` |
-
 | 完成条件 | 全部完成 | 支持 `FIRST_COMPLETED` / `FIRST_EXCEPTION` |
-
 | 使用场景 | "全部完成，给我所有结果" | "等第一个完成就行" 或 "加超时" |
 
 ### 4.5 asyncio.wait_for —— 单个协程超时

@@ -176,13 +176,9 @@ def __exit__(self, exc_type, exc_val, exc_tb):
 ```
 
 | 参数 | 无异常时 | 有异常时 | 举例（除以零） |
-
 | :--- | :--- | :--- | :--- |
-
 | `exc_type` | `None` | `<class 'ZeroDivisionError'>` | 异常的类 |
-
 | `exc_val` | `None` | `ZeroDivisionError('division by zero')` | 异常实例 |
-
 | `exc_tb` | `None` | `<traceback object>` | 调用栈信息 |
 
 ### 1.5 `__exit__` 的返回值：抑制 vs 传播（⭐⭐必考）

@@ -76,17 +76,11 @@ tags:
 #### 常见 DNS 记录类型
 
 | 记录类型 | 含义 | 例子 |
-
 | :--- | :--- | :--- |
-
 | `A` | 域名 → IPv4 地址 | `example.com → 93.184.216.34` |
-
 | `AAAA` | 域名 → IPv6 地址 | `example.com → 2606:...` |
-
 | `CNAME` | 别名 → 真名 | `www.example.com → example.com`（还得再查一次 A 记录） |
-
 | `NS` | 某级域名的权威 DNS 服务器 | `example.com 的 DNS 服务器是 ns1.example.com` |
-
 | `MX` | 邮件服务器 | `给 @example.com 发邮件 → 投递到 mail.example.com` |
 
 ### 2.3 TCP 三次握手
@@ -345,13 +339,9 @@ CSSOM 树没建好，浏览器绝不动手渲染。CSS 越早加载越好 → �
 ## 六、async vs defer
 
 | 加载方式 | 下载行为 | 执行时机 | 保证顺序 | 适用场景 |
-
 | :--- | :--- | :--- | :---: | :--- |
-
 | 普通 `<script>` | 阻塞 DOM，下载+执行都阻塞 | 下载完立刻执行 | 是 | 极少用 |
-
 | `<script async>` | 异步下载，不阻塞 DOM | 下载完立刻执行（可能乱序） | 否 | 独立脚本（统计、广告） |
-
 | `<script defer>` | 异步下载，不阻塞 DOM | DOM 解析完后按书写顺序执行 | 是 | 大部分业务代码 |
 
 **规则**：如果你的 JS 写了 `document.getElementById()` 这种东西，必须用 defer，不然 DOM 还没出来就报错了。
@@ -383,25 +373,15 @@ CSSOM 树没建好，浏览器绝不动手渲染。CSS 越早加载越好 → �
 ## 八、快速问答
 
 | 问题 | 一句话答案 |
-
 | :--- | :--- |
-
 | 输入 URL 到页面展示发生了什么？ | DNS 解析 IP → TCP 三次握手 → TLS 握手 → HTTP 请求 → 服务器响应 → 浏览器解析 HTML 构建 DOM → 解析 CSS 构建 CSSOM → 合体 Render 树 → Layout → Paint → Composite |
-
 | TCP 为什么三次握手不是两次？ | 两次无法阻止历史连接 — 旧的 SYN 延迟到达会让服务器建立无效连接 |
-
 | 强缓存和协商缓存区别？ | 强缓存不发请求直接用（200 from cache），协商缓存发请求问服务器变没变（304） |
-
 | CSS 放 `<head>` 的原因？ | CSS 是渲染阻塞资源，CSSOM 构建完前不渲染，放 head 尽早开始下载避免白屏 |
-
 | JS 放 `<body>` 底部的原因？ | JS 是解析阻塞资源，遇到 `<script>` 暂停 DOM 构建，放底部让 DOM 和页面先出来 |
-
 | async 和 defer 的区别？ | async 下载完立刻执行（乱序，适合独立脚本）；defer DOM 解析完才执行（顺序，适合业务 JS） |
-
 | 什么是重排？ | 改了布局属性（宽高、位置、display）→ 重新 Layout → 贵 |
-
 | 什么是重绘？ | 只改视觉属性（颜色、背景）→ 跳过 Layout → 比重排便宜 |
-
 | transform 和 left 做动画有什么区别？ | `left` 触发重排，`transform` 只触发合成（GPU）→ 性能差距巨大 |
 
 ## 速记卡（面试闪卡）

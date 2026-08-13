@@ -68,13 +68,9 @@ flowchart LR
 **三种解法**：
 
 | 场景 | 推荐方案 |
-
 |:---|:---|
-
 | 只是用 state 算新 state | `setCount(prev => prev + 1)`（函数式更新，绕过闭包） |
-
 | 需要读 state 做其他事 | 加依赖数组 |
-
 | 需要读最新值但不方便重建 Effect | useRef |
 
 ```tsx
@@ -130,13 +126,9 @@ useEffect(() => {
 ### 1.2 cleanup 函数的三种触发时机
 
 | 时机 | 触发条件 | 清理的是哪次 Effect |
-
 |:---|:---|:---|
-
 | 依赖变化 | 依赖变了，准备执行新 Effect 之前 | 上一次 setup 返回的 cleanup |
-
 | 组件卸载 | 组件从 DOM 移除 | 最后一次 setup 返回的 cleanup |
-
 | 依赖不变 | 不触发 | 不做任何事 |
 
 ```tsx
@@ -292,15 +284,10 @@ function AutoFocus() {
 ### 2.3 state vs ref 速查
 
 | | useState | useRef |
-
 |:---|:---|:---|
-
 | 修改触发渲染 | 会 | 不会 |
-
 | 多次渲染间保留值 | 会 | 会 |
-
 | 直接操作 DOM | 不行 | 可以 |
-
 | 异步回调中取最新值 | 小心闭包 | 一直是最新的 |
 
 ---
@@ -437,17 +424,11 @@ const [theme, setTheme] = useLocalStorage("theme", "light");
 ## 速查表
 
 | 概念 | 一句话解释 | 关键代码 |
-
 |:---|:---|:---|
-
 | 闭包陷阱 | Effect 记住的是旧值 | 把用到的变量加进依赖数组 |
-
 | `useRef` | 可变但不触发渲染的便签 | `const r = useRef(0)` → `r.current` |
-
 | ref + DOM | 直接拿到 DOM 元素 | `<div ref={myRef}>` |
-
 | 自定义 Hook | 抽取可复用的逻辑 | `function useXXX() { ... }` |
-
 | cleanup | 组件卸载时擦屁股 | `return () => clearInterval(t)` |
 
 ---

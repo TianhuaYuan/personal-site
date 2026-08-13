@@ -68,19 +68,12 @@ select 和 poll 的本质是一样的——都是"轮询式"的：每次都把�
 ### select vs poll 速记
 
 | | select | poll |
-
 | :--- | :--- | :--- |
-
 | 数据结构 | fd_set (bitmap) | pollfd 数组 |
-
 | fd 上限 | 1024（默认） | 无上限 |
-
 | 内核扫描方式 | O(n) 遍历 | O(n) 遍历 |
-
 | 返回后定位就绪 fd | O(n) 遍历，用 FD_ISSET | O(n) 遍历，检查 revents |
-
 | 每次需要重传 | 是（fd_set 被修改） | 不需要（events 和 revents 分离） |
-
 | 现状 | 基本被淘汰 | 少量遗留系统在用 |
 
 ---

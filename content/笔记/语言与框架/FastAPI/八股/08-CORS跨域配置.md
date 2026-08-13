@@ -95,11 +95,8 @@ sequenceDiagram
 
 
 | 类型 | 条件 | 浏览器行为 |
-
 | :--- | :--- | :--- |
-
 | **简单请求** | GET/POST/HEAD + 安全头（无自定义授权头） | 直接发，响应带 CORS 头即可 |
-
 | **预检请求（preflight）** | 带 `Authorization`、自定义头、非简单方法 | 先发 `OPTIONS` 问权限，过了才发真请求 |
 
 
@@ -157,21 +154,13 @@ app.add_middleware(
 
 
 | 参数 | 作用 | 注意 |
-
 | :--- | :--- | :--- |
-
 | `allow_origins` | 放行的源列表 | `["*"]` 允许全部，但**不能**和 credentials 同用 |
-
 | `allow_origin_regex` | 正则匹配源 | `'https://.*\.example\.org'` |
-
 | `allow_methods` | 放行方法 | 默认 `['GET']`；`['*']` 全放 |
-
 | `allow_headers` | 放行请求头 | `['*']` 全放 |
-
 | `allow_credentials` | 允许凭证 | 为 `True` 时 origins 必须**明确列出**，不能用 `*` |
-
 | `expose_headers` | 暴露给浏览器的响应头 | 自定义 `X-` 头要在这声明 |
-
 | `max_age` | 预检结果缓存秒数 | 默认 600 |
 
 
@@ -203,13 +192,9 @@ origins = os.getenv("CORS_ORIGINS", "").split(",") if os.getenv("CORS_ORIGINS") 
 
 
 | 场景 | 方案 |
-
 | :--- | :--- |
-
 | 本地开发 | Vite/Webpack 代理（浏览器只看到一个源，免 CORS） |
-
 | 生产部署 | `CORSMiddleware`（必须） |
-
 | 移动端/Postman | `CORSMiddleware`（无法用代理） |
 
 

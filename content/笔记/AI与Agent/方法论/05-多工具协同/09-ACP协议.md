@@ -87,11 +87,8 @@ graph LR
 ### 3.2 两种形态
 
 | 形态 | 传输 | 说明 |
-
 |------|------|------|
-
 | 本地 Agent | JSON-RPC over stdio | 作为编辑器子进程运行 |
-
 | 远程 Agent | HTTP / WebSocket | 云或独立基础设施（演进中） |
 
 ### 3.3 Agent Registry（2026-01）

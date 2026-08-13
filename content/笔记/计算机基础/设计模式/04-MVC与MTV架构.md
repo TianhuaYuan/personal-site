@@ -351,13 +351,9 @@ Django 不叫 MVC，叫 MTV。因为 Django 觉得传统命名别扭。
 
 
 | 传统 MVC | Django MTV |
-
 | :--- | :--- |
-
 | Model | Model（没变） |
-
 | View（展示层） | Template（模板） |
-
 | Controller（调度层） | View（请求处理函数） |
 
 
@@ -379,13 +375,9 @@ Django 的哲学："View 应该代表'你看到的东西'。那决定你看到�
 
 
 | 层面 | Django | 你的 FastAPI |
-
 | :--- | :--- | :--- |
-
 | **Model**（数据层） | models.py（SQLAlchemy） | models/db_models.py |
-
 | **Controller**（调度层） | views.py（路由 + 调度） | routers/chat.py |
-
 | **View**（展示层） | templates/（HTML 模板） | views/responses.py（Pydantic） |
 
 

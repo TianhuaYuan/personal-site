@@ -31,13 +31,9 @@ MCP 可以拆成三层看（别被术语吓到，就是一个"信封—管道—
 
 
 | 层 | 是什么 | 生活类比 |
-
 |-|-|-|
-
 | **协议层（Protocol）** | 定义消息长啥样、有哪些方法（tools/call、resources/read…） | 信封上写"收件人/寄件人/正文格式"的规矩 |
-
 | **传输层（Transport）** | 定义消息**怎么在网线上跑** | 用平信、快递还是当面递 |
-
 | **能力层（Capabilities）** | 服务端具体提供哪些 Tools/Resources/Prompts | 仓库里实际有哪些货 |
 
 
@@ -71,21 +67,13 @@ stdio 在本地调试无敌，但生产场景一上"远程"就三个硬伤：
 
 
 | 维度 | stdio | HTTP+SSE（旧，2024-11-05） | **Streamable HTTP（新，2025-03-26）** |
-
 |-|-|-|-|
-
 | 端点数 | 无（走 stdin/stdout） | 2 个：`/sse` 长连接 + `/message` POST | **1 个：`/mcp`（POST 为主）** |
-
 | 长连接 | 不需要 | **必须常年保持 /sse** | 不需要，按需开 SSE 流 |
-
 | 断流后果 | 进程级，整段断开 | **丢消息、要重连重发** | 每段请求独立，断哪段重哪段 |
-
 | 负载均衡 | 不适用 | 脆弱（长连接绑死实例） | **友好（可无状态）** |
-
 | 是否远程 | 否（本地） | 是 | 是 |
-
 | 会话 | 无会话概念 | 有会话但要维持 | **Mcp-Session-Id header 可选会话（稳定版）** |
-
 | 现状 | 仍在用 | **已废弃（2025-11-25 官方标记）** | **官方推荐默认** |
 
 
@@ -363,17 +351,11 @@ graph TD
 
 
 | 时间 | 版本 | 关键变化 |
-
 |-|-|-|
-
 | 2024-11-05 | 初版 | 引入 `stdio` + `HTTP+SSE` 双端点 |
-
 | 2025-03-26 | 大改 | **Streamable HTTP** 登场，单端点 `/mcp`；引入 tool annotations；短暂加 JSON-RPC 批处理 |
-
 | 2025-06-18 | 精修 | 结构化输出 `outputSchema`/`structuredContent`/`title`；**移除批处理**；Elicitation；强制 `MCP-Protocol-Version` 头 |
-
 | 2025-11-25 | 当前稳定版 | HTTP+SSE **正式废弃**；OAuth/OIDC 增强；治理结构化；JSON Schema 2020-12 默认 |
-
 | 2026-07-28 | RC（最终版同日发布） | **无状态化**：去握手、去会话；MRTR；`Mcp-Method`/`Mcp-Name` 头；`ttlMs`/`cacheScope` 缓存；**移除 Resumable SSE**；Roots/Sampling/Logging 标记废弃 |
 
 

@@ -102,13 +102,9 @@ sequenceDiagram
 nvidia-device-plugin 的生命周期遵循标准的 Device Plugin 协议：
 
 | 阶段 | gRPC 方法 | 做什么 |
-
 |------|-----------|--------|
-
 | **发现** | `ListAndWatch()` | 持续向 kubelet 上报 GPU 设备列表和健康状态 |
-
 | **分配** | `Allocate()` | kubelet 决定把 GPU 分配给某 Pod 时，调用此方法 |
-
 | **移除** | `Remove()` | Pod 被删除时，回收 GPU 资源 |
 
 > **学习重点**：GPU 作为扩展资源，调度时只看 `limits`（不看 `requests`），且 `requests` 必须等于 `limits`。一个 GPU 只能分配给一个容器——这是硬性隔离。
@@ -148,19 +144,12 @@ graph TD
 ```
 
 | 层次 | 组件 | 作用 |
-
 |------|------|------|
-
 | **第1层** | NVIDIA Driver | 与 GPU 硬件通信 |
-
 | **第1层** | NVIDIA Container Toolkit | 让容器运行时能访问 GPU |
-
 | **第2层** | containerd + CRI 配置 | 运行时层面启用 GPU 支持 |
-
 | **第2层** | kubelet | 发现并上报 GPU 资源 |
-
 | **第3层** | nvidia-device-plugin | 向 kubelet 注册 `nvidia.com/gpu` 资源 |
-
 | **第3层** | kube-scheduler | 根据 GPU 可用数量调度 Pod |
 
 ---
@@ -355,13 +344,9 @@ graph TD
 ```
 
 | 方案 | 原理 | 隔离性 | 适用场景 |
-
 |------|------|--------|----------|
-
 | **Time-Slicing** | 多个容器轮流使用同一 GPU | 无隔离，互相影响 | 开发测试 / 推理小模型 |
-
 | **MIG** | 硬件级切分 GPU 为多个实例 | 强隔离，独立显存/算力 | A100/H100 多租户 |
-
 | **MPS** | 共享 CUDA 上下文，软件级隔离 | 中等隔离 | 推理服务密集部署 |
 
 ### Time-Slicing 配置示例

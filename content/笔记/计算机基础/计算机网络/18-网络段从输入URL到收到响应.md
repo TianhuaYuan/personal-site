@@ -20,11 +20,8 @@ tags:
 你输入：https://www.example.com:443/path?q=hello#section
 
 | 部分 | scheme | host | port | path | query | hash |
-
 | :--- | :--- | :--- | :---: | :--- | :--- | :--- |
-
 | 值 | https | www.example.com | 443 | /path | ?q=hello | #section |
-
 | 意思 | 用什么协议 | 找谁（要解析成IP） | 端口 | 路径 | 参数 | 锚点（不发给服务器） |
 
 **浏览器自己先干两件事：**
@@ -72,13 +69,9 @@ graph TD
 ```
 
 | 层级 | 服务器名称 | 存了什么？ | 例子 |
-
 | :--- | :--- | :--- | :--- |
-
 | 第一层 | 根域名服务器（Root DNS） | 全球 13 组，存所有顶级域名的"下一级找谁" | .com 的 NS 是谁<br/>.cn 的 NS 是谁 |
-
 | 第二层 | 顶级域名服务器（TLD DNS） | 存某个顶级域下所有二级域名的"下一级找谁" | example.com 的 NS 是谁<br/>baidu.com 的 NS 是谁 |
-
 | 第三层 | 权威 DNS 服务器（Authoritative） | 真正存 IP 的地方！域名和 IP 的最终对应关系 | www.example.com → IP<br/>mail.example.com → IP |
 
 ```text
@@ -130,13 +123,9 @@ graph LR
 ```
 
 | 层级 | NS 记录（下一步找谁） | A 记录（最终答案） |
-
 |:---|:---|:---|
-
 | 根 DNS | ".com 归这一组服务器管，去问它们" | |
-
 | .com TLD | "example.com 归 ns1.example.com 管，去问它" | |
-
 | example.com | | "www.example.com 的 IP 是 93.184.216.34" ← 终于拿到 IP！ |
 
 ---
@@ -242,17 +231,11 @@ sequenceDiagram
 #### 1.2.4 DNS 的常见记录类型
 
 | 记录类型 | 含义 | 例子 |
-
 | :--- | :--- | :--- |
-
 | `A` | 域名 → IPv4 地址 | `example.com → 93.184.216.34` |
-
 | `AAAA` | 域名 → IPv6 地址 | `example.com → 2606:2800:220:1:248:1893:25c8:1946` |
-
 | `CNAME` | 别名 → 真名 | `www.example.com → example.com`（还得再查一次 A 记录） |
-
 | `NS` | 某级域名的权威 DNS 服务器 | `example.com 的 DNS 服务器是 ns1.example.com` |
-
 | `MX` | 邮件服务器 | `给 @example.com 发邮件 → 投递到 mail.example.com` |
 
 ---
@@ -424,17 +407,11 @@ sequenceDiagram
 **映射到 TLS：**
 
 | 快递类比 | TLS 术语 | 大白话 |
-
 | :--- | :--- | :--- |
-
 | 开着的挂锁 | 服务器公钥（Public Key） | 谁都能拿到的加密工具——只能"锁"，不能"开" |
-
 | 挂锁钥匙 | 服务器私钥（Private Key） | 服务器死死攥手里的解密工具——能"开"这把锁 |
-
 | 密码箱 | 对称密钥（Session Key） | 双方共享的临时密码——加解密都快，但只能这两方知道 |
-
 | 把密码箱钥匙锁进挂锁 | `ClientKeyExchange` | 客户端用公钥加密对称密钥 → 只有服务器能用私钥解开 |
-
 | 确认双方都有钥匙 | `Finished` | 双方各发一条"握手结束"，用 Session Key 加密——能互相解密就说明密钥一致 |
 
 #### 1.4.1 核心思路：非对称加密协商密钥 → 对称加密传数据
@@ -680,17 +657,11 @@ TLS 1.3 = 1 RTT
 TCP(1 RTT) + TLS 1.3(1 RTT) = 2 RTT 总共
 
 | RTT | TLS 1.2 (2 RTT) | TLS 1.3 (1 RTT) |
-
 |:---:|:---|:---|
-
 | RTT=0 | ClientHello ──→ | ClientHello+密钥 ──→ |
-
 | RTT=0.5 | ←── ServerHello | ←── 全部回复 |
-
 | RTT=1 | ClientKeyExchange ──→ | Finished + HTTP! ✅ |
-
 | RTT=1.5 | ←── Finished | |
-
 | RTT=2 | HTTP 请求 ✅ | |
 
 > **一句话讲清**："TCP 三次握手用掉 1 个 RTT——从发 SYN 到收 SYN+ACK。TLS 1.2 握手需要 4 个半往返 = 2 个 RTT。所以 HTTPS 首次连接总共 3 个 RTT 后才能发 HTTP 请求。TLS 1.3 把服务器回复合并成一次，握手压到 1 RTT，总共只需 2 RTT。如果用户之前连过这个服务器，还可以用 Session Resumption（0-RTT）——连 TLS 握手都省了。"
@@ -793,21 +764,13 @@ Cookie: session_id=abc123
 ```
 
 | 方法 | 含义 | 幂等？ | 缓存？ |
-
 | :--- | :--- | :---: | :---: |
-
 | `GET` | 拿资源 | ✅ | ✅ 可缓存 |
-
 | `POST` | 提交数据（创建资源） | ❌ | ❌ 不可缓存 |
-
 | `PUT` | 全量更新 | ✅ | ❌ |
-
 | `PATCH` | 部分更新 | ❌ | ❌ |
-
 | `DELETE` | 删除 | ✅ | ❌ |
-
 | `HEAD` | 只要响应头，不要体 | ✅ | ✅ |
-
 | `OPTIONS` | 问服务器支持哪些方法——CORS 预检请求（跨域请求前浏览器先发个 OPTIONS 问"我能请求你吗"） | ✅ | ❌ |
 
 #### 1.5.2 HTTP 响应报文结构
@@ -1061,11 +1024,8 @@ HTML（index.html）是整个应用的入口——它负责告诉浏览器："�
 ##### 一句话总结
 
 | 文件类型 | 策略 | 为什么？ |
-
 |:---|:---|:---|
-
 | JS/CSS | 强缓存 | 内容变了 = hash 变了 = 新 URL，不怕缓存冲突 |
-
 | HTML (index) | 协商缓存 (no-cache) | HTML 是入口，必须保证每次拿到最新的，才能引用到最新的 JS/CSS 文件名 |
 
 > **类比——快递站：** JS/CSS = 快递柜里的包裹（包裹号 = hash，内容变了就换柜子号）；HTML = 快递柜的显示屏（必须每次刷新看最新——"你的包裹在几号柜"）

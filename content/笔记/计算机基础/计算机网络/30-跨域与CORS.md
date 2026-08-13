@@ -47,19 +47,12 @@ https://www.example.com:443/path/page.html
 
 
 | URL A | URL B | 结果 | 原因 |
-
 | :--- | :--- | :--- | :--- |
-
 | `http://a.com/page` | `http://a.com/api` | ✅ 同源 | 路径不同无所谓 |
-
 | `http://a.com` | `https://a.com` | ❌ 跨域 | 协议不同 |
-
 | `http://a.com` | `http://b.com` | ❌ 跨域 | 域名不同 |
-
 | `http://a.com` | `http://a.com:8080` | ❌ 跨域 | 端口不同 |
-
 | `http://www.a.com` | `http://api.a.com` | ❌ 跨域 | 子域名不同也算不同域名 |
-
 | `http://192.168.1.1` | `http://a.com` | ❌ 跨域 | IP 和域名指向同一台机器也跨 |
 
 
@@ -163,15 +156,10 @@ Access-Control-Allow-Origin: *
 
 
 | 条件 | 要求 |
-
 | :--- | :--- |
-
 | 方法 | 仅限 `GET`、`HEAD`、`POST` |
-
 | Content-Type | 仅限 `application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain` |
-
 | 请求头 | 只包含浏览器默认允许的头，无自定义头（如 `Authorization`、`X-Token` 等） |
-
 | 其他 | 没用 `ReadableStream`、没注册 `XMLHttpRequest.upload` 事件监听 |
 
 
@@ -193,15 +181,10 @@ Access-Control-Allow-Origin: *
 
 
 | 场景 | 举例 | 会预检吗 |
-
 | :--- | :--- | :---: |
-
 | POST 发 JSON | `Content-Type: application/json` | ✅ 会 |
-
 | 带 Authorization | `Authorization: Bearer xxx` | ✅ 会 |
-
 | 自定义 Header | `X-Request-Id: 12345` | ✅ 会 |
-
 | 非简单方法 | PUT、DELETE、PATCH | ✅ 会 |
 
 
@@ -261,19 +244,12 @@ sequenceDiagram
 
 
 | 响应头 | 作用 | 示例 |
-
 | :--- | :--- | :--- |
-
 | `Access-Control-Allow-Origin` | 允许的域名 | `https://example.com` 或 `*` |
-
 | `Access-Control-Allow-Methods` | 允许的方法 | `GET, POST, PUT, DELETE` |
-
 | `Access-Control-Allow-Headers` | 允许的请求头 | `Content-Type, Authorization` |
-
 | `Access-Control-Allow-Credentials` | 是否允许携带 Cookie | `true` |
-
 | `Access-Control-Max-Age` | 预检结果缓存时间（秒） | `86400`（24小时） |
-
 | `Access-Control-Expose-Headers` | 允许 JS 读取的响应头 | `X-Total-Count, Link` |
 
 
@@ -333,15 +309,10 @@ Access-Control-Allow-Credentials: true
 
 
 | 方案 | 原理 | 适用场景 |
-
 | :--- | :--- | :--- |
-
 | **CORS 后端配置** | 服务器加 `Access-Control-Allow-*` 响应头 | 前后端分离、微服务（最推荐） |
-
 | **JSONP** | 利用 `<script>` 标签不受同源限制，通过回调函数获取数据 | 只支持 GET，老旧方案，基本不推荐 |
-
 | **Nginx 反向代理** | 让浏览器请求同源的前端域名，Nginx 转发到后端 | 生产环境最常用 |
-
 | **Webpack DevServer Proxy** | 开发环境代理到后端 | 本地开发 |
 
 

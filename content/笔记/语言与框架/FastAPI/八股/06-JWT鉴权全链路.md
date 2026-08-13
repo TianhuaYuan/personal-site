@@ -185,15 +185,10 @@ pwd.verify("明文密码", hashed)              # 登录时比对, 返回 bool
 ## JWT vs Session（必比）
 
 | 维度 | JWT | Session（服务端会话） |
-
 | :--- | :--- | :--- |
-
 | 状态 | 无状态（令牌自包含） | 有状态（服务端存 session） |
-
 | 注销/吊销 | 难（令牌到期前一直有效，需黑名单） | 易（删服务端记录即可） |
-
 | 跨服务 | 友好（微服务/移动端通用） | 需共享 session 存储 |
-
 | 性能 | 每次验签名（快，免查库） | 每次查 session 存储 |
 
 ## 安全红线
@@ -273,13 +268,9 @@ sequenceDiagram
 术语对应：
 
 | 说法 | 术语 |
-
 |------|------|
-
 | 服务器记的"本子" | Session（会话数据） |
-
 | 给你的编号"abc123" | session_id |
-
 | 你每次请求带着编号 | Cookie |
 
 ### Session 的问题
@@ -2059,17 +2050,11 @@ flowchart TB
 术语对应：
 
 | 说法 | 术语 |
-
 |------|------|
-
 | 密码 | 密钥 (secret key) |
-
 | 数学运算 | HMAC-SHA256 (HS256) |
-
 | 算出的指纹 | 签名 (signature) |
-
 | 内容+指纹一起发给用户 | 签发 Token |
-
 | 服务器检查指纹 | 验证 Token |
 
 > 把 HS256 理解成一个黑盒：`f(内容, 密码) → 指纹`。同一个输入永远输出同一个指纹，换一点内容指纹就全变了。
@@ -2141,19 +2126,12 @@ flowchart LR
 ## Payload 标准字段
 
 | 字段 | 全称 | 含义 | 示例 |
-
 |------|------|------|------|
-
 | `sub` | Subject | 这个 Token 是谁的——通常写 user_id | `"1"` |
-
 | `iat` | Issued At | 什么时候签发的 | `1719500000` |
-
 | `exp` | Expiration | 什么时候过期 | `1719501800`（30分钟后） |
-
 | `iss` | Issuer | 谁签发的——写你的应用名 | `"my-fastapi-app"` |
-
 | `aud` | Audience | 谁能用这个 Token | `"my-frontend"` |
-
 | `jti` | JWT ID | Token 唯一编号 | `随机uuid` |
 
 > 实际只要记住三个：`sub`（用户）、`exp`（过期时间）、`iat`（签发时间）。其他项目阶段再加。
@@ -2285,13 +2263,9 @@ pip install "python-jose[cryptography]" passlib[bcrypt] python-multipart
 ```
 
 | 包 | 用途 |
-
 |---|------|
-
 | python-jose | JWT 签发 (encode) + 验证 (decode) |
-
 | passlib | 密码哈希（bcrypt 算法） |
-
 | python-multipart | FastAPI 解析 form-data（登录接口用） |
 
 ---

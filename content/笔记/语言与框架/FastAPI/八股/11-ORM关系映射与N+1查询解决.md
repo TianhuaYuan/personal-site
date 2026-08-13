@@ -41,13 +41,9 @@ tags:
 
 
 | 关系 | 代码关键 | 类比 |
-
 | :--- | :--- | :--- |
-
 | 一对一 | `uselist=False` / `relationship("Profile", uselist=False)` | 一个人一个身份证 |
-
 | 一对多 | `relationship("Post")` 返回集合 | 一个人多篇文章 |
-
 | 多对多 | `secondary=association_table` 中间表 | 文章和标签 |
 
 
@@ -119,15 +115,10 @@ graph LR
 
 
 | 方案 | 行为 | N+1 风险 |
-
 | :--- | :--- | :--- |
-
 | `lazy="select"`（默认） | 访问关联时才查 | 🔴 最高 |
-
 | `joinedload` | LEFT JOIN 一次性查出 | 🟢 无（一对多需小心分页重复行） |
-
 | **`selectinload`**（推荐） | 先查主表，再用 `IN` 查关联 | 🟢 无 |
-
 | `subqueryload` | 用子查询一次查出 | 🟢 无 |
 
 

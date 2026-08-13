@@ -48,11 +48,8 @@ tags:
 ### 计算量对比
 
 | 阶段 | 计算量 |
-
 | ------ | -------- |
-
 | 无 KV Cache | O(n² × d)，每步都重新计算 |
-
 | 有 KV Cache | O(n × d)，只需计算新 token 的 Q/K/V |
 
 ### KV Cache 的显存占用
@@ -100,43 +97,28 @@ graph LR
 ### 性能对比
 
 | 指标 | 标准 Attention | FlashAttention |
-
 | ------ | --------------- | ---------------- |
-
 | HBM 访问次数 | O(N²) | O(N²/M)，M 为 SRAM 大小 |
-
 | 显存占用 | O(N²) | O(N) |
-
 | 计算复杂度 | O(N²d) | O(N²d)（相同） |
-
 | 速度提升 | 基准 | **2-4x 加速** |
 
 ### FlashAttention-2 改进
 
 | 改进 | 说明 |
-
 | ------ | ------ |
-
 | 减少非矩阵乘法运算 | 将 softmax 等操作融合到 kernel 中 |
-
 | 优化并行化 | 在序列长度维度上并行，提升 GPU 利用率 |
-
 | 改善工作分配 | 更均匀地分配计算任务到 GPU 线程块 |
 
 ## 其他推理优化技术
 
 | 技术 | 说明 | 效果 |
-
 | ------ | ------ | ------ |
-
 | 量化 (Quantization) | FP16→INT8/INT4 | 减少显存，加速计算 |
-
 | 稀疏注意力 | 只计算部分位置的注意力 | 降低计算量 |
-
 | 线性注意力 | 用核函数近似 softmax | 将复杂度降到 O(n) |
-
 | 投机解码 | 用小模型草拟，大模型验证 | 提升生成速度 |
-
 | Continuous Batching | 动态批处理 | 提升吞吐量 |
 
 ---
@@ -198,17 +180,11 @@ Flash 分块留 SRAM，提速四倍显存轻；
 ## 快速问答
 
 | 问题 | 参考答案 |
-
 | ------ | --------- |
-
 | KV Cache 的原理？ | 将自回归生成中已计算的 K/V 缓存起来，每步只计算新 token 的 Q/K/V，避免重复计算。计算量从 O(n²d) 降到 O(nd) |
-
 | Transformer 的计算复杂度是多少？ | Self-Attention 的时间复杂度和空间复杂度都是 O(n² × d)，其中 n 是序列长度，d 是模型维度 |
-
 | FlashAttention 解决了什么问题？ | 传统 Attention 需要将完整的 N×N 矩阵写入 HBM，FlashAttention 通过分块计算和 kernel fusion 减少 HBM 访问，提升速度并降低显存占用 |
-
 | KV Cache 的显存占用如何估算？ | 2 × n_layers × n_heads × seq_len × d_head × dtype_bytes。LLaMA-2 7B 在 4096 长度下约 2GB |
-
 | 如何减少 KV Cache 的显存占用？ | ① 使用 MQA/GQA 减少 KV 头数 ② 量化 KV Cache 到 INT8/INT4 ③ 动态淘汰旧的 KV Cache |
 
 相关链接

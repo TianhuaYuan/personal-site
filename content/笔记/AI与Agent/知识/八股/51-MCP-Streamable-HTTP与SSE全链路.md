@@ -19,11 +19,8 @@ tags:
 ## 传输层演进
 
 | 阶段 | 方式 | 特点 |
-
 | ------ | ------ | ------ |
-
 | 初始 | HTTP + SSE | POST 发请求，SSE 接响应流 |
-
 | 当前 | Streamable HTTP | 单端点、可升级、更灵活 |
 
 ## HTTP + SSE 模式（传统）
@@ -79,15 +76,10 @@ sequenceDiagram
 ### 关键特性
 
 | 特性 | 说明 |
-
 | ------ | ------ |
-
 | 单端点 | 所有请求发往同一个 URL |
-
 | 可升级响应 | 从普通 HTTP 升级为 SSE 流 |
-
 | 断线重连 | 支持 Last-Event-ID 恢复 |
-
 | 会话管理 | 通过 Mcp-Session-Id Header |
 
 ### ASGI 挂载
@@ -133,29 +125,19 @@ location /api/mcp/ {
 Streamable HTTP 的认证流程：
 
 | 步骤 | 请求 | 响应 |
-
 | ------ | ------ | ------ |
-
 | 1. 发现 | GET /mcp/.well-known/oauth-authorization-server | OAuth 元数据 |
-
 | 2. 授权 | OAuth 2.0 流程 | Access Token |
-
 | 3. 连接 | POST /mcp（带 Bearer Token） | Mcp-Session-Id |
-
 | 4. 通信 | POST /mcp（带 Session-Id） | JSON-RPC 响应/SSE |
 
 ## 两种传输方式的选择
 
 | 场景 | 推荐方式 | 理由 |
-
 | ------ |----------| ------ |
-
 | 本地开发/CLI | stdio | 简单、安全、无网络暴露 |
-
 | 单用户桌面应用 | Streamable HTTP | 灵活、支持流式 |
-
 | 多用户远程服务 | Streamable HTTP | 会话管理、断线重连 |
-
 | 嵌入式/边缘设备 | stdio | 资源占用最小 |
 
 ---
@@ -184,13 +166,9 @@ Streamable HTTP 的认证流程：
 MCP 可以拆成三层看（别被术语吓到，就是一个"信封—管道—内容"的关系）：
 
 | 层 | 是什么 | 生活类比 |
-
 |-|-|-|
-
 | **协议层（Protocol）** | 定义消息长啥样、有哪些方法（tools/call、resources/read…） | 信封上写"收件人/寄件人/正文格式"的规矩 |
-
 | **传输层（Transport）** | 定义消息**怎么在网线上跑** | 用平信、快递还是当面递 |
-
 | **能力层（Capabilities）** | 服务端具体提供哪些 Tools/Resources/Prompts | 仓库里实际有哪些货 |
 
 > **关键认知**：传输层只负责"把一段 JSON-RPC 文本可靠送达"，**不关心里面是调用工具还是读资源**。所以换传输层（stdio → Streamable HTTP）时，上层协议和能力**一行都不用改**——这正是"分层"的价值。（来源：MCP 官方规范 Transports 章节）
@@ -210,21 +188,13 @@ stdio 在本地调试无敌，但生产场景一上"远程"就三个硬伤：
 ## 2. 三种传输横向对比
 
 | 维度 | stdio | HTTP+SSE（旧，2024-11-05） | **Streamable HTTP（新，2025-03-26）** |
-
 |-|-|-|-|
-
 | 端点数 | 无（走 stdin/stdout） | 2 个：`/sse` 长连接 + `/message` POST | **1 个：`/mcp`（POST 为主）** |
-
 | 长连接 | 不需要 | **必须常年保持 /sse** | 不需要，按需开 SSE 流 |
-
 | 断流后果 | 进程级，整段断开 | **丢消息、要重连重发** | 每段请求独立，断哪段重哪段 |
-
 | 负载均衡 | 不适用 | 脆弱（长连接绑死实例） | **友好（可无状态）** |
-
 | 是否远程 | 否（本地） | 是 | 是 |
-
 | 会话 | 无会话概念 | 有会话但要维持 | **Mcp-Session-Id header 可选会话（稳定版）** |
-
 | 现状 | 仍在用 | **已废弃（2025-11-25 官方标记）** | **官方推荐默认** |
 
 > ⚠️ **版本红线**：网上不少老教程说"HTTP+SSE 在 2025-05 废弃"，**准确说法是 2025-11-25 规范正式把 HTTP+SSE 标记为废弃**（来源：MCP 规范版本史 / yuuine 生态盘点 2026）。写代码请以你依赖的 SDK 实际支持版本为准。
@@ -412,17 +382,11 @@ graph TD
 ## 6. 演进时间线（🔴 高优）
 
 | 时间 | 版本 | 关键变化 |
-
 |-|-|-|
-
 | 2024-11-05 | 初版 | 引入 `stdio` + `HTTP+SSE` 双端点 |
-
 | 2025-03-26 | 大改 | **Streamable HTTP** 登场，单端点 `/mcp`；引入 tool annotations；短暂加 JSON-RPC 批处理 |
-
 | 2025-06-18 | 精修 | 结构化输出 `outputSchema`/`structuredContent`/`title`；**移除批处理**；Elicitation；强制 `MCP-Protocol-Version` 头 |
-
 | 2025-11-25 | 当前稳定版 | HTTP+SSE **正式废弃**；OAuth/OIDC 增强；治理结构化；JSON Schema 2020-12 默认 |
-
 | 2026-07-28 | RC（最终版同日发布） | **无状态化**：去握手、去会话；MRTR；`Mcp-Method`/`Mcp-Name` 头；`ttlMs`/`cacheScope` 缓存；**移除 Resumable SSE**；Roots/Sampling/Logging 标记废弃 |
 
 > 实战：Atlassian 已于 2026-06-30 关闭其远程 MCP 的 SSE 端点——旧传输退场是实打实的（来源：agenticwire《FastMCP Streamable HTTP》）。
@@ -574,13 +538,9 @@ A：传输只搬信，换管零改动；
 ## 快速问答
 
 | 问题 | 参考答案 |
-
 | ------ | --------- |
-
 | Streamable HTTP 相比传统 HTTP+SSE 的改进？ | 单端点处理所有请求，支持从普通HTTP升级为SSE流，支持断线重连和会话管理 |
-
 | MCP 目前的局限性？ | ① 协议还在演进中 ② 生态尚不成熟 ③ 远程部署的安全性需加强 ④ 缺乏成熟的监控和治理工具 |
-
 | 如何选择 MCP 传输方式？ | 本地用 stdio（简单安全），远程用 Streamable HTTP（灵活支持流式和会话管理） |
 
 ## 相关链接

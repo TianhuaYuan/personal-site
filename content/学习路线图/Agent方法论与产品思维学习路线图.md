@@ -19,13 +19,9 @@ created: "2026-08-12"
 
 
 | 标记 | 含义 |
-
 | :-: | --- |
-
 | 🔴 重点 | 核心心智模型，必须内化 |
-
 | 🟡 进阶 | 实战技巧，能落地 |
-
 | 🟢 了解 | 概念认知 |
 
 
@@ -35,47 +31,26 @@ created: "2026-08-12"
 
 
 | 排名 | 方法 / 认知 | 模块 |
-
 | :-: | --- | --- |
-
 | 1 | 四层模型演进：Prompt→Context→Harness→Loop | 认知 |
-
 | 2 | Prompt 2.0 四大黄金法则 | Prompt |
-
 | 3 | 给目标不给步骤 | Prompt |
-
 | 4 | 设计反馈闭环（execute→evaluate→adjust） | Prompt |
-
 | 5 | Lost in the Middle 与首末重注入 | Context |
-
 | 6 | Attention Budget 与指令天花板（~150 条） | Context |
-
 | 7 | 渐进式加载 + 上下文压缩三级策略 | Context |
-
 | 8 | Recency Effect 利用 | Context |
-
 | 9 | 记忆污染识别与纠错 | Context |
-
 | 10 | Skill 九要素结构 + Gotchas 优先 | Skill |
-
 | 11 | CLAUDE.md / AGENTS.md 分工 | Skill |
-
 | 12 | MCP / A2A / ACP 协议区别 | 协同 |
-
 | 13 | 终止条件必须机器可检查 | Loop |
-
 | 14 | 预算护栏必设（Token/步数） | Loop |
-
 | 15 | 断路器 / 看门狗熔断 | Loop |
-
 | 16 | Workflow vs Agent 选型判断 | 产品化 |
-
 | 17 | 四步翻译（需求→方案） | 产品化 |
-
 | 18 | 降级路径设计 | 产品化 |
-
 | 19 | 三维评估 + LLM-as-Judge | 产品化 |
-
 | 20 | Human-in-the-Loop 时机判断 | 产品化 |
 
 

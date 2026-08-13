@@ -62,17 +62,11 @@ graph LR
 ```
 
 | 状态 | 说明 |
-
 |------|------|
-
 | Pending | 等待调度 |
-
 | Running | 运行中 |
-
 | Succeeded | 成功完成 |
-
 | Failed | 失败 |
-
 | Unknown | 未知状态 |
 
 ### 1.3 Pod配置示例
@@ -143,15 +137,10 @@ graph LR
 ### 2.2 Service类型
 
 | 类型 | 说明 | 适用场景 |
-
 |------|------|----------|
-
 | ClusterIP | 集群内部访问 | 内部服务 |
-
 | NodePort | 节点端口暴露 | 开发测试 |
-
 | LoadBalancer | 云负载均衡 | 生产环境 |
-
 | ExternalName | 外部服务映射 | 外部服务 |
 
 ### 2.3 Service配置示例

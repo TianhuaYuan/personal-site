@@ -1,0 +1,55 @@
+---
+title: "实战"
+tags: [索引]
+created: "2026-08-13"
+---
+
+# 实战
+
+> 本目录共 43 个条目，按名称组织。
+
+- [[AI与Agent/知识/实战/00-AI|00-AI]]
+- [[AI与Agent/知识/实战/01-Token计费原理-Temperature控制-SystemPrompt层级|01-Token计费原理-Temperature控制-SystemPrompt层级]]
+- [[AI与Agent/知识/实战/02-LLM本质-API调用封装|02-LLM本质-API调用封装]]
+- [[AI与Agent/知识/实战/03-多模型后端抽象|03-多模型后端抽象]]
+- [[AI与Agent/知识/实战/04-Embedding向量化原理+语义搜索场景|04-Embedding向量化原理+语义搜索场景]]
+- [[AI与Agent/知识/实战/05-Chroma向量数据库安装入库检索|05-Chroma向量数据库安装入库检索]]
+- [[AI与Agent/知识/实战/06-RAG检索增强生成流程|06-RAG检索增强生成流程]]
+- [[AI与Agent/知识/实战/07-分块策略：chunk_sizeoverlap选择、语义分块|07-分块策略：chunk_sizeoverlap选择、语义分块]]
+- [[AI与Agent/知识/实战/08-混合检索：向量+BM25+RRF融合|08-混合检索：向量+BM25+RRF融合]]
+- [[AI与Agent/知识/实战/10-RAG评估：检索指标+生成指标|10-RAG评估：检索指标+生成指标]]
+- [[AI与Agent/知识/实战/11-AgenticRAG：LLM主动决策多次检索vs传统单次被动检索|11-AgenticRAG：LLM主动决策多次检索vs传统单次被动检索]]
+- [[AI与Agent/知识/实战/12-Self-RAG：自我反思+自纠正闭环|12-Self-RAG：自我反思+自纠正闭环]]
+- [[AI与Agent/知识/实战/13-RAG参数调优：网格搜索实验框架|13-RAG参数调优：网格搜索实验框架]]
+- [[AI与Agent/知识/实战/14-jieba分词+BM25关键词检索|14-jieba分词+BM25关键词检索]]
+- [[AI与Agent/知识/实战/15-Agent架构与工具调用|15-Agent架构与工具调用]]
+- [[AI与Agent/知识/实战/16-ToolDescription设计铁律|16-ToolDescription设计铁律]]
+- [[AI与Agent/知识/实战/17-工具系统：定义→注册→发现→调用|17-工具系统：定义→注册→发现→调用]]
+- [[AI与Agent/知识/实战/20-MCPServer实现：FastMCP+JWT认证中间件+contextvars|20-MCPServer实现：FastMCP+JWT认证中间件+contextvars]]
+- [[AI与Agent/知识/实战/21-MCPTransport：StreamableHTTP→ASGI子应用挂载+JSON-RPC2.0|21-MCPTransport：StreamableHTTP→ASGI子应用挂载+JSON-RPC2.0]]
+- [[AI与Agent/知识/实战/22-MCPClient：自定义客户端+JSON-RPCoverHTTP+连接池+幂等重连|22-MCPClient：自定义客户端+JSON-RPCoverHTTP+连接池+幂等重连]]
+- [[AI与Agent/知识/实战/23-MCPTool-Resource定义与注册模式|23-MCPTool-Resource定义与注册模式]]
+- [[AI与Agent/知识/实战/24-Human-in-the-loop：人工介入兜底与敏感操作审批机制|24-Human-in-the-loop：人工介入兜底与敏感操作审批机制]]
+- [[AI与Agent/知识/实战/26-工具幂等性与副作用控制：防止重复执行的工程手段|26-工具幂等性与副作用控制：防止重复执行的工程手段]]
+- [[AI与Agent/知识/实战/27-指数退避重试：ExponentialBackoff+Jitter|27-指数退避重试：ExponentialBackoff+Jitter]]
+- [[AI与Agent/知识/实战/28-降级路径（Degradation）：某环节失败→回退到次优但可用方案|28-降级路径（Degradation）：某环节失败→回退到次优但可用方案]]
+- [[AI与Agent/知识/实战/29-熔断模式-CircuitBreaker|29-熔断模式-CircuitBreaker]]
+- [[AI与Agent/知识/实战/30-Fallback兜底值设计|30-Fallback兜底值设计]]
+- [[AI与Agent/知识/实战/31-短期记忆：当前任务轨迹+工具结果缓存|31-短期记忆：当前任务轨迹+工具结果缓存]]
+- [[AI与Agent/知识/实战/32-长期记忆：跨会话用户偏好、历史持久化|32-长期记忆：跨会话用户偏好、历史持久化]]
+- [[AI与Agent/知识/实战/33-上下文治理：多轮任务上下文越来越长的处理策略|33-上下文治理：多轮任务上下文越来越长的处理策略]]
+- [[AI与Agent/知识/实战/34-上下文压缩：任务摘要-文件摘要-过程笔记|34-上下文压缩：任务摘要-文件摘要-过程笔记]]
+- [[AI与Agent/知识/实战/35-重复状态识别：避免Agent反复读同一文件或重复调用同一工具|35-重复状态识别：避免Agent反复读同一文件或重复调用同一工具]]
+- [[AI与Agent/知识/实战/36-Reflexion：带自我反思的Agent|36-Reflexion：带自我反思的Agent]]
+- [[AI与Agent/知识/实战/37-Multi-Agent协作模式|37-Multi-Agent协作模式]]
+- [[AI与Agent/知识/实战/38-Agent成本控制：Token用量分析+三级模型路由+语义缓存|38-Agent成本控制：Token用量分析+三级模型路由+语义缓存]]
+- [[AI与Agent/知识/实战/39-Agent评测体系：benchmark-case-指标设计|39-Agent评测体系：benchmark-case-指标设计]]
+- [[AI与Agent/知识/实战/40-LLM-as-Judge评测工具链：Ragas-DeepEval-Langfuse配置与接入|40-LLM-as-Judge评测工具链：Ragas-DeepEval-Langfuse配置与接入]]
+- [[AI与Agent/知识/实战/41-错误Patch回滚-验证-再尝试机制|41-错误Patch回滚-验证-再尝试机制]]
+- [[AI与Agent/知识/实战/42-可观测性工具链实操：Langfuse-Ragas-DeepEval链路追踪与评测|42-可观测性工具链实操：Langfuse-Ragas-DeepEval链路追踪与评测]]
+- [[AI与Agent/知识/实战/43-Agent回归测试体系：基线建立-Case管理-自动化流水线|43-Agent回归测试体系：基线建立-Case管理-自动化流水线]]
+- [[AI与Agent/知识/实战/44-LangChain框架入门|44-LangChain框架入门]]
+- [[AI与Agent/知识/实战/45-LangGraph框架：StateGraph-Node-Edge-Checkpoint|45-LangGraph框架：StateGraph-Node-Edge-Checkpoint]]
+- [[AI与Agent/知识/实战/46-LangGraphMemorySaverCheckpoint|46-LangGraphMemorySaverCheckpoint]]
+
+- 回到 [[AI与Agent/知识/index|知识]]

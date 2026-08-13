@@ -139,17 +139,11 @@ for i in range(max_iterations):
 ## 核心要点
 
 | 要点 | 速记 |
-
 |------|------|
-
 | 核心 | Actor→Evaluator→Reflection→Memory→重试 |
-
 | 类比 | 拒稿后写 Response to Reviewers |
-
 | 数据 | HumanEval 80%→91%（arXiv:2303.11366） |
-
 | 铁律 | 必须有独立 verifier + 最大迭代次数 |
-
 | 一手依据 | Anthropic：evaluator-optimizer 最实用，多一轮收益递减快 |
 
 **下一篇**：[[16-选型判断标准|选型判断标准]]——三种框架讲完，怎么选？从最简方案起步。

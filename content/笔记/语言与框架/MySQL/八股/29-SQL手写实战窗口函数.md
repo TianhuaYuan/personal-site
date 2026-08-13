@@ -163,15 +163,10 @@ WHERE e.salary > d.avg_sal;
 ### 执行次数对比
 
 | 子查询类型 | 执行次数 |
-
 | :--- | :--- |
-
 | 标量子查询（SELECT里） | 外层N行 → 执行N次 |
-
 | 派生表（FROM里） | 执行1次 |
-
 | 相关子查询（WHERE引外层） | 外层N行 → 执行N次 |
-
 | 非相关子查询（WHERE不引外层） | 执行1次 |
 
 ---
@@ -268,13 +263,9 @@ FROM students;
 ```
 
 | 函数 | 特点 | 适用场景 |
-
 | :--- | :--- | :--- |
-
 | ROW_NUMBER | 唯一编号，无并列 | "每组严格取1条" |
-
 | RANK | 并列跳号(1,1,3) | 比赛排名 |
-
 | DENSE_RANK | 并列不跳(1,1,2) | "前N名有几个人" |
 
 ### 4.3 LAG/LEAD — 行间偏移
@@ -473,17 +464,11 @@ GROUP BY sid;
 ## 六、踩坑记录
 
 | 坑 | 正确认知 |
-
 | :--- | :--- |
-
 | LEFT JOIN + WHERE过滤右表 | LEFT JOIN退化为INNER JOIN，过滤条件必须写ON里 |
-
 | NOT IN子查询有NULL | 整条SQL返回0行，用NOT EXISTS替代 |
-
 | 窗口函数放WHERE里 | 语法报错，必须套子查询在外层WHERE过滤 |
-
 | 标量子查询 | DEPENDENT SUBQUERY，外层每行执行一次，改JOIN |
-
 | SUM OVER加ORDER BY | 变成累计求和（每行不同），不加ORDER BY是分区总和（每行一样） |
 
 ---
@@ -491,23 +476,14 @@ GROUP BY sid;
 ## 七、速答
 
 | 问题 | 一句话答案 |
-
 | :--- | :--- |
-
 | LEFT JOIN后WHERE过滤右表会怎样？ | LEFT JOIN退化为INNER JOIN，NULL行被WHERE杀掉 |
-
 | NOT IN遇NULL会怎样？ | 返回0行！用NOT EXISTS替代 |
-
 | 标量子查询为什么不推荐？ | 外层每行执行一次子查询，改JOIN |
-
 | 窗口函数和GROUP BY区别？ | GROUP BY合并行（减少行数），窗口函数附加列（不减少行数） |
-
 | ROW_NUMBER vs RANK vs DENSE_RANK？ | 唯一编号 / 并列跳号 / 并列不跳 |
-
 | 连续登录怎么算？ | 日期 - ROW_NUMBER = 同一个常数 |
-
 | 窗口函数能放WHERE里吗？ | 不能，套子查询在外层WHERE |
-
 | 行转列怎么实现？ | MAX(CASE WHEN key='X' THEN value END) + GROUP BY |
 
 ---

@@ -27,11 +27,8 @@ LLM 推理优化的核心挑战是：**模型巨大（数十亿到万亿参数�
 LLM 推理分为两个阶段，各有不同的性能瓶颈：
 
 | 阶段 | 特点 | 瓶颈 |
-
 | ------ | ------ | ------ |
-
 | Prefill（预填充） | 处理整个输入 prompt，计算所有 token 的 KV | **计算密集型**（Compute-bound） |
-
 | Decode（解码） | 逐 token 生成，每步只处理一个新 token | **内存密集型**（Memory-bound） |
 
 Decode 阶段为什么是 memory-bound？因为每生成一个新 token，都需要读取整个 KV Cache，但只做少量计算。GPU 的算力远超内存带宽。
@@ -122,15 +119,10 @@ $$KV\_Cache = 2 \times L \times n \times d \times b \times \text{bytes\_per\_par
 ### KV Cache 优化技术
 
 | 技术 | 原理 | 效果 |
-
 | ------ | ------ | ------ |
-
 | MQA（Multi-Query Attention） | 多个 head 共享一组 KV | KV Cache 减少到 1/h |
-
 | GQA（Grouped-Query Attention） | 分组共享 KV | 折中方案，h/n_groups |
-
 | KV Cache 量化 | 将 KV Cache 量化为 INT8/INT4 | 内存减少 50%-75% |
-
 | KV Cache 驱逐 | 基于注意力分数驱逐不重要的 KV | 支持更长上下文 |
 
 ## 模型量化（Quantization）
@@ -139,15 +131,10 @@ $$KV\_Cache = 2 \times L \times n \times d \times b \times \text{bytes\_per\_par
 将模型参数从高精度（FP32/FP16）转换为低精度（INT8/INT4），减少内存占用和计算量。
 
 | 精度 | 每参数字节数 | 相对 FP16 | 适用场景 |
-
 | ------ | ------------ | ---------- | --------- |
-
 | FP32 | 4 bytes | 1x | 训练 |
-
 | FP16/BF16 | 2 bytes | 0.5x | 训练+推理 |
-
 | INT8 | 1 byte | 0.25x | 推理 |
-
 | INT4 | 0.5 byte | 0.125x | 边缘部署 |
 
 ### 主流量化方法
@@ -156,13 +143,9 @@ $$KV\_Cache = 2 \times L \times n \times d \times b \times \text{bytes\_per\_par
 训练后量化，无需重新训练：
 
 | 方法 | 原理 | 特点 |
-
 | ------ | ------ | ------ |
-
 | GPTQ | 基于 Hessian 矩阵的逐层量化 | 精度高，需要校准数据 |
-
 | AWQ（Activation-aware Weight Quantization） | 保留对输出影响大的权重通道 | 对模型质量影响最小 |
-
 | SqueezeLLM | 非均匀量化 + 稀疏存储 | 兼顾压缩率和精度 |
 
 #### QAT（Quantization-Aware Training）
@@ -178,15 +161,10 @@ $$KV\_Cache = 2 \times L \times n \times d \times b \times \text{bytes\_per\_par
 ### 量化对模型质量的影响
 
 | 量化精度 | 中文任务影响 | 英文任务影响 | 代码任务影响 |
-
 | --------- | ------------ | ------------ | ------------ |
-
 | INT8 | 几乎无损 | 几乎无损 | 几乎无损 |
-
 | INT4 (GPTQ) | 轻微下降 | 轻微下降 | 轻微下降 |
-
 | INT4 (AWQ) | 极小下降 | 极小下降 | 极小下降 |
-
 | INT3 | 明显下降 | 明显下降 | 明显下降 |
 
 ## 推测解码（Speculative Decoding）
@@ -221,15 +199,10 @@ $$KV\_Cache = 2 \times L \times n \times d \times b \times \text{bytes\_per\_par
 ### Draft Model 选择
 
 | 策略 | Draft Model 来源 | 优点 |
-
 | ------ | ----------------- | ------ |
-
 | 同族小模型 | LLaMA-7B 作为 LLaMA-70B 的 draft | 共享词表，兼容性好 |
-
 | 独立小模型 | 专门训练的小模型 | 可针对特定任务优化 |
-
 | 自草稿 | 用大模型自身的早期层 | 无需额外模型 |
-
 | Medusa | 在大模型上加多个预测头 | 无需额外模型，多头并行 |
 
 ## Continuous Batching（连续批处理）
@@ -287,13 +260,9 @@ Continuous Batching：
 ### 效果对比
 
 | 指标 | 传统实现 | vLLM (PagedAttention) |
-
 | ------ | --------- | ---------------------- |
-
 | 内存浪费 | 60%-80% | 4%（接近最优） |
-
 | 吞吐量 | 基准 | 提升 2-4x |
-
 | 并发请求数 | 受限于预分配 | 动态分配，支持更多并发 |
 
 ## FlashAttention
@@ -324,13 +293,9 @@ FlashAttention：
 ### 性能提升
 
 | 指标 | 标准注意力 | FlashAttention |
-
 | ------ | ---------- | --------------- |
-
 | 内存使用 | O(n²) | O(n) |
-
 | 运行速度 | 基准 | 2-4x 加速 |
-
 | 最大序列长度 | 受限于显存 | 可处理更长序列 |
 
 ## 张量并行与流水线并行
@@ -373,25 +338,15 @@ GPU 3：Layer 36-47 → 最终输出
 ## 综合优化策略
 
 | 优化技术 | 延迟优化 | 吞吐优化 | 显存优化 | 实现难度 |
-
 | --------- | --------- | --------- | --------- | --------- |
-
 | KV Cache | ★★★ | ★★ | ★★ | 低 |
-
 | INT8 量化 | ★★ | ★★★ | ★★★ | 低 |
-
 | INT4 量化 | ★ | ★★★ | ★★★ | 中 |
-
 | 推测解码 | ★★★ | ★ | ★ | 中 |
-
 | Continuous Batching | ★ | ★★★ | ★ | 中 |
-
 | PagedAttention | ★ | ★★★ | ★★★ | 高 |
-
 | FlashAttention | ★★★ | ★★ | ★★★ | 高（但有库） |
-
 | 张量并行 | ★ | ★★ | ★★ | 高 |
-
 | 流水线并行 | ★ | ★★ | ★★ | 高 |
 
 ## 速记卡（面试闪卡）
@@ -445,22 +400,13 @@ KV Cache 先缓存，量化压体积
 ## 常见问题
 
 | 问题 | 回答要点 |
-
 | ------ | --------- |
-
 | 什么是 KV Cache？它解决了什么问题？ | KV Cache 缓存了之前 token 的 Key 和 Value，避免自回归生成时重复计算。它将每步的计算复杂度从 O(n²×d) 降低到 O(n×d)，是 LLM 推理的基础优化。 |
-
 | 推理时为什么 Decode 阶段是 memory-bound？ | Decode 阶段每步只生成一个 token，但需要读取整个 KV Cache（可能数百 GB）。计算量很小但内存读取量巨大，GPU 的内存带宽成为瓶颈。 |
-
 | FlashAttention 如何加速注意力计算？ | 通过 Tiling 技术将注意力计算分块在 SRAM 中完成，避免将 O(n²) 的注意力矩阵写入 HBM。减少了 HBM 的读写次数，显著降低内存访问延迟。 |
-
 | GPTQ 和 AWQ 的核心区别是什么？ | GPTQ 基于 Hessian 矩阵进行逐层最优量化，追求全局最优；AWQ 关注激活值分布，保留对输出影响大的权重通道，更注重模型质量保持。AWQ 通常质量略优。 |
-
 | 推测解码为什么是无损的？ | 推测解码通过拒绝采样（Rejection Sampling）保证输出分布与大模型一致。小模型生成的 token 被大模型验证，不满足分布的 token 被拒绝并重新采样。 |
-
 | vLLM 的 PagedAttention 解决了什么问题？ | 解决了 KV Cache 的内存碎片化问题。借鉴 OS 虚拟内存的分页机制，将 KV Cache 分成固定大小的 Block 按需分配，消除了内存浪费，支持更多并发请求。 |
-
 | Continuous Batching 相比 Static Batching 的优势？ | Static Batching 中短请求必须等待最长请求完成，造成 GPU 资源浪费。Continuous Batching 允许在生成过程中动态加入/移除请求，显著提升 GPU 利用率和吞吐量。 |
-
 | 张量并行和流水线并行的适用场景有何不同？ | 张量并行将单层计算分布到多 GPU，适合层内通信频繁、显存不足的场景；流水线并行将不同层分配到不同 GPU，适合模型太大无法放入单 GPU、层间通信可控的场景。 |
 

@@ -31,13 +31,9 @@ MCP 规范对三者"谁说了算"有明确定位，这是理解它们的核心�
 
 
 | 原语 | 谁控制（who controls） | 本质 | 有无副作用 | 类比 |
-
 |-|-|-|-|-|
-
 | **Tool** | **模型控制**（Model-controlled） | 执行动作 / 函数 | 可能有（改世界） | 菜谱步骤 / `POST` |
-
 | **Resource** | **应用控制**（Application-controlled） | 读取数据 / 上下文 | 无（只读） | 食材 / `GET` |
-
 | **Prompt** | **用户控制**（User-controlled） | 预设指令模板 | 无 | 话术卡片 |
 
 
@@ -257,15 +253,10 @@ def read_file(path: str) -> str:
 
 
 | 注解字段 | 含义 | 主机可能的行为 |
-
 |-|-|-|
-
 | `readOnlyHint: true` | 只读，不改世界 | 可自动执行，无需确认 |
-
 | `destructiveHint: true` | 破坏性、不可撤销 | **要求用户明确确认** |
-
 | `idempotentHint: true` | 幂等，重复执行安全 | 可安全重试（呼应第 ⑥⑦⑪ 篇） |
-
 | `openWorldHint: true` | 影响外部开放系统 | 谨慎执行 |
 
 
@@ -383,13 +374,9 @@ mcp.add_tool(search_fn)                                  # 运行时动态把函
 
 
 | 模式 | 上手 | Schema 生成 | 控制粒度 | 适用 |
-
 |-|-|-|-|-|
-
 | 装饰器（FastMCP） | 极简 | 自动 | 中 | 90% 生产 Server |
-
 | 命令式（low-level SDK） | 复杂 | 手动 | 细 | 自定义传输 / 协议钻探 |
-
 | 运行时动态 | 中 | 看写法 | 动态 | 插件 / 多租户 / 权限路由 |
 
 
@@ -435,31 +422,18 @@ MCP 规范演进快，字段随版本变。写代码前先确认目标版本：
 
 
 | 字段 / 能力 | 2024-11-05 | 2025-06-18 | 2025-11-25 | 2026-07-28 RC |
-
 |-|-|-|-|-|
-
 | `name` / `description` / `inputSchema` | ✅ | ✅ | ✅ | ✅ |
-
 | `title`（显示名） | ❌ | ✅ 新增 | ✅ | ✅ |
-
 | `outputSchema` | ❌ | ✅ 新增 | ✅ | ✅ |
-
 | `structuredContent`（结构化输出） | ❌ | ✅ 新增 | ✅ | ✅ |
-
 | `annotations`（四 hint） | 部分 | ✅ | ✅ | ✅ |
-
 | Resource 模板 `{param}` | ✅ | ✅ | ✅ | ✅ |
-
 | JSON-RPC 批处理 | ❌ | ❌（2025-03-26 加、本版移除） | ❌ | ❌ |
-
 | JSON Schema 默认 2020-12 | ❌ | ❌ | ✅（SEP-1613） | ✅ |
-
 | 输入错误→`isError`（SEP-1303） | ❌ | ❌ | ✅ 建议 | ✅ |
-
 | 工具图标 metadata（SEP-973） | ❌ | ❌ | ✅ | ✅ |
-
 | `tools/list` 缓存 `ttlMs`/`cacheScope` | 基础分页 | 基础 | 增强 | ✅（正式） |
-
 | Resumable SSE / `Last-Event-ID` | ✅ | ✅ | ✅ | ❌ 移除 |
 
 

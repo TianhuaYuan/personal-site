@@ -31,13 +31,9 @@ pip install "python-jose[cryptography]" passlib[bcrypt] python-multipart
 ```
 
 | 包 | 用途 |
-
 |---|------|
-
 | python-jose | JWT 签发 (encode) + 验证 (decode) |
-
 | passlib | 密码哈希（bcrypt 算法） |
-
 | python-multipart | FastAPI 解析 form-data（登录接口用） |
 
 ---
